@@ -1,0 +1,50 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  profiles:
+    include:
+      - secret
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
+    show-sql: true
+    defer-datasource-initialization: true
+    open-in-view: false
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/record?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    username: ${db.username}
+    password: ${db.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 30000  # 커넥션 타임아웃 설정 (ms)
+      maximum-pool-size: 10  # 커넥션 풀의 최대 크기 설정
+      minimum-idle: 5  # 유휴 커넥션을 유지할 최소한의 커넥션 수 설정
+      idle-timeout: 600000  # 유휴 커넥션의 최대 유지 시간 설정 (ms)
+      pool-name: MyHikariCP  # 커넥션 풀의 이름 설정
+      validation-timeout: 5000  # 커넥션 유효성 검사 타임아웃 설정 (ms)
+      auto-commit: true  # 자동 커밋 모드 설정
+
+springdoc: #swagger
+  packages-to-scan: com.example.back
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /record.html            # Swagger UI ?? => localhost:8080/api/record.html
+    tags-sorter: alpha            # alpha: ??? ? ?? ??, method: HTTP Method ? ??
+    operations-sorter: alpha      # alpha: ??? ? ?? ??, method: HTTP Method ? ??
+  api-docs:
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true
+
