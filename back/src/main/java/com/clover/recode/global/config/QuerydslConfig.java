@@ -1,4 +1,4 @@
-package com.example.back.global.config;
+package com.clover.recode.global.config;
 
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;

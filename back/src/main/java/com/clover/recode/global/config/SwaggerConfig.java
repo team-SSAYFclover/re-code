@@ -1,4 +1,4 @@
-package com.example.back.global.config;
+package com.clover.recode.global.config;
 
 
 import io.swagger.v3.oas.models.Components;
