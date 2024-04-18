@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.entity;
 
+import com.clover.recode.domain.User.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +22,8 @@ public class Statistics {
 
     int randomNo;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
