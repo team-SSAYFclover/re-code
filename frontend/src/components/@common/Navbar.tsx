@@ -45,7 +45,7 @@ const Navbar = () => {
             return (
               <div
                 key={idx}
-                className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md ${currentPath === nav.url && 'text-MAIN1 bg-MAIN2'}`}
+                className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath === nav.url && 'text-MAIN1 bg-MAIN2'}`}
                 onClick={() => navigate(`/${nav.url}`)}
               >
                 <div className="text-[22px]">{nav.icon}</div>
@@ -71,7 +71,7 @@ const Navbar = () => {
           return (
             <div
               key={idx}
-              className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md ${currentPath === nav.url && 'text-MAIN1 bg-MAIN2'}`}
+              className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath === nav.url && 'text-MAIN1 bg-MAIN2'}`}
               onClick={() => navigate(`/${nav.url}`)}
             >
               <div className="text-lg">{nav.icon}</div>
@@ -80,7 +80,7 @@ const Navbar = () => {
           );
         })}
 
-        <button className="flex justify-center items-center absolute bottom-0 left-0 right-0 h-12 m-3 text-BLACK font-bold">
+        <button className="flex justify-center items-center absolute bottom-0 left-0 right-0 h-12 m-3 transition ease-in-out text-BLACK font-bold hover:bg-black/5 rounded-md outline-none">
           <div className="text-lg">
             <LuLogOut />
           </div>
