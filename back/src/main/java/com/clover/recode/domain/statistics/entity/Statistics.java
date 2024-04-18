@@ -4,6 +4,9 @@ import com.clover.recode.domain.User.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -14,16 +17,20 @@ import lombok.*;
 public class Statistics {
 
     @Id
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    int rank;
+    private int rank;
 
-    int supplementaryNo;
+    private int supplementaryNo;
 
-    int randomNo;
+    private int randomNo;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "id")
+    private List<WeekReviews> weekReviews= new ArrayList<>();
 
 }
