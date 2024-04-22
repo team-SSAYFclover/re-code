@@ -1,0 +1,51 @@
+{
+	"manifest_version": 3,
+	"name": "Re:Code Uploader",
+	"version": "1.0",
+	"action": {
+		"default_popup": "index.html",
+		"default_title": "Re:Code",
+		"default_icon": {
+			"16": "assets/thumbnail.png",
+			"48": "assets/thumbnail.png",
+			"128": "assets/thumbnail.png"
+		}
+	},
+	"permissions": [
+		"tabs",
+		"activeTab",
+		"storage",
+		"unlimitedStorage",
+		"declarativeNetRequest",
+		"declarativeNetRequestWithHostAccess"
+	],
+	"host_permissions": ["https://www.acmicpc.net/", "https://github.com/"],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"declarative_net_request": {
+		"rule_resources": [
+			{
+				"id": "ruleset",
+				"enabled": true,
+				"path": "rules.json"
+			}
+		]
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://www.acmicpc.net/*"],
+			"css": ["css/modal.css"],
+			"js": [
+				"scripts/utils.js",
+				"scripts/storage.js",
+				"scripts/baekjoon/modal.js",
+				"scripts/baekjoon/variable.js",
+				"scripts/baekjoon/parse.js",
+				"scripts/baekjoon/baekjoon.js",
+				"scripts/baekjoon/api.js"
+			],
+			"run_at": "document_idle"
+		}
+	]
+}
