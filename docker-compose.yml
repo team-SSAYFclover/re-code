@@ -1,0 +1,8 @@
+version: "3"
+services:
+  recode-back:
+    container_name: recode-back
+    build: ./back
+    image: recode_back_image:0.0
+    ports:
+      - "8080:8080"
