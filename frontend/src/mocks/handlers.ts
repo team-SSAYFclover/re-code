@@ -1,3 +1,3 @@
-import { testHandlers } from '@/mocks/api/handlers/testHandlers';
+import { authHandler } from '@/mocks/api/handlers/authHandlers';
 
-export const handlers = [...testHandlers];
+export const handlers = [...authHandler];
