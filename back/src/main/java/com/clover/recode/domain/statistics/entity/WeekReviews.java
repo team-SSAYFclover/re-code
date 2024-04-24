@@ -3,6 +3,7 @@ package com.clover.recode.domain.statistics.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -20,9 +21,7 @@ public class WeekReviews {
 
     private int count;
 
-    private int sequence;
-
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "statistic_id")
