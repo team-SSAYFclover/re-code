@@ -86,6 +86,7 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
 
   const modifyBtnClass = 'text-sm leading-6 text-MAIN1';
   const contentCommonClass = 'flex justify-between pt-6 pb-2';
+  const textCommonClass = 'text-sm leading-6';
 
   return (
     <>
@@ -102,7 +103,7 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
         </div>
 
         <div className={contentCommonClass}>
-          <span className="text-md">복습 난이도 설정</span>
+          <span className={textCommonClass}>복습 난이도 설정</span>
           {!isModifyDifficulty ? (
             <button className={modifyBtnClass} onClick={handleModifyLevel}>
               수정
@@ -134,13 +135,13 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
         </div>
 
         <div className={contentCommonClass}>
-          <span className="text-md">알림 설정</span>
+          <span className={textCommonClass}>알림 설정</span>
           <Toggle isOn={modifyInfo.notifStatus} handleToggle={handleAlarmStatus} />
         </div>
         {modifyInfo.notifStatus && (
           <>
             <div className={contentCommonClass}>
-              <span className="text-md">알림 시간</span>
+              <span className={textCommonClass}>알림 시간</span>
               {!isModifyAlarm ? (
                 <button className={modifyBtnClass} onClick={handleModifyAlarm}>
                   수정
