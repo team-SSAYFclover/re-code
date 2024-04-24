@@ -1,0 +1,31 @@
+package com.clover.recode.domain.statistics.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Date;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@ToString
+public class WeekReviews {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private int count;
+
+    private int sequence;
+
+    private Date date;
+
+    @ManyToOne
+    @JoinColumn(name = "statistic_id")
+    private Statistics statistics;
+
+}
