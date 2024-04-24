@@ -1,9 +1,13 @@
 package com.clover.recode.domain.statistics.repository;
 
-import com.clover.recode.domain.statistics.entity.WeekReviews;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Repository
-public interface WeekReviewsRepository extends JpaRepository<WeekReviews, Integer> {
+public interface WeekReviewsRepository {
+
+    List<Integer> findReviewsBetweenDates(LocalDate startOfWeek, LocalDate endOfWeek);
+
 }

@@ -1,19 +1,23 @@
 package com.clover.recode.domain.statistics.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 
+@Setter
+@Getter
 public class StatisticsListRes {
 
     private int sequence;
 
-    private int rank;
+    private int ranking;
 
-    private Map<String, Integer> weekReviews;
+    private List<Integer> weekReviews;
 
-    private List<TodayReview> todayReviews;
+    //private List<TodayReview> todayReviews;
 
     private int supplementaryQuestion;
 
