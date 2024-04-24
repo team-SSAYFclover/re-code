@@ -6,3 +6,23 @@ services:
     image: recode_back_image:0.0
     ports:
       - "8080:8080"
+    networks:
+      - backend_frontend
+
+  recode-front:
+    container_name: recode-front
+    build: ./frontend
+    image: recode_front_image:0.0
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+      - /home/ubuntu/https/nginx:/etc/nginx/conf.d
+    networks:
+      - backend_frontend
+
+networks:
+  backend_frontend:
+    driver: bridge
