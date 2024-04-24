@@ -20,7 +20,7 @@ spring:
     open-in-view: false
 
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/record?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
     username: ${db.username}
     password: ${db.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
