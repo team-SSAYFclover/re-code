@@ -1,4 +1,4 @@
-package com.clover.recode.domain.User;
+package com.clover.recode.domain.user;
 
 import com.clover.recode.domain.statistics.entity.Statistics;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(mappedBy = "id")
+    @OneToOne(mappedBy = "user")
     private Statistics statistics;
 
 }
