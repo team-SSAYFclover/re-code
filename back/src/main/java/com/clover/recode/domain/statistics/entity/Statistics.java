@@ -26,6 +26,8 @@ public class Statistics {
 
     private int randomNo;
 
+    private int sequence;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
