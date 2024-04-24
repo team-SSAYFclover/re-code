@@ -1,6 +1,6 @@
 package com.clover.recode.domain.statistics.entity;
 
-import com.clover.recode.domain.User.User;
+import com.clover.recode.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
