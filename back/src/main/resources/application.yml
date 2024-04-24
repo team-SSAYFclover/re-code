@@ -18,6 +18,18 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
     open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-name: github
+            client-id: ${oauth.client.id}
+            client-secret: ${oauth.client.secret}
+            redirect-uri: ${oauth.redirect.uri}
+            authorization-grant-type: authorization_code
+#            scope:  no-scope
+
 
   datasource:
     url: jdbc:mysql://${db.server_public_ip}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
@@ -47,4 +59,3 @@ springdoc: #swagger
       enabled: true
   cache:
     disabled: true
-
