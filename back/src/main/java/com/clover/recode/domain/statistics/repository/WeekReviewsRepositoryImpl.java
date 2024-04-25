@@ -25,6 +25,7 @@ public class WeekReviewsRepositoryImpl implements WeekReviewsRepository{
                 .select(weeklyReview.count)
                 .from(weeklyReview)
                 .where(weeklyReview.date.between(mon, sun))
+                .orderBy(weeklyReview.date.asc()) // 날짜 순으로 오름차순 정렬
                 .fetch();
 
     }
