@@ -26,8 +26,11 @@ public class Statistics {
     @ColumnDefault("100")
     private int ranking;
 
+    @NotNull
+    @ColumnDefault("1806")
     private int supplementaryNo;
 
+    @ColumnDefault("2178")
     private int randomNo;
 
     @NotNull
