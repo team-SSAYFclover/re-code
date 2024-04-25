@@ -19,7 +19,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
-      - /home/ubuntu/https/nginx:/etc/nginx/conf.d
+      - /home/ubuntu/nginx:/etc/nginx/conf.d
     networks:
       - backend_frontend
 
