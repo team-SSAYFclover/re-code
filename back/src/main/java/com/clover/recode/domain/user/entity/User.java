@@ -1,4 +1,4 @@
-package com.clover.recode.domain.user;
+package com.clover.recode.domain.user.entity;
 
 import com.clover.recode.domain.statistics.entity.Statistics;
 import jakarta.persistence.*;
@@ -19,6 +19,5 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Statistics statistics;
-
 }
 
