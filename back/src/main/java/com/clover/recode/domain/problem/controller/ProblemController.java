@@ -2,21 +2,22 @@ package com.clover.recode.domain.problem.controller;
 
 import com.clover.recode.domain.problem.dto.ProblemDto;
 import com.clover.recode.domain.problem.service.ProblemService;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
 @RestController
+@RequiredArgsConstructor //Lombok을 사용하여 생성자 자동 생성
 @RequestMapping("/problems")
 public class ProblemController {
 
-    @Autowired
-    private ProblemService problemService;
+    private final ProblemService problemService;
+
+    // 생성자를 통한 의존성 주입 -> @RequiredArgsConstructor
+//    public ProblemController(ProblemService problemService) {
+//        this.problemService = problemService;
+//    }
+
 
     @PostMapping
     public ResponseEntity<ProblemDto> createProblem(@RequestBody ProblemDto problemDto) {
@@ -28,23 +29,5 @@ public class ProblemController {
     public ResponseEntity<ProblemDto> getProblemById(@PathVariable Long id) {
         ProblemDto problemDto = problemService.getProblemById(id);
         return ResponseEntity.ok(problemDto);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ProblemDto>> getAllProblems() {
-        List<ProblemDto> problems = problemService.getAllProblems();
-        return ResponseEntity.ok(problems);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ProblemDto> updateProblem(@PathVariable Long id, @RequestBody ProblemDto problemDto) {
-        ProblemDto updatedProblem = problemService.updateProblem(id, problemDto);
-        return ResponseEntity.ok(updatedProblem);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProblem(@PathVariable Long id) {
-        problemService.deleteProblem(id);
-        return ResponseEntity.ok().build();
     }
 }
