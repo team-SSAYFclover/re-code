@@ -20,7 +20,7 @@ public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotNull
     @ColumnDefault("100")
