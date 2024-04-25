@@ -4,6 +4,7 @@ import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewsRepository;
+import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+
+import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +38,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public StatisticsListRes getStatisticsList(int userId) {
         Statistics statistics = statisticsRepository.findById(userId)
-                .orElseThrow();// BusinessException 대신 적절한 예외를 사용하세요.
+                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
             LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
