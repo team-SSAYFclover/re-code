@@ -33,6 +33,11 @@ spring:
       validation-timeout: 5000  # 커넥션 유효성 검사 타임아웃 설정 (ms)
       auto-commit: true  # 자동 커밋 모드 설정
 
+  redis:
+    host: ${db.redis.host}
+    port: ${db.redis.port}
+    password: ${db.redis.password}
+
 springdoc: #swagger
   packages-to-scan: com.example.back
   default-consumes-media-type: application/json;charset=UTF-8
