@@ -1,4 +1,4 @@
-package com.clover.recode.problem.dto;
+package com.clover.recode.domain.problem.dto;
 
 import lombok.*;
 

@@ -1,7 +1,7 @@
-package com.clover.recode.problem.controller;
+package com.clover.recode.domain.problem.controller;
 
-import com.clover.recode.problem.dto.ProblemDto;
-import com.clover.recode.problem.service.ProblemService;
+import com.clover.recode.domain.problem.dto.ProblemDto;
+import com.clover.recode.domain.problem.service.ProblemService;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.beans.factory.annotation.Autowired;

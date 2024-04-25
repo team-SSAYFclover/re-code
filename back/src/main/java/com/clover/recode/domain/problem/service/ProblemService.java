@@ -1,6 +1,6 @@
-package com.clover.recode.problem.service;
+package com.clover.recode.domain.problem.service;
 
-import com.clover.recode.problem.dto.ProblemDto;
+import com.clover.recode.domain.problem.dto.ProblemDto;
 
 import java.util.List;
 
