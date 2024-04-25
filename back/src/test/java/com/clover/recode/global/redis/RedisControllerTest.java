@@ -19,6 +19,6 @@ class RedisControllerTest {
         stringRepository.addRedisKey(key, value);
 
         ResponseEntity<?> foundValue = stringRepository.getRedisKey(key);
-        Assertions.assertThat(foundValue).isEqualTo(value);
+        Assertions.assertThat(foundValue.getBody()).isEqualTo(value);
     }
 }
