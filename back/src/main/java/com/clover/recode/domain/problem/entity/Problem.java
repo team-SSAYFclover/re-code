@@ -1,10 +1,15 @@
 package com.clover.recode.domain.problem.entity;
 
+import com.clover.recode.domain.statistics.entity.TodayProblem;
+import com.clover.recode.domain.statistics.entity.WeekReviews;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "problem")
@@ -29,4 +34,8 @@ public class Problem {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @OneToMany(mappedBy = "id")
+    private List<TodayProblem> todayProblems= new ArrayList<>();
+
 }
