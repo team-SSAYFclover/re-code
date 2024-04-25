@@ -1,4 +1,4 @@
-package com.clover.recode.problem.entity;
+package com.clover.recode.domain.problem.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

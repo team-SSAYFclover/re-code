@@ -1,9 +1,9 @@
-package com.clover.recode.problem.service;
+package com.clover.recode.domain.problem.service;
 
-import com.clover.recode.problem.dto.ProblemDto;
-import com.clover.recode.problem.entity.Problem;
-import com.clover.recode.problem.repository.ProblemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.clover.recode.domain.problem.repository.ProblemRepository;
+import com.clover.recode.domain.problem.dto.ProblemDto;
+import com.clover.recode.domain.problem.entity.Problem;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class ProblemServiceImpl implements ProblemService {
 
-    @Autowired
-    private ProblemRepository problemRepository;
+
+    private final ProblemRepository problemRepository;
 
     @Override
     public ProblemDto createProblem(ProblemDto problemDto) {
