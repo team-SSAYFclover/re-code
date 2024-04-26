@@ -32,7 +32,9 @@ spring:
 
 
   datasource:
+#    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
     url: jdbc:mysql://${db.server_public_ip}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+
     username: ${db.username}
     password: ${db.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -45,8 +47,13 @@ spring:
       validation-timeout: 5000  # 커넥션 유효성 검사 타임아웃 설정 (ms)
       auto-commit: true  # 자동 커밋 모드 설정
 
+  redis:
+    host: ${db.redis.host}
+    port: ${db.redis.port}
+    password: ${db.redis.password}
+
 springdoc: #swagger
-  packages-to-scan: com.example.back
+  packages-to-scan: com.clover.recode
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
