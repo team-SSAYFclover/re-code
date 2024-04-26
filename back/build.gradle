@@ -45,14 +45,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.7.5'
 }
 
-def querydslSrcDir = 'src/main/generated'
-clean {
-    delete file(querydslSrcDir)
-}
-tasks.withType(JavaCompile) {
-    options.generatedSourceOutputDirectory = file(querydslSrcDir)
-}
-
 tasks.named('test') {
     useJUnitPlatform()
 }
