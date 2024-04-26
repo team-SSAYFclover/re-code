@@ -35,7 +35,4 @@ public class Problem {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @OneToMany(mappedBy = "id")
-    private List<TodayProblem> todayProblems= new ArrayList<>();
-
 }
