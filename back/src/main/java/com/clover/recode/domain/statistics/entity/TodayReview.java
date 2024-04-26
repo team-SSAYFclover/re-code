@@ -1,5 +1,7 @@
 package com.clover.recode.domain.statistics.entity;
 
+import com.clover.recode.domain.problem.entity.Problem;
+import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,8 +24,8 @@ public class TodayReview {
 
     private LocalDate date;
 
-    @OneToMany(mappedBy = "id")
-    private List<TodayProblem> todayProblems= new ArrayList<>();
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistics_id")
+    private Statistics statistics;
 
 }

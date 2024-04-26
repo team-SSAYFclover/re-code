@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@ToString
 public class TodayProblem {
 
     @Id
@@ -21,12 +20,18 @@ public class TodayProblem {
 
     private int review_count;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "today_review_id")
+    private TodayReview todayReview;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "problem_id")
     private Problem problem;
 
-    @ManyToOne
-    @JoinColumn(name = "today_review_id")
-    private TodayReview todayReview;
+
+    @Override
+    public String toString() {
+        return id + " " + is_complete;
+    }
 
 }

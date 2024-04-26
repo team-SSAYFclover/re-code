@@ -23,8 +23,8 @@ public class WeekReviews {
 
     private LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "statistic_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistics_id")
     private Statistics statistics;
 
 }

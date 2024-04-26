@@ -37,11 +37,4 @@ public class Statistics {
     @ColumnDefault("0")
     private int sequence;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "id")
-    private List<WeekReviews> weekReviews= new ArrayList<>();
-
 }
