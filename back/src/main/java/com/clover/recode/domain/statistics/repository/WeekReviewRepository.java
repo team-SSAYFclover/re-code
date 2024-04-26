@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface WeekReviewsRepository {
+public interface WeekReviewRepository {
 
     List<Integer> findReviewsBetweenDates(LocalDate startOfWeek, LocalDate endOfWeek);
 

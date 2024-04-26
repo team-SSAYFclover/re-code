@@ -1,26 +1,24 @@
 package com.clover.recode.domain.statistics.repository;
 
-import com.clover.recode.domain.statistics.entity.QWeekReviews;
+import com.clover.recode.domain.statistics.entity.QWeekReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class WeekReviewsRepositoryImpl implements WeekReviewsRepository{
+public class WeekReviewRepositoryImpl implements WeekReviewRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public List<Integer> findReviewsBetweenDates(LocalDate mon, LocalDate sun) {
-        QWeekReviews weeklyReview = QWeekReviews.weekReviews;
+        QWeekReview weeklyReview = QWeekReview.weekReview;
         return jpaQueryFactory
                 .select(weeklyReview.count)
                 .from(weeklyReview)
