@@ -67,8 +67,10 @@ public class SecurityConfig {
         .authorizeHttpRequests((auth) -> auth
             // Swagger
             .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-            .requestMatchers( "/auth/**").permitAll()
-            .anyRequest().authenticated());
+            // 이후에 Authenticated로 변경
+           .anyRequest().authenticated());
+//            .anyRequest().permitAll());
+
 
     // 세션 설정
     http
@@ -82,11 +84,11 @@ public class SecurityConfig {
 
               // 허용할 출처
               configuration.setAllowedOrigins(
-                  Arrays.asList("https://k10d210.p.ssafy.io", "http://localhost:3000")
+                  Arrays.asList("https://k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com")
               );
 
               // 허용할 HTTP 메소드
-              configuration.setAllowedMethods(Collections.singletonList("*"));
+              configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 
               // 자격 증명 정보 허용 설정
               configuration.setAllowCredentials(true);
@@ -98,8 +100,8 @@ public class SecurityConfig {
               configuration.setMaxAge(3600L);
 
               // 브라우저에 노출할 헤더 설정
-              configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-              configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+              configuration.setExposedHeaders(Collections.singletonList("*"));
+//              configuration.setExposedHeaders(Collections.singletonList("Authorization"));
               return configuration;
             }));
 

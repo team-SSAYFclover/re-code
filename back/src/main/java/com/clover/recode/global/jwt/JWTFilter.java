@@ -1,7 +1,7 @@
 package com.clover.recode.global.jwt;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
-import com.clover.recode.domain.auth.dto.LoginRes;
+import com.clover.recode.domain.auth.dto.TokenRes;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -30,7 +30,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
       System.out.println(cookie.getName());
       if (cookie.getName().equals("Authorization")) {
-
         authorization = cookie.getValue();
       }
     }
@@ -59,14 +58,16 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     //토큰에서 id 획득
-    String id = jwtUtil.getId(token);
+    Long id = jwtUtil.getId(token);
+    Long githubId = jwtUtil.geGithubtId(token);
 
     //userDTO를 생성하여 값 set
-    LoginRes loginRes = new LoginRes();
-    loginRes.setId(Long.parseLong(id));
+    TokenRes tokenRes = new TokenRes();
+    tokenRes.setId(id);
+    tokenRes.setGithubId(githubId);
 
     //UserDetails에 회원 정보 객체 담기
-    CustomOAuth2User customOAuth2User = new CustomOAuth2User(loginRes);
+    CustomOAuth2User customOAuth2User = new CustomOAuth2User(tokenRes);
 
     //스프링 시큐리티 인증 토큰 생성
     Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());

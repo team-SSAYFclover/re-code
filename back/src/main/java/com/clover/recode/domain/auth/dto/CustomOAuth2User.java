@@ -3,12 +3,14 @@ package com.clover.recode.domain.auth.dto;
 import java.util.Collection;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @AllArgsConstructor
+@ToString
 public class CustomOAuth2User implements OAuth2User {
-  private final LoginRes loginRes;
+  private final TokenRes tokenRes;
   @Override
   public Map<String, Object> getAttributes() {
     return null;
@@ -21,14 +23,12 @@ public class CustomOAuth2User implements OAuth2User {
 
   @Override
   public String getName() {
-    return loginRes.getName();
+    return tokenRes.getGithubId().toString();
   }
 
-  public String getAvatarUrl() {
-    return loginRes.getAvatarUri();
-  }
   public Long getId() {
-    return loginRes.getId();
+    return tokenRes.getId();
   }
+  public Long getGithubId() { return tokenRes.getGithubId(); }
 
 }

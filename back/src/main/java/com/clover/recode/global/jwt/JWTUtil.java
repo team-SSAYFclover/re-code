@@ -16,17 +16,22 @@ public class JWTUtil {
     secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
   }
 
-  public String getId(String token) {
-    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("id", String.class);
+  public Long getId(String token) {
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("id", Long.class);
+  }
+
+  public Long geGithubtId(String token) {
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("githubId", Long.class);
   }
 
   public Boolean isExpired(String token) {
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
   }
 
-  public String createJwt(Long id, Long expiredMs) {
+  public String createJwt(Long id, Long githubId, Long expiredMs) {
     return Jwts.builder()
         .claim("id", id)
+        .claim("githubId", githubId)
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + expiredMs))
         .signWith(secretKey)
