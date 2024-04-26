@@ -56,15 +56,16 @@ const HomeContent: React.FC = () => {
         <div className="w-3/5 h-full flex flex-col justify-between">
           <AttendCheckComp />
           <WeekReviewComp weekRepeatData={data1} percentage={data2} />
+          {/* 좌측 하단 */}
           <div className="flex justify-between h-1/3">
-            <CloverComp />
+            <OctagonGraphComp />
             <RecommendComp suppleProb={suppleProb} randProb={randProb} />
           </div>
         </div>
         {/* 우측 */}
         <div className="w-1/3 h-full flex flex-col justify-between">
+          <CloverComp leafNum={4} />
           <TodayReviewComp TodayReviewData={TodayReviewData} />
-          <OctagonGraphComp />
         </div>
       </div>
     </div>
