@@ -1,0 +1,27 @@
+daysky {
+  width: 100%;
+  height: 100%;
+}
+
+.daysky {
+  background: linear-gradient(135deg, #8ef4ff59, #79d7ff64, rgba(112, 188, 255, 0.743), #008cff8e);
+  background-repeat: no-repeat;
+  background-size: 200% 200%;
+  animation: backgroundChange 10s ease-in-out infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+@keyframes backgroundChange {
+  0% {
+    background-position: 10s 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
