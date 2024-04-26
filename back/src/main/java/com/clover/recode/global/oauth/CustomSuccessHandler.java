@@ -25,14 +25,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     //OAuth2User
     CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
+    System.out.println(customUserDetails);
+
     Long id = customUserDetails.getId();
+    Long githubId = customUserDetails.getGithubId();
 
-    System.out.println("Principal"+authentication.getPrincipal());
-
-    String token = jwtUtil.createJwt(id, 60*60*60L);
+    String token = jwtUtil.createJwt(id,githubId, 10800000L);
 
     response.addCookie(createCookie("Authorization", token));
-    response.sendRedirect("http://localhost:3000/");
+    response.sendRedirect("http://localhost:3000/redirect");
   }
 
   private Cookie createCookie(String key, String value) {

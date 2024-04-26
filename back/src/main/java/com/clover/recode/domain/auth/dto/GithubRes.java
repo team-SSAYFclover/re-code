@@ -26,7 +26,7 @@ public class GithubRes implements OAuth2Res{
   }
 
   @Override
-  public String getAvatarUri() {
+  public String getAvatarUrl() {
     return attribute.get("avatar_url").toString();
   }
 }

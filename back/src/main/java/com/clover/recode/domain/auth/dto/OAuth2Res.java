@@ -9,6 +9,7 @@ public interface OAuth2Res {
   //사용자 실명 (설정한 이름)
   String getName();
   //프로필 사진 Uri
-  String getAvatarUri();
+  String getAvatarUrl();
+
 
 }

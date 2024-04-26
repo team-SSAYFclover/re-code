@@ -1,11 +1,14 @@
 package com.clover.recode.domain.user.entity;
 
+import com.clover.recode.domain.statistics.entity.Statistics;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import java.time.LocalDateTime;
@@ -32,8 +35,13 @@ public class User {
   private Long id;
 
   private Long githubId;
+  private String name;
+  private String avatarUrl;
 
   private String fcmToken;
+
+  @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+  private Setting setting;
 
   @CreatedDate
   @Column(updatable = false)

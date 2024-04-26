@@ -47,16 +47,20 @@ dependencies {
     //modelmapper
     implementation 'org.modelmapper:modelmapper:3.2.0'
 
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    //spring security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
 }
 
-def querydslSrcDir = 'src/main/generated'
-clean {
-    delete file(querydslSrcDir)
-}
-tasks.withType(JavaCompile) {
-    options.generatedSourceOutputDirectory = file(querydslSrcDir)
 
-}
 
 tasks.named('test') {
     useJUnitPlatform()
