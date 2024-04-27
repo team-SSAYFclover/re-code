@@ -9,6 +9,7 @@ import java.util.Collections;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -29,10 +31,6 @@ public class SecurityConfig {
   private final CustomSuccessHandler customSuccessHandler;
   private JWTUtil jwtUtil;
 
-  @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -67,10 +65,12 @@ public class SecurityConfig {
         .authorizeHttpRequests((auth) -> auth
             // Swagger
             .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-            // 이후에 Authenticated로 변경
-           .anyRequest().authenticated());
-//            .anyRequest().permitAll());
+            .requestMatchers("/users/refresh").permitAll()
+            // TODO : 개발 끝나면 authenticated() 로 변경
+           .anyRequest().permitAll());
 
+    http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
+        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
 
     // 세션 설정
     http
@@ -100,8 +100,7 @@ public class SecurityConfig {
               configuration.setMaxAge(3600L);
 
               // 브라우저에 노출할 헤더 설정
-              configuration.setExposedHeaders(Collections.singletonList("*"));
-//              configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+              configuration.setExposedHeaders(Collections.singletonList("Authorization"));
               return configuration;
             }));
 

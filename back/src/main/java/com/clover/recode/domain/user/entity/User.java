@@ -1,6 +1,7 @@
 package com.clover.recode.domain.user.entity;
 
 import com.clover.recode.domain.statistics.entity.Statistics;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -18,6 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -28,6 +30,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EntityListeners(value = AuditingEntityListener.class)
+@ToString
 public class User {
 
   @Id
@@ -40,7 +43,7 @@ public class User {
 
   private String fcmToken;
 
-  @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
   private Setting setting;
 
   @CreatedDate

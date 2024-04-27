@@ -28,20 +28,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     OAuth2User oAuth2User = super.loadUser(userRequest);
 
-    System.out.println(oAuth2User.getAttributes());
-
-    String registrationId = userRequest.getClientRegistration().getRegistrationId();
-
     OAuth2Res oAuth2Response = new GithubRes(oAuth2User.getAttributes());
 
-
-    User existData = userRepository.findBygithubId(Long.parseLong(oAuth2Response.getProviderId()))
-        .orElseGet(() -> createNewUser(oAuth2Response));
-
+    User user = userRepository.findByGithubId(Long.parseLong(oAuth2Response.getProviderId()));
+    if(user == null) {
+      user = createNewUser(oAuth2Response);
+    } else {
+      user.setName(oAuth2Response.getName());
+      userRepository.save(user);
+    }
 
     TokenRes tokenRes = new TokenRes();
-    tokenRes.setId(existData.getId());
-    tokenRes.setGithubId(existData.getGithubId());
+    tokenRes.setId(user.getId());
 
     return new CustomOAuth2User(tokenRes);
   }
@@ -53,10 +51,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         .avatarUrl(oAuth2Response.getAvatarUrl())
         .name(oAuth2Response.getName())
         .build();
-    userRepository.saveAndFlush(user);
+
     Setting setting = Setting.builder()
-        .user(user).build();
+        .user(user)
+        .build();
+
     settingRepository.save(setting);
+
     return user;
   }
 

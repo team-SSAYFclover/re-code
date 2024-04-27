@@ -23,12 +23,11 @@ public class CustomOAuth2User implements OAuth2User {
 
   @Override
   public String getName() {
-    return tokenRes.getGithubId().toString();
+    return tokenRes.getId().toString();
   }
 
   public Long getId() {
     return tokenRes.getId();
   }
-  public Long getGithubId() { return tokenRes.getGithubId(); }
 
 }
