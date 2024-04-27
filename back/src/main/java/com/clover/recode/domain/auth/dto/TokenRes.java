@@ -10,6 +10,5 @@ import lombok.ToString;
 public class TokenRes {
 
   private Long id;
-  private Long githubId;
 
 }
