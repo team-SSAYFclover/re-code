@@ -39,6 +39,6 @@ public class Statistics {
     private User user;
 
     @OneToMany(mappedBy = "id")
-    private List<WeekReviews> weekReviews= new ArrayList<>();
+    private List<WeekReview> weekReview= new ArrayList<>();
 
 }
