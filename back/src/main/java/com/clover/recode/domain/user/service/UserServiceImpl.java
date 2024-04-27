@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
 
     UserRes userRes = UserRes.builder()
+        .id(user.getId())
         .name(user.getName())
         .avatarUrl(user.getAvatarUrl())
         .settings(SettingRes.builder()
