@@ -20,7 +20,7 @@ const data = [
 ];
 const OctagonGraphComp: React.FC = () => {
   return (
-    <div className="shadow-lg p-1 h-1/3 flex-row bg-white rounded-sm">
+    <div className="shadow-lg p-1 w-[calc(40vh)] h-full flex-row bg-white rounded-lg">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={data}>
           <PolarGrid />
