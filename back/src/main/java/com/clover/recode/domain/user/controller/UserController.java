@@ -7,6 +7,7 @@ import com.clover.recode.domain.user.service.UserService;
 import com.clover.recode.global.result.ResultCode;
 import com.clover.recode.global.result.ResultResponse;
 import com.clover.recode.global.result.error.exception.BusinessException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -38,9 +39,16 @@ public class UserController {
 
     // 리프레시 토큰 획득
     String token = request.getHeader("Authorization");
-    String id = request.getHeader("Id");
+    String refresh = null;
+    Cookie[] cookies = request.getCookies();
+    for(Cookie cookie : cookies) {
+      if(cookie.getName().equals("refresh_token")) {
+        refresh = cookie.getValue();
+        break;
+      }
+    }
 
-    userService.refreshToken(token, id, response);
+    userService.refreshToken(token, refresh, response);
 
     return ResponseEntity.ok(ResultResponse.of(TOKEN_REISSUE_SUCCESS));
   }
