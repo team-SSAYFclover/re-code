@@ -2,6 +2,8 @@ package com.clover.recode.domain.statistics.repository;
 
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.*;
+import com.clover.recode.domain.statistics.entity.QTodayProblem;
+import com.clover.recode.domain.statistics.entity.QTodayReview;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
