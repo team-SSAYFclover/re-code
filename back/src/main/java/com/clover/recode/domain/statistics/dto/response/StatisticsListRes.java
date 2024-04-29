@@ -21,7 +21,7 @@ public class StatisticsListRes {
 
     private List<Integer> weekReviews;
 
-    private List<TodayProblem> todayProblems;
+    private List<TodayProblemRes> todayProblems;
 
     private int supplementaryQuestion;
 

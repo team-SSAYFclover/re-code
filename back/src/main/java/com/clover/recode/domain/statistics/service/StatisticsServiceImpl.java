@@ -1,6 +1,7 @@
 package com.clover.recode.domain.statistics.service;
 
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
+import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.entity.TodayReview;
@@ -37,10 +38,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             List<Integer> weekReviewsList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek);
 
-        log.info("weekReviewsList 가져옴");
-            List<TodayProblem> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now(), statistics.getId());
-
-        log.info("todayReviewList 가져옴");
+            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now());
 
         StatisticsListRes response = new StatisticsListRes();
         response.setSequence(statistics.getSequence()); // 또는 다른 적절한 필드
