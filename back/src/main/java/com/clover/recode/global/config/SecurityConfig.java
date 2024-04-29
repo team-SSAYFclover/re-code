@@ -66,8 +66,7 @@ public class SecurityConfig {
             // Swagger
             .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
             .requestMatchers("/users/refresh").permitAll()
-            // TODO : 개발 끝나면 authenticated() 로 변경
-           .anyRequest().permitAll());
+           .anyRequest().authenticated());
 
     http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
@@ -84,7 +83,7 @@ public class SecurityConfig {
 
               // 허용할 출처
               configuration.setAllowedOrigins(
-                  Arrays.asList("https://k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com")
+                  Arrays.asList("k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com")
               );
 
               // 허용할 HTTP 메소드
