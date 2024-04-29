@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
 
     UserRes userRes = UserRes.builder()
-        .id(user.getId())
         .name(user.getName())
         .avatarUrl(user.getAvatarUrl())
+        .uuid(user.getUuid())
         .settings(SettingRes.builder()
             .difficulty(user.getSetting().getLevel())
             .notificationStatus(user.getSetting().getNotificationStatus())
@@ -53,30 +53,32 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void refreshToken(String token, String id, HttpServletResponse response) {
+  public void refreshToken(String token, String refresh, HttpServletResponse response) {
 
-    if(!id.matches("^[0-9]+$")) {
-      throw new BusinessException(INVALID_USER_ID);
-    }
-
-    Long convertId = Long.parseLong(id);
 
     // 리프레시 토큰이 없거나, 만료되었다면 예외 발생
     if (token == null || !token.startsWith("Bearer ")) {
-      throw new BusinessException(REFRESH_TOKEN_NOT_AVAILABLE);
+      throw new BusinessException(HTTP_HEADER_INVALID);
     }
 
-    String refreshToken = token.split(" ")[1];
-    String storedRefreshToken = jwtUtil.getRefreshEntity(convertId);
+    token = token.split(" ")[1];
 
-    if(!refreshToken.equals(storedRefreshToken)) {
-      jwtUtil.deleteRefreshEntity(convertId);
-      throw new BusinessException(REFRESH_TOKEN_INVALID);
+    Long id = jwtUtil.getId(token);
+    String storedRefreshToken = jwtUtil.getRefreshEntity(id);
+
+    log.info("token : {}, id : {}, refresh : {}, stored: {}",token, id, refresh, storedRefreshToken);
+
+    if(refresh == null || !refresh.equals(storedRefreshToken)) {
+      try {
+        jwtUtil.deleteRefreshEntity(id);
+      } catch(Exception e) {
+        throw new BusinessException(REFRESH_TOKEN_INVALID);
+      }
     }
 
-    String newAccess = jwtUtil.createJwt(convertId, 10800000L);
+    String newAccess = jwtUtil.createJwt(id, 10800000L);
     String updatedRefreshToken = UUID.randomUUID().toString();
-    jwtUtil.addRefreshEntity(convertId, updatedRefreshToken);
+    jwtUtil.addRefreshEntity(id, updatedRefreshToken);
     response.setHeader("access_token", newAccess);
     response.addCookie(createCookie("refresh_token", updatedRefreshToken));
   }
