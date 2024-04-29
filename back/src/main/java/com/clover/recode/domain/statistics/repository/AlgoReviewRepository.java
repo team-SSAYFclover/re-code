@@ -7,5 +7,5 @@ import java.util.List;
 @Repository
 public interface AlgoReviewRepository {
 
-    List<Integer> findAlgoReviewList();
+    List<Integer> findAlgoReviewList(Long statisticsId);
 }

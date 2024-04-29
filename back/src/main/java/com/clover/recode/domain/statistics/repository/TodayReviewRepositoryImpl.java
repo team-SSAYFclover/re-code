@@ -21,7 +21,7 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<TodayProblemRes> findTodayReviews(LocalDate date) {
+    public List<TodayProblemRes> findTodayReviews(LocalDate date, Long statisticsId) {
 
         QTodayProblem todayProblem = QTodayProblem.todayProblem;
         QTodayReview todayReview = QTodayReview.todayReview;
@@ -35,6 +35,7 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
                 .from(todayProblem)
                 .join(todayProblem.todayReview, todayReview)
                 .where(todayReview.date.eq(date))
+                .where(todayReview.id.eq(statisticsId))
                 .fetch();
     }
 
