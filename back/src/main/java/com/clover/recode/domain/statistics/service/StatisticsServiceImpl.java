@@ -16,8 +16,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     @Transactional
-    public StatisticsListRes getStatisticsList(int userId) {
+    public StatisticsListRes getStatisticsList(Long userId) {
         Statistics statistics = statisticsRepository.findById(userId)
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
@@ -53,5 +55,18 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         log.info("리턴직전");
         return response;
+    }
+
+    @Override
+    public int getReviewCnt(Long userId) {
+
+        Optional<Statistics> statistics= statisticsRepository.findById(userId);
+
+        LocalDate today = LocalDate.now();
+
+        // 사용자에 해당하는 Statistics가 없으면 0을 반환합니다.
+        return statistics.map(value -> statisticsRepository.countByStatisticsIdAndDate(value.getId(), today)).orElse(0);
+
+
     }
 }
