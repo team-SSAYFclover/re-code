@@ -59,16 +59,16 @@ public class RecodeServiceImpl implements RecodeService {
     }
 
     @Override
-    public RecodeDto getRecode(int codeNo) {
-        Optional<Recode> recode = recodeRepository.findById(codeNo);
+    public RecodeDto getRecode(int codeId) {
+        Optional<Recode> recode = recodeRepository.findById(codeId);
         // TODO: 문제 정보 가져오기
         // TODO: 난이도에 따른 레코드 생성하기
         return null;
     }
 
     @Override
-    public void addRecodeCount(int codeNo) {
-        recodeRepository.incrementSubmitCount(codeNo);
+    public void addRecodeCount(int codeId) {
+        recodeRepository.incrementSubmitCount(codeId);
         // TODO: 업데이트 한 값 불러온 뒤 활성화 시간 갱신
     }
 
