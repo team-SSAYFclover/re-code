@@ -16,12 +16,13 @@ public class AlgoReviewRepositoryImpl implements AlgoReviewRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Integer> findAlgoReviewList() {
+    public List<Integer> findAlgoReviewList(Long statisticsId) {
 
         QAlgoReview qAlgoReview= QAlgoReview.algoReview;
 
         return jpaQueryFactory
                 .select(qAlgoReview.count)
+                .where(qAlgoReview.statistics.id.eq(statisticsId))
                 .from(qAlgoReview)
                 .orderBy(qAlgoReview.id.asc())
                 .fetch();

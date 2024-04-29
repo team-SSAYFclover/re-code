@@ -36,11 +36,11 @@ public class StatisticsServiceImpl implements StatisticsService {
             LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-            List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek);
+            List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now());
+            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now(), statistics.getId());
 
-            List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList();
+            List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
         StatisticsListRes response = new StatisticsListRes();
         response.setSequence(statistics.getSequence()); // 또는 다른 적절한 필드
