@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @ToString
-public class WeekReviews {
+public class WeekReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
