@@ -17,14 +17,14 @@ public class WeekReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private int count;
 
     private LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "statistic_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistics_id")
     private Statistics statistics;
 
 }
