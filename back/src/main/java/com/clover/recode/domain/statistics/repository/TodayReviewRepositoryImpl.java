@@ -20,6 +20,7 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
 
     @Override
     public List<TodayProblemRes> findTodayReviews(LocalDate date) {
+
         QTodayProblem todayProblem = QTodayProblem.todayProblem;
         QTodayReview todayReview = QTodayReview.todayReview;
 
