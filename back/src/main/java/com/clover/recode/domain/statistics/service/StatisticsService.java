@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 public interface StatisticsService {
 
-    StatisticsListRes getStatisticsList(int id);
+    StatisticsListRes getStatisticsList(Long id);
+
+    int getReviewCnt(Long id);
 
 }
