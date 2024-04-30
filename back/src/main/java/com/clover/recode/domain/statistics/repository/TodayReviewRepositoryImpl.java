@@ -40,17 +40,4 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
                 .fetch();
     }
 
-    @Override
-    public Long countByStatisticsIdAndDate(Long statisticsId, LocalDate today) {
-        QTodayReview todayReview = QTodayReview.todayReview;
-        QTodayProblem todayProblem= QTodayProblem.todayProblem;
-
-        return jpaQueryFactory.select(todayProblem.count())
-                .from(todayProblem)
-                .join(todayProblem.todayReview, todayReview)
-                .where(todayReview.statistics.id.eq(statisticsId)
-                        .and(todayReview.date.eq(today)))
-                .fetchOne();
-    }
-
 }

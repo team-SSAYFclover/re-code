@@ -29,4 +29,17 @@ public class WeekReviewRepositoryImpl implements WeekReviewRepository{
 
     }
 
+    @Override
+    public Integer countByTodayWeview(Long statisticsId, LocalDate today) {
+        QWeekReview weekReview= QWeekReview.weekReview;
+
+        return jpaQueryFactory
+                .select(weekReview.count)
+                .from(weekReview)
+                .where(weekReview.date.eq(today))
+                .fetchOne();
+
+    }
+
+
 }
