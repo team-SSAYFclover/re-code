@@ -17,9 +17,9 @@ public class TodayProblem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean is_complete;
+    private boolean isCompleted;
 
-    private int review_count;
+    private int reviewCnt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "today_review_id")
@@ -29,10 +29,5 @@ public class TodayProblem {
     @JoinColumn(name = "code_id")
     private Code code;
 
-
-    @Override
-    public String toString() {
-        return id + " " + is_complete;
-    }
 
 }
