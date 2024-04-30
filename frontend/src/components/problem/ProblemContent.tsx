@@ -3,7 +3,7 @@ import ProblemOptionComp from './ProblemOptionComp';
 import { PiFunnelBold } from 'react-icons/pi';
 import { IoSearchSharp } from 'react-icons/io5';
 
-interface IOptionInfo {
+export interface IOptionInfo {
   category: { TF: boolean; tagId: number; name: string }[];
   levelStart: number;
   levelEnd: number;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Range, getTrackBackground } from 'react-range';
+import { IOptionInfo } from './ProblemContent';
 
 interface ProblemOptionCompProps {
   optionInfo: IOptionInfo;
@@ -62,15 +63,17 @@ const ProblemOptionComp: React.FC<ProblemOptionCompProps> = ({ optionInfo, setOp
       <div className="flex flex-col">
         <div>알고리즘 분류</div>
         <div className="flex flex-row overflow-x-auto">
-          {optionInfo.category.map((item, index) => (
-            <button
-              key={index}
-              onClick={() => toggleCategory(index)}
-              className={`min-w-24 rounded-xl w-fit p-1 ps-2 pe-2 ${item.TF ? 'bg-MAIN1 text-MAIN2' : 'bg-gray-100 text-gray-400'} m-1`}
-            >
-              {item.name}
-            </button>
-          ))}
+          {optionInfo.category.map(
+            (item: { TF: boolean; tagId: number; name: string }, index: number) => (
+              <button
+                key={index}
+                onClick={() => toggleCategory(index)}
+                className={`min-w-24 rounded-xl w-fit p-1 ps-2 pe-2 ${item.TF ? 'bg-MAIN1 text-MAIN2' : 'bg-gray-100 text-gray-400'} m-1`}
+              >
+                {item.name}
+              </button>
+            )
+          )}
         </div>
       </div>
       <div className="flex flex-col mt-5">
