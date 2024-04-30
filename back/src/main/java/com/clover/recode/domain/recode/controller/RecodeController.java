@@ -23,16 +23,16 @@ public class RecodeController {
 
     @Operation(summary = "요청한 코드의 레코드를 가져옵니다.")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{codeNo}")
-    public ResponseEntity<ResultResponse> getRecode(@PathVariable("codeNo") int codeNo) {
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_Recode_SUCCESS, recodeService.getRecode(codeNo)));
+    @GetMapping("/{codeId}")
+    public ResponseEntity<ResultResponse> getRecode(@PathVariable("codeId") int codeId) {
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_Recode_SUCCESS, recodeService.getRecode(codeId)));
     }
 
     @Operation(summary = "요청한 코드의 레코드 해결 카운트를 증가시킵니다.")
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{codeNo}")
-    public ResponseEntity<ResultResponse> addRecodeCount(@PathVariable("codeNo") int codeNo) {
-        recodeService.addRecodeCount(codeNo);
+    @PutMapping("/{codeId}")
+    public ResponseEntity<ResultResponse> addRecodeCount(@PathVariable("codeId") int codeId) {
+        recodeService.addRecodeCount(codeId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.PUT_Recode_SUCCESS));
     }
 
