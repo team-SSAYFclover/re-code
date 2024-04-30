@@ -1,6 +1,6 @@
 package com.clover.recode.domain.recode.service;
 
-import com.clover.recode.domain.problem.dto.ProblemDto;
+import com.clover.recode.domain.problem.dto.ProblemCodeDto;
 import com.clover.recode.domain.recode.dto.GptRequestDto;
 import com.clover.recode.domain.recode.dto.GptResponseDto;
 import com.clover.recode.domain.recode.dto.Message;
@@ -33,7 +33,7 @@ public class RecodeServiceImpl implements RecodeService {
     private String model;
 
     @Override
-    public void saveRecode(ProblemDto problemDto) {
+    public void saveRecode(ProblemCodeDto problemDto) {
 
         String code = "";
 
