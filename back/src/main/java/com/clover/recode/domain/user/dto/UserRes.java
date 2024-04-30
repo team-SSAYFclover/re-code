@@ -12,6 +12,6 @@ public class UserRes {
   private String name;
   private String avatarUrl;
   private String uuid;
-  private SettingRes settings;
+  private SettingDto settings;
 
 }
