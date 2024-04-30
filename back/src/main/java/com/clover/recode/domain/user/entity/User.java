@@ -37,11 +37,13 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true, nullable = false)
   private Long githubId;
   private String name;
   private String avatarUrl;
 
   private String fcmToken;
+  private String uuid;
 
   @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
   private Setting setting;
