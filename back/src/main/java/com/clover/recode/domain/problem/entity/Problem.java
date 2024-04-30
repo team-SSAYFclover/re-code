@@ -5,6 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+// Problem Entity
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "problem")
@@ -30,3 +38,4 @@ public class Problem {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 }
+
