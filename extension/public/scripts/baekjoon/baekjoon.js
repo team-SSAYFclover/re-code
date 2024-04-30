@@ -22,7 +22,7 @@ function findUsername() {
  */
 
 if (regex.test(currentUrl)) {
-  chrome.storage.local.get(["githubI"]).then((res) => {
+  chrome.storage.local.get(["githubId"]).then((res) => {
     if (res.githubId) {
       addModal();
       addUploadBtnToResult();
