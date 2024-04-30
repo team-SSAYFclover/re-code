@@ -20,7 +20,7 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<TodayProblemRes> findTodayReviews(Long statisticsId) {
+    public List<TodayProblemRes> findTodayReviews(Long statisticsId, LocalDate today) {
 
         QTodayProblem todayProblem = QTodayProblem.todayProblem;
         QTodayReview todayReview = QTodayReview.todayReview;
@@ -36,17 +36,8 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
                 .from(todayProblem)
                 .join(todayProblem.todayReview, todayReview)
                 .where(todayReview.id.eq(statisticsId))
+                .where(todayReview.date.eq(today))
                 .fetch();
-    }
-
-    @Override
-    public Long countByStatisticsIdAndDate(Long statisticsId, LocalDate date) {
-        QTodayReview todayReview = QTodayReview.todayReview;
-        return jpaQueryFactory.select(todayReview.count())
-                .from(todayReview)
-                .where(todayReview.statistics.id.eq(statisticsId)
-                        .and(todayReview.date.eq(date)))
-                .fetchOne();
     }
 
 }
