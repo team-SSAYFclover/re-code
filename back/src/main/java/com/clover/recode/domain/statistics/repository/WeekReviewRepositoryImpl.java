@@ -22,8 +22,8 @@ public class WeekReviewRepositoryImpl implements WeekReviewRepository{
         return jpaQueryFactory
                 .select(weeklyReview.count)
                 .from(weeklyReview)
+                .where(weeklyReview.statistics.id.eq(statisticsId))
                 .where(weeklyReview.date.between(mon, sun))
-                .where(weeklyReview.id.eq(statisticsId))
                 .orderBy(weeklyReview.date.asc()) // 날짜 순으로 오름차순 정렬
                 .fetch();
 
