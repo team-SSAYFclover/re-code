@@ -11,12 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TodayProblemRes {
 
-    private Long id;
+    private Long problemId;
 
-    private Long problem_id;
+    private Long codeId;
 
-    private boolean iScomplete;
+    private String name;
 
-    private int review_count;
+    private int reviewCnt;
+
+    private boolean isCompleted;
 
 }
