@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface TodayReviewRepository {
 
-    List<TodayProblemRes> findTodayReviews(Long statisticsId);
+    List<TodayProblemRes> findTodayReviews(Long statisticsId, LocalDate today);
 
-    Long countByStatisticsIdAndDate(Long statisticsId, LocalDate date);
+
 }

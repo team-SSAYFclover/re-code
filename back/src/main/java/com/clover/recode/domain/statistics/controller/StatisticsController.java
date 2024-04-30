@@ -10,8 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.clover.recode.global.result.ResultCode.GET_ReviewCnt_SUCCESS;
-import static com.clover.recode.global.result.ResultCode.GET_Statistics_SUCCESS;
+import static com.clover.recode.global.result.ResultCode.*;
 
 @Slf4j
 @RestController
@@ -31,10 +30,16 @@ public class StatisticsController {
 
     @Operation(summary = "오늘의 복습문제 갯수 조회")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/today/cnt/{userId}")
-    public ResponseEntity<ResultResponse> getReviewCnt(@PathVariable("userId") Long userId) {
+    @GetMapping("/today/reviews/cnt/{userId}")
+    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviewCnt(userId)));
     }
 
+    @Operation(summary = "오늘의 복습문제 조회")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/today/reviews/{userId}")
+    public ResponseEntity<ResultResponse> getReviews(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.getReviews(userId)));
+    }
 
 }
