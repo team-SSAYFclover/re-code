@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.entity;
 
+import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.Problem;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,8 +26,8 @@ public class TodayProblem {
     private TodayReview todayReview;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "problem_id")
-    private Problem problem;
+    @JoinColumn(name = "code_id")
+    private Code code;
 
 
     @Override
