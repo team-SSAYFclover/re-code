@@ -9,7 +9,10 @@ public enum ResultCode {
 
     //User
     GET_USER_INFO_SUCCESS(200, "회원 정보 조회에 성공하였습니다."),
-    TOKEN_REISSUE_SUCCESS(200, "액세스 토큰 재발급에 성공하였습니다."),
+    GET_USER_NUMBER_SUCCESS(200, "회원 고유 번호 조회에 성공하였습니다."),
+    TOKEN_REISSUE_SUCCESS(201, "액세스 토큰 재발급에 성공하였습니다."),
+    PATCH_USER_SETTING_SUCCESS(201, "회원 설정 변경에 성공하였습니다."),
+
 
 
     //Statistics
