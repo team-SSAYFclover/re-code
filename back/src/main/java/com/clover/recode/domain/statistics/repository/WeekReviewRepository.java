@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface WeekReviewRepository  {
 
-    List<Integer> findReviewsBetweenDates(LocalDate startOfWeek, LocalDate endOfWeek);
+    List<Integer> findReviewsBetweenDates(LocalDate startOfWeek, LocalDate endOfWeek, Long statisticsId);
 
 }

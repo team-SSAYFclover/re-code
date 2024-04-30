@@ -36,17 +36,20 @@ public class StatisticsServiceImpl implements StatisticsService {
             LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-            List<Integer> weekReviewsList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek);
+            List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now());
+            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now(), statistics.getId());
+
+            List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
         StatisticsListRes response = new StatisticsListRes();
         response.setSequence(statistics.getSequence()); // 또는 다른 적절한 필드
         response.setRanking(statistics.getRanking());
-        response.setWeekReviews(weekReviewsList);
+        response.setWeekReviews(weekReviewList);
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
         response.setRandomQuestion(statistics.getRandomNo());
         response.setTodayProblems(todayProblemList);
+        response.setAlgoReview(algoReviewList);
 
         log.info("리턴직전");
         return response;
