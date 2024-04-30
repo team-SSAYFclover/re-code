@@ -3,8 +3,6 @@ package com.clover.recode.domain.statistics.service;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
-import com.clover.recode.domain.statistics.entity.TodayProblem;
-import com.clover.recode.domain.statistics.entity.TodayReview;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @RequiredArgsConstructor
@@ -58,14 +55,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public int getReviewCnt(Long userId) {
+    public Long getReviewCnt(Long userId) {
 
-        Optional<Statistics> statistics= statisticsRepository.findById(userId);
+        Statistics statistics = statisticsRepository.findById(userId)
+                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
-        LocalDate today = LocalDate.now();
-
-        // 사용자에 해당하는 Statistics가 없으면 0을 반환합니다.
-        return statistics.map(value -> statisticsRepository.countByStatisticsIdAndDate(value.getId(), today)).orElse(0);
+        return statisticsRepository.countByStatisticsIdAndDate(statistics.getId(), LocalDate.now());
 
 
     }
