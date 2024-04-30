@@ -26,7 +26,7 @@ const WeekRepeatComp: React.FC<WeekRepeatCompProps> = ({ weekRepeatData, percent
           <div className="text-sm font-semibold">주간 복습량</div>
           <div className="text-xs text-gray-500">지난 일주일 간의 복습 횟수입니다</div>
         </div>
-        <div className="w-full flex flex-1 flex-col justify-end content-end text-end ms-5">
+        <div className="w-full flex flex-1 flex-col content-end text-end ms-5">
           <div className="text-xs text-MAIN1 font-semibold me-2">현재 상위 {percentage}%</div>
           <div className="max-w-xs ms-5">
             <ResponsiveContainer width="100%" height={15}>

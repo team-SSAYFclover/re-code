@@ -9,14 +9,14 @@ import {
 } from 'recharts';
 
 const data = [
-  { name: 'greedy', num: 16 },
-  { name: 'string', num: 20 },
-  { name: '자료구조', num: 15 },
-  { name: 'graph', num: 31 },
-  { name: 'dp', num: 26 },
-  { name: 'geometry', num: 6 },
-  { name: 'math', num: 5 },
-  { name: '구현', num: 27 },
+  { name: '수학', tagId: 1, num: 16 },
+  { name: '구현', tagId: 2, num: 12 },
+  { name: 'greedy', tagId: 3, num: 5 },
+  { name: 'string', tagId: 4, num: 7 },
+  { name: '자료 구조', tagId: 5, num: 3 },
+  { name: '그래프', tagId: 6, num: 9 },
+  { name: 'dp', tagId: 7, num: 20 },
+  { name: 'geometry', tagId: 8, num: 15 },
 ];
 const OctagonGraphComp: React.FC = () => {
   return (
