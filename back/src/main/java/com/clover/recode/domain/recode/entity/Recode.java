@@ -1,10 +1,9 @@
 package com.clover.recode.domain.recode.entity;
 
+import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.statistics.entity.Statistics;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import com.clover.recode.domain.user.entity.User;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -34,6 +33,10 @@ public class Recode {
 
     @NotNull
     private String content;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "code_id")
+    Code code;
 
 }
 
