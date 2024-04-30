@@ -1,5 +1,6 @@
 package com.clover.recode.domain.problem.entity;
 
+import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,18 +15,33 @@ import java.time.LocalDateTime;
     @NoArgsConstructor
     @Table(name = "code")
     public class Code {
+
         @Id
         private Long id;
-        private Long userId;
-        private Long problemId;
-        private Long codeNo;
-        //private LocalDateTime submitTime;
-        private String name;
 
+        @OneToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "user_id")
+        private User user;
+
+        private Long problemId;
+
+        private Long codeNo;
+
+        //private LocalDateTime submitTime;
+
+        private String name;
 
         @Column(columnDefinition = "TEXT")
         private String content;
+
         private Boolean deleted;
+
         private LocalDateTime createdTime;
+
         private Boolean reviewStatus;
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "problem_id")
+        private Problem problem;
+
     }
