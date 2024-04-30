@@ -17,6 +17,6 @@ public class TodayProblemRes {
 
     private boolean iScomplete;
 
-    private int review_count;
+    private int review_cnt;
 
 }
