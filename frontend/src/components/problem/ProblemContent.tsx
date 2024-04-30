@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ProblemOptionComp from './ProblemOptionComp';
+import ProblemComp from './ProblemComp';
 import { PiFunnelBold } from 'react-icons/pi';
 import { IoSearchSharp } from 'react-icons/io5';
 
@@ -8,6 +9,30 @@ export interface IOptionInfo {
   levelStart: number;
   levelEnd: number;
 }
+export interface IProblemData {
+  problemNo: number;
+  title: string;
+  level: number;
+  tagName: string[];
+  repeatNum: number;
+}
+
+const problemData: IProblemData[] = [
+  {
+    problemNo: 1261,
+    title: '알고스팟',
+    level: 14,
+    tagName: ['다익스트라', '최단경로'],
+    repeatNum: 2,
+  },
+  {
+    problemNo: 1261,
+    title: '알고스팟',
+    level: 14,
+    tagName: ['다익스트라', '최단경로'],
+    repeatNum: 2,
+  },
+];
 
 const ProblemContent: React.FC = () => {
   const [showOption, setShowOption] = useState<boolean>(false);
@@ -67,6 +92,33 @@ const ProblemContent: React.FC = () => {
         <ProblemOptionComp optionInfo={optionInfo} setOptionInfo={setOptionInfo} />
       ) : null}
       {/* 문제 컴포넌트 리스트 */}
+      {showOption ? (
+        <div className="w-full h-1/2 pt-10 pb-4 pe-3 flex flex-row flex-wrap overflow-x-auto">
+          {problemData.map((item) => (
+            <ProblemComp
+              key={item.problemNo}
+              problemNo={item.problemNo}
+              title={item.title}
+              level={item.level}
+              tagName={item.tagName}
+              repeatNum={item.repeatNum}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="w-full h-[calc(74vh)] pt-10 pb-4 pe-3 flex flex-row flex-wrap overflow-x-auto">
+          {problemData.map((item) => (
+            <ProblemComp
+              key={item.problemNo}
+              problemNo={item.problemNo}
+              title={item.title}
+              level={item.level}
+              tagName={item.tagName}
+              repeatNum={item.repeatNum}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
