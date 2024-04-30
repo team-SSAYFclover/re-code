@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface TodayReviewRepository {
 
-    List<TodayProblemRes> findTodayReviews(LocalDate date, Long statisticsId);
+    List<TodayProblemRes> findTodayReviews(Long statisticsId);
 
 }

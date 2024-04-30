@@ -38,12 +38,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now(), statistics.getId());
+            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(statistics.getId());
 
             List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
         StatisticsListRes response = new StatisticsListRes();
-        response.setSequence(statistics.getSequence()); // 또는 다른 적절한 필드
+        response.setSequence(statistics.getSequence());
         response.setRanking(statistics.getRanking());
         response.setWeekReviews(weekReviewList);
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
