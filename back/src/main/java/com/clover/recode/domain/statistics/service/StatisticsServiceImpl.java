@@ -1,14 +1,12 @@
 package com.clover.recode.domain.statistics.service;
 
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
+import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
-import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,35 +14,54 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true)
 public class StatisticsServiceImpl implements StatisticsService {
 
     private final StatisticsRepository statisticsRepository;
 
+
     @Override
-    public StatisticsListRes getStatisticsList(int userId) {
+    @Transactional
+    public StatisticsListRes getStatisticsList(Long userId) {
         Statistics statistics = statisticsRepository.findById(userId)
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
             LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-            List<Integer> weekReviewsList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek);
+            List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-        // Response 객체를 생성하고 필드를 채웁니다. 'todayReviews'와 같은 필드는 추가 정보가 필요합니다.
+            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now(), statistics.getId());
+
+            List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
+
         StatisticsListRes response = new StatisticsListRes();
         response.setSequence(statistics.getSequence()); // 또는 다른 적절한 필드
         response.setRanking(statistics.getRanking());
-        response.setWeekReviews(weekReviewsList);
+        response.setWeekReviews(weekReviewList);
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
         response.setRandomQuestion(statistics.getRandomNo());
+        response.setTodayProblems(todayProblemList);
+        response.setAlgoReview(algoReviewList);
 
+        log.info("리턴직전");
         return response;
+    }
+
+    @Override
+    public Long getReviewCnt(Long userId) {
+
+        Statistics statistics = statisticsRepository.findById(userId)
+                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
+
+        return statisticsRepository.countByStatisticsIdAndDate(statistics.getId(), LocalDate.now());
+
+
     }
 }

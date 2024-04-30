@@ -1,10 +1,13 @@
 package com.clover.recode.domain.statistics.entity;
 
+import com.clover.recode.domain.problem.entity.Problem;
+import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,13 +16,11 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @ToString
-public class WeekReview {
+public class TodayReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private int count;
 
     private LocalDate date;
 

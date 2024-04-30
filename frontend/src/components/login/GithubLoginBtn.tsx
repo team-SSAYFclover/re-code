@@ -2,7 +2,7 @@ import { FaGithub } from 'react-icons/fa';
 
 const GithubLoginBtn = () => {
   const handleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_BASE_URL}/api/oauth2/authorization/github`;
+    window.location.href = `${import.meta.env.VITE_BASE_URL}/oauth2/authorization/github`;
   };
 
   return (
