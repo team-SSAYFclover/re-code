@@ -9,9 +9,9 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 public class UserRes {
 
-  private Long id;
   private String name;
   private String avatarUrl;
-  private SettingRes settings;
+  private String uuid;
+  private SettingDto settings;
 
 }

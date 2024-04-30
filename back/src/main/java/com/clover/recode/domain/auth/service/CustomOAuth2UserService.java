@@ -8,6 +8,7 @@ import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.domain.user.repository.SettingRepository;
 import com.clover.recode.domain.user.repository.UserRepository;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -50,6 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         .githubId(Long.parseLong(oAuth2Response.getProviderId()))
         .avatarUrl(oAuth2Response.getAvatarUrl())
         .name(oAuth2Response.getName())
+        .uuid(UUID.randomUUID().toString())
         .build();
 
     Setting setting = Setting.builder()

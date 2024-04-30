@@ -1,5 +1,6 @@
 package com.clover.recode.domain.user.entity;
 
+import com.clover.recode.domain.user.dto.SettingDto;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
+import java.sql.Time;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +28,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Builder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString(of = {"level", "notificationStatus", "notificationHour", "notificationMinute"})
+@ToString(of = {"difficulty", "notificationStatus", "notificationTime"})
 @DynamicInsert
 public class Setting {
 
@@ -39,17 +41,24 @@ public class Setting {
   private User user;
 
   @ColumnDefault("1")
-  private Integer level;
+  private Integer difficulty;
 
   @ColumnDefault("true")
   private Boolean notificationStatus;
 
+  @ColumnDefault("150000")
+  private Time notificationTime;
 
-  @ColumnDefault("15")
-  private Integer notificationHour;
-
-
-  @ColumnDefault("0")
-  private Integer notificationMinute;
+  public void updateSetting(SettingDto settingDto) {
+    if(settingDto.getDifficulty() != null) {
+      this.difficulty = settingDto.getDifficulty();
+    }
+    if(settingDto.getNotificationStatus() != null) {
+      this.notificationStatus = settingDto.getNotificationStatus();
+    }
+    if(settingDto.getNotificationTime() != null) {
+      this.notificationTime = settingDto.getNotificationTime();
+    }
+  }
 
 }

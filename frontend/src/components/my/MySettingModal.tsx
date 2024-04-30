@@ -91,7 +91,7 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <>
       <div className="w-screen h-screen fixed top-0 left-0" onClick={() => onClose()}></div>
-      <div className="absolute top-16 right-4 w-72 bg-white rounded-md shadow-lg p-6 z-10">
+      <div className="absolute top-16 right-4 w-72 bg-white rounded-md shadow-lg p-6 z-20">
         <span className="text-lg">내 정보</span>
         <div className="flex mx-2 border-b-[1px] border-[#E9E9E9] py-2">
           <img
@@ -163,7 +163,7 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
                 {notifHour < 12 ? 'AM' : 'PM'}
               </div>
             ) : (
-              <TimePicker />
+              <TimePicker hour={10} minute={0} />
             )}
           </>
         )}
