@@ -3,8 +3,6 @@ package com.clover.recode.domain.statistics.service;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
-import com.clover.recode.domain.statistics.entity.TodayProblem;
-import com.clover.recode.domain.statistics.entity.TodayReview;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
@@ -29,7 +28,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     @Transactional
-    public StatisticsListRes getStatisticsList(int userId) {
+    public StatisticsListRes getStatisticsList(Long userId) {
         Statistics statistics = statisticsRepository.findById(userId)
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
@@ -53,5 +52,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         log.info("리턴직전");
         return response;
+    }
+
+    @Override
+    public Long getReviewCnt(Long userId) {
+
+        Statistics statistics = statisticsRepository.findById(userId)
+                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
+
+        return statisticsRepository.countByStatisticsIdAndDate(statistics.getId(), LocalDate.now());
+
+
     }
 }

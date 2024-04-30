@@ -13,4 +13,5 @@ public interface TodayReviewRepository {
 
     List<TodayProblemRes> findTodayReviews(LocalDate date, Long statisticsId);
 
+    Long countByStatisticsIdAndDate(Long statisticsId, LocalDate date);
 }
