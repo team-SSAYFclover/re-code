@@ -31,10 +31,16 @@ public class StatisticsController {
 
     @Operation(summary = "오늘의 복습문제 갯수 조회")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/today/cnt/{userId}")
-    public ResponseEntity<ResultResponse> getReviewCnt(@PathVariable("userId") Long userId) {
+    @GetMapping("/today/reviews/cnt/{userId}")
+    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviewCnt(userId)));
     }
 
+    @Operation(summary = "오늘의 복습문제 조회")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/today/reviews/{userId}")
+    public ResponseEntity<ResultResponse> getReviews(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviews(userId)));
+    }
 
 }
