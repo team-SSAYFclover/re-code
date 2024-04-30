@@ -17,12 +17,13 @@ public class WeekReviewRepositoryImpl implements WeekReviewRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Integer> findReviewsBetweenDates(LocalDate mon, LocalDate sun) {
+    public List<Integer> findReviewsBetweenDates(LocalDate mon, LocalDate sun, Long statisticsId) {
         QWeekReview weeklyReview = QWeekReview.weekReview;
         return jpaQueryFactory
                 .select(weeklyReview.count)
                 .from(weeklyReview)
                 .where(weeklyReview.date.between(mon, sun))
+                .where(weeklyReview.id.eq(statisticsId))
                 .orderBy(weeklyReview.date.asc()) // 날짜 순으로 오름차순 정렬
                 .fetch();
 
