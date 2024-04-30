@@ -7,8 +7,6 @@ import com.clover.recode.domain.recode.dto.Message;
 import com.clover.recode.domain.recode.dto.RecodeDto;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
-import com.clover.recode.domain.statistics.repository.StatisticsRepository;
-import com.clover.recode.global.config.ChatGPTConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

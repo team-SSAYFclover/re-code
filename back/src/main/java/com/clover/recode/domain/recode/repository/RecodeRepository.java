@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface RecodeRepository extends JpaRepository<Recode, Integer> {
+public interface RecodeRepository extends JpaRepository<Recode, Integer>, RecodeResRepository {
 
     @Transactional
     @Modifying
