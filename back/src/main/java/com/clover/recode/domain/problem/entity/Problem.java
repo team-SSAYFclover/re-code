@@ -5,28 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+// Problem Entity
 
+// Problem Entity
 @Entity
-@Table(name = "problem")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "problem")
 public class Problem {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private Integer problemNo;
-
-    @Column(nullable = false, length = 50)
     private String title;
-
-    @Column(nullable = false)
     private Integer level;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String content;
 }
