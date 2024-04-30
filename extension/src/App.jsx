@@ -5,34 +5,32 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import { useEffect, useState } from "react";
 
 function App() {
-	const [loginId, setLoginId] = useState(undefined);
+  const [loginId, setLoginId] = useState(undefined);
 
-	useEffect(() => {
-		if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
-			chrome.storage.local.get(["loginId"], function (result) {
-				setLoginId(result.loginId); // 로그인 상태 업데이트
-			});
-		}
-	}, []);
+  useEffect(() => {
+    chrome.storage.local.get("githubId").then((res) => {
+      setLoginId(res.githubId);
+    });
+  }, []);
 
-	const router = createMemoryRouter([
-		{
-			path: "/",
-			element: <DefaultLayout />,
-			children: [
-				{
-					index: true,
-					element: loginId ? <HomePage /> : <LoginPage />,
-				},
-			],
-		},
-	]);
+  const router = createMemoryRouter([
+    {
+      path: "/",
+      element: <DefaultLayout />,
+      children: [
+        {
+          index: true,
+          element: loginId ? <HomePage /> : <LoginPage />,
+        },
+      ],
+    },
+  ]);
 
-	return (
-		<>
-			<RouterProvider router={router} />
-		</>
-	);
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;
