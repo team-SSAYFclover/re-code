@@ -3,6 +3,6 @@ import { IGetAlarmRes } from '@/types/alarm';
 import { APIResponse } from '@/types/model';
 
 export const getTodayAlarm = async (): Promise<APIResponse<IGetAlarmRes>> => {
-  const res = await axiosCommonInstance.get('/api/notifications');
+  const res = await axiosCommonInstance.get('/notifications');
   return res.data;
 };
