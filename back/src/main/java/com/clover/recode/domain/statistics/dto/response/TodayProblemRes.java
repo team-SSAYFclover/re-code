@@ -15,6 +15,10 @@ public class TodayProblemRes {
 
     private Long problem_id;
 
+    private Long code_id;
+
+    private String name;
+
     private boolean iScomplete;
 
     private int review_cnt;
