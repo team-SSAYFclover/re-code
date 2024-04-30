@@ -9,7 +9,7 @@ public interface StatisticsService {
 
     StatisticsListRes getStatisticsList(Long id);
 
-    Long getReviewCnt(Long id);
+    Integer getReviewCnt(Long id);
 
      List<TodayProblemRes> getReviews(Long id);
 

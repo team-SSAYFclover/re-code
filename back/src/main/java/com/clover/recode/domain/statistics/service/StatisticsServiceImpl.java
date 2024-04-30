@@ -53,12 +53,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Long getReviewCnt(Long userId) {
+    public Integer getReviewCnt(Long userId) {
 
         Statistics statistics = statisticsRepository.findById(userId)
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
-        return statisticsRepository.countByStatisticsIdAndDate(statistics.getId(), LocalDate.now());
+        return statisticsRepository.countByTodayWeview(statistics.getId(), LocalDate.now());
 
 
     }
