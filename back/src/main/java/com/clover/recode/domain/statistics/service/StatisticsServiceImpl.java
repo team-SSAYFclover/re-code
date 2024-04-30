@@ -14,7 +14,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
-import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
@@ -37,7 +36,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(statistics.getId());
+            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(statistics.getId(), LocalDate.now());
 
             List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
@@ -50,7 +49,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         response.setTodayProblems(todayProblemList);
         response.setAlgoReview(algoReviewList);
 
-        log.info("리턴직전");
         return response;
     }
 
@@ -62,6 +60,16 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         return statisticsRepository.countByStatisticsIdAndDate(statistics.getId(), LocalDate.now());
 
+
+    }
+
+    @Override
+    public List<TodayProblemRes> getReviews(Long userId) {
+
+        Statistics statistics = statisticsRepository.findById(userId)
+                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
+
+        return statisticsRepository.findTodayReviews(statistics.getId(), LocalDate.now());
 
     }
 }
