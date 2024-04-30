@@ -1,10 +1,8 @@
 package com.clover.recode.domain.statistics.entity;
 
+import com.clover.recode.domain.problem.entity.Tag;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -13,18 +11,21 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @ToString
-public class WeekReview {
+public class AlgoReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int count;
-
-    private LocalDate date;
+    private Integer count;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "statistics_id")
     private Statistics statistics;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
+
 
 }

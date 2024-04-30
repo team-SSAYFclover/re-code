@@ -1,5 +1,7 @@
 package com.clover.recode.domain.user.service;
 
+import com.clover.recode.domain.user.dto.GithubIdRes;
+import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -10,4 +12,8 @@ public interface UserService {
   public UserRes getUserInfo(Authentication authentication);
 
   void refreshToken(String token, String id, HttpServletResponse response);
+
+  void patchSetting(SettingDto setting, Authentication authentication);
+
+  GithubIdRes getGithubId(String uuid);
 }

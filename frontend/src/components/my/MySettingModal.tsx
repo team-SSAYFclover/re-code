@@ -163,7 +163,7 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
                 {notifHour < 12 ? 'AM' : 'PM'}
               </div>
             ) : (
-              <TimePicker />
+              <TimePicker hour={10} minute={0} />
             )}
           </>
         )}
