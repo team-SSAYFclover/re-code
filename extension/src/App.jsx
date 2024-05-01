@@ -8,11 +8,9 @@ function App() {
 	const [loginId, setLoginId] = useState(undefined);
 
 	useEffect(() => {
-		if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
-			chrome.storage.local.get(["loginId"], function (result) {
-				setLoginId(result.loginId); // 로그인 상태 업데이트
-			});
-		}
+		chrome.storage.local.get("id").then((res) => {
+			setLoginId(res.githubId);
+		});
 	}, []);
 
 	const router = createMemoryRouter([

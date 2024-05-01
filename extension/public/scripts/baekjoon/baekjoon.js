@@ -21,8 +21,12 @@ function findUsername() {
  * 업로드 버튼 추가 함수 실행
  */
 if (regex.test(currentUrl)) {
-	addModal();
-	addUploadBtnToResult();
+	chrome.storage.local.get(["id"]).then((res) => {
+		if (res.id) {
+			addModal();
+			addUploadBtnToResult();
+		}
+	});
 }
 
 /**
@@ -42,7 +46,7 @@ function addUploadBtnToResult() {
 			td[3].style = "justify-content:center";
 			td[3].innerHTML =
 				td[3].innerHTML +
-				'<div style="float:right;"><a href="javascript:void(0);" class="uploadBtn fa fa-cloud-upload"> Re:Code</a></div>';
+				'<div style="float:right;"><a href="javascript:void(0);" class="uploadBtn fa fa-upload" >RE:CODE</a></div>';
 		}
 	}
 
@@ -58,14 +62,12 @@ function addUploadBtnToResult() {
 			const problem_info = Object.assign(
 				{},
 				table_data,
+				await chrome.storage.local.get(["id"]),
 				await fetchProblemDescriptionById(table_data.problemNo),
 				await findSubmissionCode(table_data.submitNo)
-				// await fetchSolvedACById(table_data.problemNo)
 			);
 
 			const bojData = makeDetailMessageAndReadme(problem_info);
-			console.log("boj_data", bojData);
-
 			popOpen(bojData);
 		})
 	);

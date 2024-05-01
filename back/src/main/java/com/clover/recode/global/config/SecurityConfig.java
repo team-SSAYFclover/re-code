@@ -83,7 +83,7 @@ public class SecurityConfig {
 
               // 허용할 출처
               configuration.setAllowedOrigins(
-                  Arrays.asList("k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com")
+                  Arrays.asList("k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com", "chrome-extension://bpaejacickjgkmfankecnbbnbklcbipg")
               );
 
               // 허용할 HTTP 메소드

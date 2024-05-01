@@ -3,8 +3,6 @@ package com.clover.recode.domain.statistics.service;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
-import com.clover.recode.domain.statistics.entity.TodayProblem;
-import com.clover.recode.domain.statistics.entity.TodayReview;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +27,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     @Transactional
-    public StatisticsListRes getStatisticsList(int userId) {
+    public StatisticsListRes getStatisticsList(Long userId) {
         Statistics statistics = statisticsRepository.findById(userId)
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
@@ -38,12 +36,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(LocalDate.now(), statistics.getId());
+            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(statistics.getId(), LocalDate.now());
 
             List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
         StatisticsListRes response = new StatisticsListRes();
-        response.setSequence(statistics.getSequence()); // 또는 다른 적절한 필드
+        response.setSequence(statistics.getSequence());
         response.setRanking(statistics.getRanking());
         response.setWeekReviews(weekReviewList);
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
@@ -51,7 +49,27 @@ public class StatisticsServiceImpl implements StatisticsService {
         response.setTodayProblems(todayProblemList);
         response.setAlgoReview(algoReviewList);
 
-        log.info("리턴직전");
         return response;
+    }
+
+    @Override
+    public Integer getReviewCnt(Long userId) {
+
+        Statistics statistics = statisticsRepository.findById(userId)
+                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
+
+        return statisticsRepository.countByTodayWeview(statistics.getId(), LocalDate.now());
+
+
+    }
+
+    @Override
+    public List<TodayProblemRes> getReviews(Long userId) {
+
+        Statistics statistics = statisticsRepository.findById(userId)
+                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
+
+        return statisticsRepository.findTodayReviews(statistics.getId(), LocalDate.now());
+
     }
 }
