@@ -1,5 +1,11 @@
+import ProblemContent from '@/components/problem/ProblemContent';
+
 const ProblemPage = () => {
-  return <div>ProblemPage</div>;
+  return (
+    <div className="h-[calc(81vh)]">
+      <ProblemContent />
+    </div>
+  );
 };
 
 export default ProblemPage;

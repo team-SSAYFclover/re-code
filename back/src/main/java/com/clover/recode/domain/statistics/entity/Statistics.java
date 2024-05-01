@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.entity;
 
+import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -36,5 +37,9 @@ public class Statistics {
     @NotNull
     @ColumnDefault("0")
     private int sequence;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
