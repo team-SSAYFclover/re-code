@@ -11,12 +11,26 @@ function addModal() {
 		`
     <div class="modal-bg"></div>
     <div class="modal-wrap">
-			<h1>ReCode</h1>
-			
-        <div id="BaekjoonHub_progress_elem" class=""></div>
 
-        <button  class="modal-close btn">닫기</button>
-        <button id="upload" class="btn">업로드</button>
+			<div style="display: flex; flex-direction: column; width : 100%; height : 100%; position:relative;">
+			<div id="recodebackdrop" class="" style="position : absolute;"></div>
+			<p class="recodeheader">RE:CODE</p>
+			<div class="recodediv">
+				<div id="BaekjoonHub_progress_elem" class="" style="position : absolute;"></div>
+				<div style="width : 100%; display : flex;">
+				<div>코드 제목 입력<span style="font-size:10px"> (최대 20자)</span></div>
+				</div>
+				<input type="text" id="nameinput" maxlength="20" placeholder="코드를 요약해주세요."
+				style="padding : 4px; background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+				border-radius: 6px !important; width : 100%; height : 32px; --tw-bg-opacity: 1;"/>
+				<div id="resultdiv"> </div>
+				<div style="width : 100%; display : flex; justify-content: space-between;">
+					<button  class="modal-close btn recodebtn">닫기</button>
+					<button id="upload" class="btn recodebtn">업로드</button>
+				</div>
+			</div>
+			</div>
+        
     </div>`;
 
 	let selectBtn = document.querySelector("#upload");
@@ -29,8 +43,13 @@ function addModal() {
 		// 로딩 CSS 표시
 		const elem = document.getElementById("BaekjoonHub_progress_elem");
 		elem.className = "BaekjoonHub_progress";
+		const backdrop = document.getElementById("recodebackdrop");
+		backdrop.className = "recodebackdrop";
+
+		bojData.code.name = document.getElementById("nameinput").value || "빈 제목 입니다.";
 
 		// TODO: 등록 API 호출
+		console.log(bojData);
 	});
 
 	let modalclose = document.querySelector(".modal-close");
@@ -44,16 +63,6 @@ async function popOpen(data) {
 
 	let modalPop = document.querySelector(".modal-wrap"); // $('.modal-wrap');
 	let modalBg = document.querySelector(".modal-bg"); // $('.modal-bg');
-	let json = await getObjectFromLocalStorage("directoryMap");
-
-	// if (isNull(json)) {
-	// 	alert("Re:code 계정과 연결되지 않았습니다. 연동해주세요.");
-	// 	return;
-	// }
-
-	// json = JSON.parse(json);
-
-	// $("#tree").bstreeview({ data: JSON.stringify(json) });
 
 	modalBg.style = "display: block";
 	modalPop.style = "display: block";

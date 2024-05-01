@@ -11,15 +11,8 @@
 			"128": "assets/thumbnail.png"
 		}
 	},
-	"permissions": [
-		"tabs",
-		"activeTab",
-		"storage",
-		"unlimitedStorage",
-		"declarativeNetRequest",
-		"declarativeNetRequestWithHostAccess"
-	],
-	"host_permissions": ["https://www.acmicpc.net/", "https://github.com/"],
+	"permissions": ["storage", "declarativeNetRequest"],
+	"host_permissions": ["https://www.acmicpc.net/"],
 	"background": {
 		"service_worker": "background.js"
 	},
@@ -38,7 +31,6 @@
 			"css": ["css/modal.css"],
 			"js": [
 				"scripts/utils.js",
-				"scripts/storage.js",
 				"scripts/baekjoon/modal.js",
 				"scripts/baekjoon/variable.js",
 				"scripts/baekjoon/parse.js",
