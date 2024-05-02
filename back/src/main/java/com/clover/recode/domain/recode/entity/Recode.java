@@ -1,6 +1,8 @@
 package com.clover.recode.domain.recode.entity;
 
+import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -18,9 +20,7 @@ import java.time.LocalDate;
 public class Recode {
 
     @Id
-    @OneToOne
-    @JoinColumn(name = "code_id")
-    private Statistics statistics;
+    private Long id;
 
     @NotNull
     private LocalDate review_time;
@@ -33,5 +33,6 @@ public class Recode {
 
     @NotNull
     private String content;
+
 
 }
