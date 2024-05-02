@@ -2,6 +2,7 @@ import { IGetProblemRes } from '@/pages/recode/RecodeDetailPage';
 import RecodeProgressBar from './RecodeProgressBar';
 
 const RecodeBottom = ({ recode }: { recode: IGetProblemRes }) => {
+  console.log(recode);
   const btnCommonClass = 'px-3 py-2 rounded-md text-sm shadow-md font-semibold';
 
   return (
