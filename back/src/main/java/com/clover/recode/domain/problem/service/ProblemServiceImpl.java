@@ -30,11 +30,11 @@ public class ProblemServiceImpl implements ProblemService {
             problemRepository.save(problem);
         }
 
-        Code code = new Code();
-        code.setUserId(dto.getUserId());
-        code.setProblemId(dto.getProblemId());
-        code.setCodeNo(dto.getCodeNo());
-        code.setContent(dto.getCodeContent());
-        codeRepository.save(code);
+//        Code code = new Code();
+//        code.setUserId(dto.getUserId());
+//        code.setProblemId(dto.getProblemId());
+//        code.setCodeNo(dto.getCodeNo());
+//        code.setContent(dto.getCodeContent());
+//        codeRepository.save(code);
     }
 }

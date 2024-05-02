@@ -20,14 +20,14 @@ const Navbar = () => {
       url: '',
     },
     {
-      icon: <PiNotepad />,
-      label: '문제 조회',
-      url: 'problem',
-    },
-    {
       icon: <PiNotePencilLight />,
       label: '문제 풀기',
       url: 'recode',
+    },
+    {
+      icon: <PiNotepad />,
+      label: '문제 조회',
+      url: 'problem',
     },
     {
       icon: <PiHandWaving />,
