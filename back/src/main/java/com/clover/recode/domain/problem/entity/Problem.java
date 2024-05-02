@@ -1,6 +1,7 @@
 package com.clover.recode.domain.problem.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "problem")
@@ -20,6 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Problem {
 
     @Id
@@ -35,7 +38,18 @@ public class Problem {
     @Column(nullable = false)
     private Integer level;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
+
+    @OneToMany(mappedBy = "problem", orphanRemoval = true,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Code> codes;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "problem_tag",
+        joinColumns = @JoinColumn(name = "problem_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    List<Tag> tags;
 }
 
