@@ -43,5 +43,13 @@ public class Problem {
 
     @OneToMany(mappedBy = "problem", orphanRemoval = true,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Code> codes;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "problem_tag",
+        joinColumns = @JoinColumn(name = "problem_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    List<Tag> tags;
 }
 
