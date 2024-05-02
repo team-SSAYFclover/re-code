@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.scheduler;
 
+import com.clover.recode.domain.problem.dto.CodeDTO;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.repository.CodeCustomRepository;
 import com.clover.recode.domain.problem.repository.CodeRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,7 +32,8 @@ public class StatisticsScheduler {
     private final CodeCustomRepository codeCustomRepository;
     private final TodayProblemRepository todayProblemRepository;
 
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 05 16 * * *")
+    @Transactional
     public void updateTodayProblem() {
 
         List<User> users = userRepository.findAll();
@@ -42,7 +45,18 @@ public class StatisticsScheduler {
             todayReview.setDate(today);
             todayReview.setUser(user);
 
+            log.info("todayReview 추가완료");
+            log.info(String.valueOf(todayReview.getId()));
+            log.info(String.valueOf(todayReview.getDate()));
+            log.info(String.valueOf(todayReview.getUser().getId()));
+
             List<Code> codesToReview = codeCustomRepository.findByReviewStatusFalseAndReviewTimeBefore(user.getId(), today);
+
+            log.info("codesToReview 가져오기 성공");
+
+            for(Code code: codesToReview){
+                System.out.println(code.getCodeNo());
+            }
 
             List<TodayProblem> todayProblems = new ArrayList<>();
             for (Code code : codesToReview) {

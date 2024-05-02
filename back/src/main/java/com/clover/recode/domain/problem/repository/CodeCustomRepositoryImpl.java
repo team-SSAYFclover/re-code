@@ -1,5 +1,6 @@
 package com.clover.recode.domain.problem.repository;
 
+import com.clover.recode.domain.problem.dto.CodeDTO;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.QCode;
 import com.clover.recode.domain.recode.entity.QRecode;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -18,18 +21,19 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Code> findByReviewStatusFalseAndReviewTimeBefore(Long userId, LocalDate today) {
+    public List<CodeDTO> findByReviewStatusFalseAndReviewTimeBefore(Long userId, LocalDate today) {
 
         QUser user= QUser.user;
         QCode code= QCode.code;
         QRecode recode= QRecode.recode;
 
-        return jpaQueryFactory.select(code)
-                .join(recode, code.recode)
-                .join(user, code.user)
-                .where(code.user.id.eq(userId))
-                .where(code.reviewStatus.eq(false))
-                .where(recode.review_time.before(today))
+        return jpaQueryFactory.selectFrom(code)
+                .join(code.recode, recode)
+                .join(code.user, user)
+                .where(code.user.id.eq(userId),
+                    code.deleted.eq(false),
+                    code.reviewStatus.eq(true),
+                    recode.review_time.before(today.plusDays(1)))
                 .fetch();
     }
 }
