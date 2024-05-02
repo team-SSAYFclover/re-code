@@ -25,7 +25,7 @@ public class TodayReview {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "statistics_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
 

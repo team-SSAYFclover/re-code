@@ -56,9 +56,4 @@ public class User {
     updatedTime = LocalDateTime.now();
   }
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "statistics_id")
-  private Statistics statistics;
-
-
 }
