@@ -11,7 +11,7 @@ interface INavInfo {
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const currentPath = window.location.href.split('/').at(-1);
+  const currentPath = window.location.href.replace('//', '').split('/');
 
   const navInfo: INavInfo[] = [
     {
@@ -20,14 +20,14 @@ const Navbar = () => {
       url: '',
     },
     {
-      icon: <PiNotepad />,
-      label: '문제 조회',
-      url: 'problem',
-    },
-    {
       icon: <PiNotePencilLight />,
       label: '문제 풀기',
       url: 'recode',
+    },
+    {
+      icon: <PiNotepad />,
+      label: '문제 조회',
+      url: 'problem',
     },
     {
       icon: <PiHandWaving />,
@@ -36,7 +36,7 @@ const Navbar = () => {
     },
   ];
 
-  if (currentPath === 'recode') {
+  if (currentPath.includes('recode')) {
     return (
       <nav className="w-16 h-full shadow-lg relative">
         <div className="flex justify-center items-center h-20"></div>
@@ -45,7 +45,7 @@ const Navbar = () => {
             return (
               <div
                 key={idx}
-                className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath === nav.url && 'text-MAIN1 bg-MAIN2'}`}
+                className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath.includes(nav.url) && 'text-MAIN1 bg-MAIN2'}`}
                 onClick={() => navigate(`/${nav.url}`)}
               >
                 <div className="text-[22px]">{nav.icon}</div>
@@ -64,14 +64,14 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="w-60 h-full shadow-lg relative">
+    <nav className="w-60 h-full min-w-[200px] shadow-lg relative">
       <div className="flex justify-center items-center h-20">re:code</div>
       <div className="py-4">
         {navInfo.map((nav, idx) => {
           return (
             <div
               key={idx}
-              className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath === nav.url && 'text-MAIN1 bg-MAIN2'}`}
+              className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath.includes(nav.url) && 'text-MAIN1 bg-MAIN2'}`}
               onClick={() => navigate(`/${nav.url}`)}
             >
               <div className="text-lg">{nav.icon}</div>

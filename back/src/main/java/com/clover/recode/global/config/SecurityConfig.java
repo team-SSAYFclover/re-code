@@ -65,7 +65,7 @@ public class SecurityConfig {
         .authorizeHttpRequests((auth) -> auth
             // Swagger
             .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-            .requestMatchers("/users/refresh", "/users/code").permitAll()
+            .requestMatchers("/users/refresh", "/users/code", "/problem").permitAll()
            .anyRequest().authenticated());
 
     http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
@@ -82,9 +82,11 @@ public class SecurityConfig {
               CorsConfiguration configuration = new CorsConfiguration();
 
               // 허용할 출처
-              configuration.setAllowedOrigins(
-                  Arrays.asList("k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com", "chrome-extension://bpaejacickjgkmfankecnbbnbklcbipg")
-              );
+//              configuration.setAllowedOrigins(
+//                  Arrays.asList("k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com", "chrome-extension://jbdflmjhhemnomkgojjjkdeklcjihfpp")
+//              );
+              // TODO : 개발이 끝나면 CORS 닫기
+              configuration.setAllowedOriginPatterns(Arrays.asList("*"));
 
               // 허용할 HTTP 메소드
               configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));

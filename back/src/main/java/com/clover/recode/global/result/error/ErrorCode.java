@@ -26,6 +26,10 @@ public enum ErrorCode {
     REFRESH_TOKEN_INVALID(401, "유효한 리프레시 토큰이 아닙니다."),
     INVALID_USER_ID(400, "유효한 ID 값이 아닙니다."),
 
+    //Code
+    Already_REGIST_CODE(409, "이미 등록한 코드입니다."),
+
+
     //통계
     USER_NOT_FOUND(404, "유저를 찾을 수 없습니다.");
 
