@@ -21,19 +21,17 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<CodeDTO> findByReviewStatusFalseAndReviewTimeBefore(Long userId, LocalDate today) {
+    public List<Code> findByReviewStatusFalseAndReviewTimeBefore(LocalDate today) {
 
-        QUser user= QUser.user;
         QCode code= QCode.code;
         QRecode recode= QRecode.recode;
 
         return jpaQueryFactory.selectFrom(code)
                 .join(code.recode, recode)
-                .join(code.user, user)
-                .where(code.user.id.eq(userId),
-                    code.deleted.eq(false),
+                .where(code.deleted.eq(false),
                     code.reviewStatus.eq(true),
                     recode.review_time.before(today.plusDays(1)))
                 .fetch();
+
     }
 }
