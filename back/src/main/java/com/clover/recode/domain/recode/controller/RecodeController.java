@@ -31,7 +31,7 @@ public class RecodeController {
     @Operation(summary = "요청한 코드의 레코드 해결 카운트를 증가시킵니다.")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{codeId}")
-    public ResponseEntity<ResultResponse> addRecodeCount(@PathVariable("codeId") int codeId) {
+    public ResponseEntity<ResultResponse> addRecodeCount(@PathVariable("codeId") Long codeId) {
         recodeService.addRecodeCount(codeId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.PUT_Recode_SUCCESS));
     }

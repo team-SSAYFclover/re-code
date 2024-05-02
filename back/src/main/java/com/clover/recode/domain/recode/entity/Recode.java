@@ -9,30 +9,36 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @ToString
+@Builder(toBuilder = true)
 public class Recode {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private LocalDate review_time;
+    @JoinColumn(name = "code_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    private Code code;
 
-    private LocalDate submit_time;
+    @Column(nullable = false)
+    private LocalDateTime reviewTime;
 
-    @NotNull
+    @Column()
+    private LocalDateTime submitTime;
+
+    @Column(nullable = false)
     @ColumnDefault("0")
-    private int submit_count;
+    private int submitCount;
 
-    @NotNull
+    @Column(nullable = false)
     private String content;
-
 
 }
