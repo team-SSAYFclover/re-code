@@ -4,6 +4,7 @@ import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
+import com.clover.recode.domain.statistics.repository.TodayReviewCustomRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 public class StatisticsServiceImpl implements StatisticsService {
 
     private final StatisticsRepository statisticsRepository;
+    private final TodayReviewCustomRepository todayReviewCustomRepository;
 
 
     @Override
@@ -36,7 +38,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-            List<TodayProblemRes> todayProblemList = statisticsRepository.findTodayReviews(statistics.getId(), LocalDate.now());
+            List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(statistics.getId(), LocalDate.now());
 
             List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
@@ -69,7 +71,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         Statistics statistics = statisticsRepository.findById(userId)
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
-        return statisticsRepository.findTodayReviews(statistics.getId(), LocalDate.now());
+        return todayReviewCustomRepository.findTodayReviews(statistics.getId(), LocalDate.now());
 
     }
 }

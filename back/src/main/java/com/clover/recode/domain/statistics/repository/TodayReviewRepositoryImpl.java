@@ -1,5 +1,7 @@
 package com.clover.recode.domain.statistics.repository;
 
+import com.clover.recode.domain.problem.entity.QCode;
+import com.clover.recode.domain.recode.entity.QRecode;
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.QTodayProblem;
 import com.clover.recode.domain.statistics.entity.QTodayReview;
@@ -15,7 +17,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class TodayReviewRepositoryImpl implements TodayReviewRepository{
+public class TodayReviewRepositoryImpl implements TodayReviewCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -27,7 +29,7 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
 
         return jpaQueryFactory
                 .select(Projections.constructor(TodayProblemRes.class,
-                        todayProblem.code.problemId,
+                        todayProblem.code.problem.id,
                         todayProblem.code.id,
                         todayProblem.code.name,
                         todayProblem.reviewCnt,
@@ -39,5 +41,4 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
                 .where(todayReview.date.eq(today))
                 .fetch();
     }
-
 }
