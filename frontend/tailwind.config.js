@@ -15,11 +15,21 @@ export default {
       },
       animation: {
         wiggle: 'wiggle 7s ease-in-out infinite',
+        modalOpen: 'FadeIn 0.3s ease-in-out',
+        modalClose: 'FadeOut 0.3s ease-in-out',
       },
       keyframes: {
         wiggle: {
           '0%, 100%': { transform: 'rotate(-5deg)' },
           '50%': { transform: 'rotate(5deg)' },
+        },
+        FadeIn: {
+          from: { opacity: 0, transform: 'translate(-50%, -40%)' },
+          to: { opacity: 1, transform: 'translate(-50%, -50%)' },
+        },
+        FadeOut: {
+          from: { opacity: 1, transform: 'translate(-50%, -50%)' },
+          to: { opacity: 0, transform: 'translate(-50%, -40%)' },
         },
       },
     },
