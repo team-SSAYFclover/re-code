@@ -17,7 +17,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Byte id; // 알고리즘 분류 Id : 1
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name; // 알고리즘 분류 이름 : "구현"
 
 //    @OneToMany(mappedBy = "tag",fetch = FetchType.LAZY)

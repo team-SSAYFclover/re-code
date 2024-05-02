@@ -2,13 +2,11 @@ package com.clover.recode.domain.user.controller;
 
 import static com.clover.recode.global.result.ResultCode.*;
 
-import com.clover.recode.domain.user.dto.GithubIdRes;
+import com.clover.recode.domain.user.dto.idRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
 import com.clover.recode.domain.user.service.UserService;
-import com.clover.recode.global.result.ResultCode;
 import com.clover.recode.global.result.ResultResponse;
-import com.clover.recode.global.result.error.exception.BusinessException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
@@ -16,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -74,7 +70,7 @@ public class UserController {
   @Operation(summary = "사용자 코드로 고유 번호 조회")
   @GetMapping("/code")
   public ResponseEntity<ResultResponse> getGithubId(String uuid) {
-    GithubIdRes id = userService.getGithubId(uuid);
+    idRes id = userService.getGithubId(uuid);
     return ResponseEntity.ok(ResultResponse.of(GET_USER_NUMBER_SUCCESS, id));
   }
 }
