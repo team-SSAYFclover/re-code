@@ -1,6 +1,5 @@
 package com.clover.recode.domain.recode.service;
 
-import com.clover.recode.domain.problem.dto.ProblemCodeDto;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.recode.dto.RecodeRes;
 

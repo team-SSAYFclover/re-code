@@ -1,14 +1,11 @@
 package com.clover.recode.domain.recode.service;
 
-import com.clover.recode.domain.problem.dto.ProblemCodeDto;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.dto.*;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
-import com.clover.recode.domain.user.entity.Setting;
-import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_EXISTS;
 
@@ -42,7 +38,7 @@ public class RecodeServiceImpl implements RecodeService {
     @Override
     public void saveRecode(Code code) {
 
-        List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + code.getContent()));
+        List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + "```\n" + code.getContent() + "\n```"));
         GptRequestDto request = new GptRequestDto(model, prompts, 1, 256, 1, 0, 0);
 
         // HTTP 헤더 설정
