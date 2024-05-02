@@ -17,12 +17,12 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class TodayReviewRepositoryImpl implements TodayReviewCustomRepository {
+public class TodayCustomReviewRepositoryImpl implements TodayReviewCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<TodayProblemRes> findTodayReviews(Long statisticsId, LocalDate today) {
+    public List<TodayProblemRes> findTodayReviews(Long userId, LocalDate today) {
 
         QTodayProblem todayProblem = QTodayProblem.todayProblem;
         QTodayReview todayReview = QTodayReview.todayReview;
@@ -37,7 +37,7 @@ public class TodayReviewRepositoryImpl implements TodayReviewCustomRepository {
                         ))
                 .from(todayProblem)
                 .join(todayProblem.todayReview, todayReview)
-                .where(todayReview.id.eq(statisticsId))
+                .where(todayReview.user.id.eq(userId))
                 .where(todayReview.date.eq(today))
                 .fetch();
     }

@@ -1,5 +1,6 @@
 package com.clover.recode.domain.problem.repository;
 
+import com.clover.recode.domain.problem.dto.CodeDTO;
 import com.clover.recode.domain.problem.entity.Code;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,6 @@ import java.util.List;
 @Repository
 public interface CodeCustomRepository {
 
-    List<Code> findByReviewStatusFalseAndReviewTimeBefore(Long userId, LocalDate today);
+    List<CodeDTO> findByReviewStatusFalseAndReviewTimeBefore(Long userId, LocalDate today);
 
 }
