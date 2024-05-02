@@ -1,20 +1,13 @@
 package com.clover.recode.domain.statistics.scheduler;
 
-import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.repository.CodeCustomRepository;
-import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
-import com.clover.recode.domain.statistics.repository.TodayReviewRepository;
-import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
