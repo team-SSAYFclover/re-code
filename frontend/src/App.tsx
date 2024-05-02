@@ -8,7 +8,9 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProblemLayout from './components/@common/ProblemLayout';
+import RecodeLayout from './components/@common/RecodeLayout';
 import PrivateRoute from './pages/private/PrivateRoute';
+import RecodeDetailPage from './pages/recode/RecodeDetailPage';
 import RecodePage from './pages/recode/RecodePage';
 import RedirectPage from './pages/redirect/RedirectPage';
 
@@ -20,14 +22,6 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <HomePage />,
-      },
-      {
-        path: 'recode',
-        element: (
-          <PrivateRoute>
-            <RecodePage />
-          </PrivateRoute>
-        ),
       },
       {
         path: 'guide',
@@ -50,6 +44,24 @@ const router = createBrowserRouter([
       {
         path: ':problemNo',
         element: <ProblemDetailPage />,
+      },
+    ],
+  },
+  {
+    path: '/recode',
+    element: (
+      <PrivateRoute>
+        <RecodeLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: '',
+        element: <RecodePage />,
+      },
+      {
+        path: ':recodeId',
+        element: <RecodeDetailPage />,
       },
     ],
   },

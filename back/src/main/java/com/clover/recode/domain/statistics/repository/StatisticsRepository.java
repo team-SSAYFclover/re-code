@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StatisticsRepository extends JpaRepository<Statistics, Long>, WeekReviewRepository, TodayReviewRepository, AlgoReviewRepository {
+public interface StatisticsRepository extends JpaRepository<Statistics, Long>, WeekReviewRepository, AlgoReviewRepository{
 
 }
