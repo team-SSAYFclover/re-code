@@ -4,7 +4,6 @@ import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
-import com.clover.recode.domain.statistics.repository.TodayReviewCustomRepository;
 import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private final UserRepository userRepository;
     private final StatisticsRepository statisticsRepository;
-    private final TodayReviewCustomRepository todayReviewCustomRepository;
 
 
     @Override
@@ -40,7 +38,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
-            List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
+            //List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
 
             List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
@@ -50,7 +48,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         response.setWeekReviews(weekReviewList);
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
         response.setRandomQuestion(statistics.getRandomNo());
-        response.setTodayProblems(todayProblemList);
+        //response.setTodayProblems(todayProblemList);
         response.setAlgoReview(algoReviewList);
 
         return response;
@@ -70,7 +68,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public List<TodayProblemRes> getReviews(Long userId) {
 
-        return todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
+        return null;
+        //return todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
 
     }
 }
