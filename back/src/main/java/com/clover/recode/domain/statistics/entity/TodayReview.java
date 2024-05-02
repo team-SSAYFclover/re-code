@@ -26,6 +26,7 @@ public class TodayReview {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "statistics_id")
-    private Statistics statistics;
+    private User user;
+
 
 }

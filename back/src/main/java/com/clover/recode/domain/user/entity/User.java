@@ -1,17 +1,8 @@
 package com.clover.recode.domain.user.entity;
 
 import com.clover.recode.domain.statistics.entity.Statistics;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -64,6 +55,10 @@ public class User {
   public void preUpdate() {
     updatedTime = LocalDateTime.now();
   }
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "statistics_id")
+  private Statistics statistics;
 
 
 }
