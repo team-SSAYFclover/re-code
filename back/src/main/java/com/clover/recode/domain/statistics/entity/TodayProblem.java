@@ -21,6 +21,8 @@ public class TodayProblem {
 
     private int reviewCnt;
 
+    private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "today_review_id")
     private TodayReview todayReview;
