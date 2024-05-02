@@ -24,10 +24,6 @@ public class TodayProblem {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "today_review_id")
-    private TodayReview todayReview;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_id")
     private Code code;
 
