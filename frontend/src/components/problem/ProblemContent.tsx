@@ -26,11 +26,11 @@ const problemData: IProblemData[] = [
     repeatNum: 2,
   },
   {
-    problemNo: 1261,
-    title: '알고스팟',
-    level: 14,
-    tagName: ['다익스트라', '최단경로'],
-    repeatNum: 2,
+    problemNo: 10164,
+    title: '격자상의 경로',
+    level: 9,
+    tagName: ['수학', '다이나믹 프로그래밍', '조합론'],
+    repeatNum: 1,
   },
 ];
 
