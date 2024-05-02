@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface RecodeRepository extends JpaRepository<Recode, Long>, RecodeResRepository {
+public interface RecodeRepository extends JpaRepository<Recode, Long> {
 
 }
