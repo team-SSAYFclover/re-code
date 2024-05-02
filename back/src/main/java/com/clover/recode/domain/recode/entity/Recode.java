@@ -34,9 +34,6 @@ public class Recode {
     @NotNull
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code_id")
-    Code code;
 
 }
 
