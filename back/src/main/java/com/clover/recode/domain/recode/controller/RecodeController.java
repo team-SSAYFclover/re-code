@@ -24,7 +24,7 @@ public class RecodeController {
     @Operation(summary = "요청한 코드의 레코드를 가져옵니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{codeId}")
-    public ResponseEntity<ResultResponse> getRecode(@PathVariable("codeId") int codeId) {
+    public ResponseEntity<ResultResponse> getRecode(@PathVariable("codeId") Long codeId) {
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_Recode_SUCCESS, recodeService.getRecode(codeId)));
     }
 
