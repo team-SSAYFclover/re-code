@@ -13,7 +13,8 @@ public enum ResultCode {
     TOKEN_REISSUE_SUCCESS(201, "액세스 토큰 재발급에 성공하였습니다."),
     PATCH_USER_SETTING_SUCCESS(201, "회원 설정 변경에 성공하였습니다."),
 
-
+    //Problem
+    REGIST_CODE_SUCCESS(201, "코드 등록에 성공하였습니다."),
 
     //Statistics
     GET_Statistics_SUCCESS(200, "메인화면 통계를 가져오는 것에 성공했습니다."),
