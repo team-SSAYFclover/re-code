@@ -25,19 +25,20 @@ public class TodayReviewRepositoryImpl implements TodayReviewRepository{
         QTodayProblem todayProblem = QTodayProblem.todayProblem;
         QTodayReview todayReview = QTodayReview.todayReview;
 
-        return jpaQueryFactory
-                .select(Projections.constructor(TodayProblemRes.class,
-                        todayProblem.code.problemId,
-                        todayProblem.code.id,
-                        todayProblem.code.name,
-                        todayProblem.reviewCnt,
-                        todayProblem.isCompleted
-                        ))
-                .from(todayProblem)
-                .join(todayProblem.todayReview, todayReview)
-                .where(todayReview.id.eq(statisticsId))
-                .where(todayReview.date.eq(today))
-                .fetch();
+        return null;
+//            jpaQueryFactory
+//                .select(Projections.constructor(TodayProblemRes.class,
+//                        todayProblem.code.problemId,
+//                        todayProblem.code.id,
+//                        todayProblem.code.name,
+//                        todayProblem.reviewCnt,
+//                        todayProblem.isCompleted
+//                        ))
+//                .from(todayProblem)
+//                .join(todayProblem.todayReview, todayReview)
+//                .where(todayReview.id.eq(statisticsId))
+//                .where(todayReview.date.eq(today))
+//                .fetch();
     }
 
 }
