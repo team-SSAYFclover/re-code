@@ -2,6 +2,9 @@ package com.clover.recode.domain.problem.entity;
 
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +12,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,9 +20,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
     @Entity
     @Getter
     @Setter
-    @NoArgsConstructor
+    @Builder(toBuilder = true)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @EntityListeners(value = AuditingEntityListener.class)
     @ToString(of = {"id", "codeNo", "name", "content"})
+    @DynamicInsert
     public class Code {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +36,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         private User user;
 
         @JoinColumn(name = "problem_id")
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         private Problem problem;
 
-        @Column(unique = true)
-        private Long codeNo;
+        @Column(unique = true, nullable = false)
+        private Integer codeNo;
 
         @Column(nullable = false)
         private String name;

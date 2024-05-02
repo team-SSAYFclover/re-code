@@ -1,6 +1,6 @@
 package com.clover.recode.domain.user.service;
 
-import com.clover.recode.domain.user.dto.GithubIdRes;
+import com.clover.recode.domain.user.dto.idRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,5 +15,5 @@ public interface UserService {
 
   void patchSetting(SettingDto setting, Authentication authentication);
 
-  GithubIdRes getGithubId(String uuid);
+  idRes getGithubId(String uuid);
 }
