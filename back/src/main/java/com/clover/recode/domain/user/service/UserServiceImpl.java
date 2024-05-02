@@ -3,7 +3,7 @@ package com.clover.recode.domain.user.service;
 import static com.clover.recode.global.result.error.ErrorCode.*;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
-import com.clover.recode.domain.user.dto.GithubIdRes;
+import com.clover.recode.domain.user.dto.idRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
 import com.clover.recode.domain.user.entity.Setting;
@@ -104,8 +104,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public GithubIdRes getGithubId(String uuid) {
-    GithubIdRes id = userRepository.findByUuid(uuid)
+  public idRes getGithubId(String uuid) {
+    idRes id = userRepository.findByUuid(uuid)
         .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
     return id;
   }
