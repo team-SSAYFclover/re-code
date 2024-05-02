@@ -38,7 +38,7 @@ public class RecodeServiceImpl implements RecodeService {
     @Override
     public void saveRecode(Code code) {
 
-        List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + "```\n" + code.getContent() + "\n```"));
+        List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + code.getContent() + "\n```"));
         GptRequestDto request = new GptRequestDto(model, prompts, 1, 256, 1, 0, 0);
 
         // HTTP 헤더 설정

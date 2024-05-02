@@ -12,11 +12,9 @@ public class EnglishPrompt {
             - You should not add any explanations other than the code in your response.
             - Your response should consist only of the code and the special characters marking the important parts of the code. Do not engage in any other activities such as explaining the code.
                         
-            ```
             Now, I will show you an example below.
                         
             The code given to you:
-            ```
             ```
             import java.io.BufferedReader;
             import java.io.InputStreamReader;
@@ -82,8 +80,7 @@ public class EnglishPrompt {
             }
             ```
                         
-            Now I will give you a code. Based on the rules and examples specified above, generate an appropriate response.
-            
-            
+            Now I will give you a code below. Based on the rules and examples specified above, generate an appropriate response.
+            ```
             """;
 }
