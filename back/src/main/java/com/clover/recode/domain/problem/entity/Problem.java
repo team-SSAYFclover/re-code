@@ -1,7 +1,10 @@
 package com.clover.recode.domain.problem.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,13 +16,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Table(name = "problem")
 @Getter
 @Setter
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Problem {
 
     @Id
@@ -35,7 +40,15 @@ public class Problem {
     @Column(nullable = false)
     private Integer level;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "problem_tag",
+        joinColumns = @JoinColumn(name = "problem_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    List<Tag> tags;
 }
 
