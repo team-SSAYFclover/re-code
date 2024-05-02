@@ -82,30 +82,7 @@ public class KoreanPrompt {
             ```
                         
             이제 당신에게 코드를 주겠습니다. 위에서 명시한 규칙들과 예시들을 근거로 적절한 답변을 생성해 내세요.
-                        
-            ```
-            import java.util.Scanner;
-                        
-            public class Main {
-                        
-            	public static void main(String[] args) {
-            		Scanner sc = new Scanner(System.in);
-                        
-            		int T = sc.nextInt();
-            		
-            		int[] abc = {300, 60, 10};
-            		int[] abcC = new int[3];
-            		for (int i = 0; i < 3; i++) {
-            			abcC[i] = T/abc[i];
-            			T %= abc[i];
-            		}
-            		if (T==0)
-            			System.out.printf("%d %d %d", abcC[0], abcC[1], abcC[2]);
-            		else
-            			System.out.println("-1");
-            	}
-                        
-            }
-            ```
+            
+            
             """;
 }

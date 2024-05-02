@@ -1,5 +1,7 @@
 package com.clover.recode.domain.problem.entity;
 
+import com.clover.recode.domain.recode.entity.Recode;
+import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -51,6 +53,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @Column(updatable = false)
         private LocalDateTime createdTime;
         private LocalDateTime updatedTime;
+
+        @OneToOne(mappedBy = "code", orphanRemoval = true, fetch = FetchType.LAZY)
+        private Recode recode;
 
         @PrePersist
         public void prePersist() {

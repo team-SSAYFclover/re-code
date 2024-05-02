@@ -1,12 +1,15 @@
 package com.clover.recode.domain.recode.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.clover.recode.domain.problem.entity.Problem;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
+import java.util.List;
+
+@Getter
+@Setter
 @AllArgsConstructor
 public class RecodeRes {
-    private String recode;          // 레코드
+    private Problem problem;
+    private String recode;
+    private List<String> answers;
 }

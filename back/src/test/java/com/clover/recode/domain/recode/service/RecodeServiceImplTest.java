@@ -18,4 +18,9 @@ class RecodeServiceImplTest {
     void GPTTest() {
 //        String recode = service.getRecode(EnglishPrompt.prompt);
     }
+
+    @Test
+    void saveRecodeTest() {
+//        String recode = service.getRecode(EnglishPrompt.prompt);
+    }
 }
