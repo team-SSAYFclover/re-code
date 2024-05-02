@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static com.clover.recode.global.result.ResultCode.*;
@@ -24,22 +25,22 @@ public class StatisticsController {
     @Operation(summary = "메인화면의 모든 통계들 정보 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
-    public ResponseEntity<ResultResponse> getStatisticsList(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(ResultResponse.of(GET_Statistics_SUCCESS, statisticsService.getStatisticsList(userId)));
+    public ResponseEntity<ResultResponse> getStatisticsList(@PathVariable("userId") Long userId, Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_Statistics_SUCCESS, statisticsService.getStatisticsList(userId, authentication)));
     }
 
     @Operation(summary = "오늘의 복습문제 갯수 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/today/reviews/cnt/{userId}")
-    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviewCnt(userId)));
+    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable("userId") Long userId, Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviewCnt(userId, authentication)));
     }
 
     @Operation(summary = "오늘의 복습문제 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/today/reviews/{userId}")
-    public ResponseEntity<ResultResponse> getReviews(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.getReviews(userId)));
+    public ResponseEntity<ResultResponse> getReviews(@PathVariable("userId") Long userId, Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.getReviews(userId, authentication)));
     }
 
 }

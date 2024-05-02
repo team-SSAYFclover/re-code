@@ -45,7 +45,7 @@ const ProblemDetailCodeComp: React.FC<ICode> = ({ id, name, content, reviewStatu
               </label>
             </div>
             <div className="h-full flex flex-row mt-3">
-              <div className="w-[3vh] p-1 me-2 flex flex-col text-center bg-teal-50 text-teal-400">
+              <div className="w-7 p-1 me-2 flex flex-col text-center bg-teal-50 text-teal-400">
                 1 2 3 4 5 6 7 8 9 10
               </div>
               <div>{content}</div>
