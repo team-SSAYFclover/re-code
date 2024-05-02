@@ -2,7 +2,6 @@ package com.clover.recode.domain.recode.dto;
 
 public class TestCode {
     public static String prompt = """
-            ```
             import java.util.Scanner;
                         
             public class Main {
@@ -25,6 +24,5 @@ public class TestCode {
             	}
                         
             }
-            ```
             """;
 }
