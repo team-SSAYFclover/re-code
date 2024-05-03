@@ -1,5 +1,6 @@
 package com.clover.recode.domain.recode.controller;
 
+import com.clover.recode.domain.recode.dto.RecodeRes;
 import com.clover.recode.domain.recode.service.RecodeService;
 import com.clover.recode.domain.statistics.service.StatisticsService;
 import com.clover.recode.global.result.ResultCode;
@@ -25,14 +26,16 @@ public class RecodeController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{codeId}")
     public ResponseEntity<ResultResponse> getRecode(@PathVariable("codeId") Long codeId) {
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_Recode_SUCCESS, recodeService.getRecode(codeId)));
+        RecodeRes res = recodeService.getRecode(codeId);
+        log.info("GetRecode : {}", res);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_Recode_SUCCESS, res));
     }
 
     @Operation(summary = "요청한 코드의 레코드 해결 카운트를 증가시킵니다.")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{codeId}")
     public ResponseEntity<ResultResponse> addRecodeCount(@PathVariable("codeId") Long codeId) {
-        recodeService.addRecodeCount(codeId);
+        recodeService.recodeSubmit(codeId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.PUT_Recode_SUCCESS));
     }
 

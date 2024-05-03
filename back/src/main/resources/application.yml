@@ -53,7 +53,6 @@ spring:
     password: ${db.redis.password}
 
   openai:
-    model: gpt-3.5-turbo-0125
     secret-key: ${openai.secret-key}
 
 springdoc: #swagger

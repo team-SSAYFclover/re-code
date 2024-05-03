@@ -7,6 +7,6 @@ public interface RecodeService {
 
     void saveRecode(Code code);
     RecodeRes getRecode(Long codeId);
-    void addRecodeCount(Long codeId);
+    void recodeSubmit(Long codeId);
 
 }
