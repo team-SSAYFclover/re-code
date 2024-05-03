@@ -6,8 +6,7 @@ import { FiBell } from 'react-icons/fi';
 import AlarmModal from '../alarm/AlarmModal';
 
 const Header = () => {
-  const { isLogin, avatar_url } = userStore();
-
+  const { isLogin, avatarUrl } = userStore();
   const [isShowSetting, setIsShowSetting] = useState<boolean>(false);
   const [isShowAlarm, setIsShowAlarm] = useState<boolean>(false);
 
@@ -36,7 +35,7 @@ const Header = () => {
               <FiBell size="25" color="#484848" />
             </span>
             <img
-              src={avatar_url === '' ? defaultProfile : avatar_url}
+              src={avatarUrl === '' ? defaultProfile : avatarUrl}
               alt="profile"
               className="w-8 mx-4 cursor-pointer z-10"
               onClick={() => handleOpen('setting')}

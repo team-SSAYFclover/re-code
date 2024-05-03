@@ -1,7 +1,23 @@
 import axios from 'axios';
+import refresh from './refresh';
+import setAuthorization from './setAuthorization';
 
-const axiosRequestConfig = {
-  baseURL: import.meta.env.VITE_NODE_ENV === 'development' ? '' : import.meta.env.VITE_BASE_URL,
+const BASE_URL =
+  import.meta.env.VITE_NODE_ENV === 'development' ? '' : import.meta.env.VITE_BASE_URL;
+
+const basicRequestConfig = {
+  baseURL: BASE_URL,
 };
 
-export const axiosCommonInstance = axios.create(axiosRequestConfig);
+const refreshTokenReqestConfig = {
+  baseURL: BASE_URL,
+  withCredentials: true,
+};
+
+export const axiosCommonInstance = axios.create(basicRequestConfig);
+export const axiosRefreshInstance = axios.create(refreshTokenReqestConfig);
+
+axiosCommonInstance.interceptors.request.use(setAuthorization);
+axiosRefreshInstance.interceptors.request.use(setAuthorization);
+
+axiosCommonInstance.interceptors.response.use(null, refresh);
