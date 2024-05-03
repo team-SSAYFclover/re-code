@@ -41,7 +41,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         private Problem problem;
 
         @JoinColumn(name = "recode_id")
-        @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @OneToOne(mappedBy = "code", orphanRemoval = true, fetch = FetchType.LAZY)
         private Recode recode;
 
         @Column(unique = true, nullable = false)
