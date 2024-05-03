@@ -52,6 +52,9 @@ spring:
     port: ${db.redis.port}
     password: ${db.redis.password}
 
+  openai:
+    secret-key: ${openai.secret-key}
+
 springdoc: #swagger
   packages-to-scan: com.clover.recode
   default-consumes-media-type: application/json;charset=UTF-8

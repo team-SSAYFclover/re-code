@@ -1,6 +1,7 @@
 package com.clover.recode.domain.problem.entity;
 
 import com.clover.recode.domain.recode.entity.Recode;
+import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
