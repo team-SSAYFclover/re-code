@@ -20,7 +20,12 @@ import java.time.LocalDate;
 public class Recode {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "code_id")
+    private Code code;
 
     @NotNull
     private LocalDate review_time;
