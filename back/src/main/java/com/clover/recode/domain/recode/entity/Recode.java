@@ -38,7 +38,7 @@ public class Recode {
     @ColumnDefault("0")
     private int submitCount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
 }

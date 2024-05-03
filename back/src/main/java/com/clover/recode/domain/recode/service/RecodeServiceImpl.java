@@ -1,7 +1,9 @@
 package com.clover.recode.domain.recode.service;
 
+import com.clover.recode.domain.problem.dto.ProblemDto;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.Problem;
+import com.clover.recode.domain.problem.entity.Tag;
 import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.dto.*;
 import com.clover.recode.domain.recode.entity.Recode;
@@ -9,7 +11,6 @@ import com.clover.recode.domain.recode.repository.RecodeRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,13 @@ public class RecodeServiceImpl implements RecodeService {
     private final RecodeRepository recodeRepository;
     private final CodeRepository codeRepository;
 
-    @Value("${spring.openai.model}")
-    private String model;
-
     @Override
+    @Transactional
     public void saveRecode(Code code) {
 
         List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + code.getContent() + "\n```"));
-        GptRequestDto request = new GptRequestDto(model, prompts, 1, 256, 1, 0, 0);
+        GptRequestDto request = new GptRequestDto("gpt-3.5-turbo-0125", prompts, 1, 1, 0, 0);
+//        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -93,7 +93,7 @@ public class RecodeServiceImpl implements RecodeService {
                 }
 
                 if (blockDifficulty == userDifficulty) {
-                    sb.append('‽' * userDifficulty).append('▢' * userDifficulty);
+                    sb.append("‽").append("▢");
 
                     StringBuilder answer = new StringBuilder();
                     while (content.charAt(i + 1) != '▢') {
@@ -114,11 +114,24 @@ public class RecodeServiceImpl implements RecodeService {
                 sb.append(ch);
         }
 
-        return new RecodeRes(problem, sb.toString(), answers);
+        List<String> tagNames = new ArrayList<>();
+        List<Tag> tags = problem.getTags();
+        for (Tag tag : tags) tagNames.add(tag.getName());
+
+        return new RecodeRes(ProblemDto.builder()
+                .problemNo(problem.getProblemNo())
+                .title(problem.getTitle())
+                .level(problem.getLevel())
+                .content(problem.getContent())
+                .tags(tagNames)
+                .build()
+                , sb.toString()
+                , answers);
     }
 
     @Override
-    public void addRecodeCount(Long codeId) {
+    @Transactional
+    public void recodeSubmit(Long codeId) {
         Code code = codeRepository.findById(codeId)
                 .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
 
