@@ -1,14 +1,9 @@
 import clover from '@/assets/clover.png';
 import RecodeList from '@/components/recode/RecodeList';
+import { IRecodeItemProps } from '@/pages/recode/RecodePage';
+import Modal from '../@common/Modal';
 
-export interface IRecodeItemProps {
-  problemNo: number;
-  problemTitle: string;
-  count: number;
-  solvedYn: boolean;
-}
-
-const RecodePage = () => {
+const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
   const TodayReviewData: IRecodeItemProps[] = [
     { problemNo: 3302, problemTitle: 'Job Scheduling', count: 2, solvedYn: true },
     { problemNo: 11779, problemTitle: '최소비용 구하기 2', count: 1, solvedYn: false },
@@ -24,31 +19,24 @@ const RecodePage = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center bg-gray-100/50 relative">
-      <div className="w-2/3 h-2/3 mx-auto">
+    <Modal width="w-1/2" height="h-2/3" onClose={onClose}>
+      <div className="w-full h-full mx-auto">
         <div className="h-20 flex items-center">
           <div className="w-[50px] px-2">
             <img src={clover} alt="clover" />
           </div>
           <div className="flex-1">
             <div className="text-xl font-semibold">오늘의 복습 리스트</div>
-            <div className="text-sm">
-              지금까지 쌓인 복습 리스트입니다. 문제를 눌러 복습을 시작해보아요.
-            </div>
+            <div className="text-sm">문제를 눌러 복습을 시작해보아요.</div>
           </div>
-          <div className="w-[50px] text-xl">
+          <div className="w-[50px] text-md">
             {solvedCnt()} / {TodayReviewData.length}
           </div>
         </div>
         <RecodeList review={TodayReviewData} />
-        <div className="h-20 flex justify-end items-center">
-          <button className="h-12 bg-MAIN1 text-MAIN2 px-4 font-semibold rounded-md hover:bg-[#2CD8AE]">
-            처음부터 복습하기
-          </button>
-        </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 
-export default RecodePage;
+export default RecodeListModal;

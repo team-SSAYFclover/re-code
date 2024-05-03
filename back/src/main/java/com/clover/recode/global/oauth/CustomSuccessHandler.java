@@ -34,8 +34,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     response.addCookie(createCookie("refresh_token", refresh));
 
     // TODO : 개발 끝나면 redirect 주소 도메인으로 수정하기
-//    response.sendRedirect("http://localhost:3000/redirect?access_token="+access);
-    response.sendRedirect("https://www.recode-d210.com/redirect?access="+access);
+     response.sendRedirect("http://localhost:5173/redirect?access_token="+access);
+    // response.sendRedirect("https://www.recode-d210.com/redirect?access="+access);
   }
 
   private Cookie createCookie(String key, String value) {

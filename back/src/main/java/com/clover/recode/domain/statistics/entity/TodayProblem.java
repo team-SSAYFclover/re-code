@@ -5,6 +5,8 @@ import com.clover.recode.domain.problem.entity.Problem;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -21,9 +23,9 @@ public class TodayProblem {
 
     private int reviewCnt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "today_review_id")
-    private TodayReview todayReview;
+    private String name;
+
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_id")

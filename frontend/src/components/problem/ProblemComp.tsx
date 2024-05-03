@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { IProblemData } from './ProblemContent';
+import { useNavigate } from 'react-router-dom';
 
 const ProblemComp: React.FC<IProblemData> = ({ problemNo, title, level, tagName, repeatNum }) => {
+  const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState<string>('');
 
   useEffect(() => {
@@ -18,7 +20,10 @@ const ProblemComp: React.FC<IProblemData> = ({ problemNo, title, level, tagName,
   }, [level]);
 
   return (
-    <div className="shadow-lg w-72 h-40 me-10 mb-5 p-5 flex flex-col justify-between bg-white rounded-md text-sm">
+    <div
+      className="shadow-lg w-72 h-40 me-10 mb-5 p-5 flex flex-col justify-between bg-white rounded-md text-sm cursor-pointer"
+      onClick={() => navigate(`/problem/${problemNo}`)}
+    >
       {/* 상단부 */}
       <div className="w-full h-fit flex flex-row justify-between">
         <div>
