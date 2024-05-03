@@ -11,6 +11,5 @@ export type difficultyLevelType = 1 | 2 | 3; // 1 : 하, 2 : 중, 3 : 상
 export interface ISettingInfo {
   difficulty: difficultyLevelType;
   notificationStatus: boolean;
-  notificationHour: number;
-  notificationMinute: number;
+  notificationTime: string;
 }

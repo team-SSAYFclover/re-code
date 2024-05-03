@@ -1,10 +1,12 @@
 import defaultProfile from '@/assets/default_profile.png';
 import Toggle from '@/components/@common/Toggle';
+import { useUser } from '@/hooks/user/useUser';
 import userStore from '@/stores/userStore';
 import { difficultyLevelType } from '@/types/model';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { TbCopy } from 'react-icons/tb';
+import Toast from '../@common/Toast';
 import TimePicker from './TimePicker';
-
 interface IDifficultyInfo {
   difficulty: difficultyLevelType;
   text: string;
@@ -18,13 +20,17 @@ interface IModifyInfo {
 }
 
 const MySettingModal = ({ onClose }: { onClose: () => void }) => {
-  const { name, difficulty, notifStatus, notifHour, notifMinute, avatar_url } = userStore();
+  const { useGetUser } = useUser();
+  const { data } = useGetUser();
+  const { name, avatarUrl } = userStore();
+
+  console.log(data);
 
   const [modifyInfo, setModifyInfo] = useState<IModifyInfo>({
-    difficulty: difficulty,
-    notifStatus: notifStatus,
-    notifHour: notifHour,
-    notifMinute: notifMinute,
+    difficulty: 1,
+    notifStatus: false,
+    notifHour: 0,
+    notifMinute: 0,
   });
 
   const [isModifyDifficulty, setIsModifyDifficulty] = useState<boolean>(false);
@@ -44,6 +50,22 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
       text: '하',
     },
   ];
+
+  useEffect(() => {
+    if (data) {
+      const [hour, min, _] = data.settings.notificationTime.split(':');
+
+      setModifyInfo((prev) => {
+        return {
+          ...prev,
+          difficulty: data.settings.difficulty,
+          notifStatus: data.settings.notificationStatus,
+          notifHour: Number(hour),
+          notifMinute: Number(min),
+        };
+      });
+    }
+  }, [data]);
 
   const handleDifficult = (difficulty: difficultyLevelType) => {
     if (!isModifyDifficulty) return;
@@ -88,6 +110,15 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
   const contentCommonClass = 'flex justify-between pt-6 pb-2';
   const textCommonClass = 'text-sm leading-6';
 
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      Toast.success('연동 코드가 복사되었습니다.');
+    } catch (error) {
+      Toast.error('복사를 실패했습니다.');
+    }
+  };
+
   return (
     <>
       <div className="w-screen h-screen fixed top-0 left-0" onClick={() => onClose()}></div>
@@ -95,13 +126,25 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
         <span className="text-lg">내 정보</span>
         <div className="flex mx-2 border-b-[1px] border-[#E9E9E9] py-2">
           <img
-            src={avatar_url === '' ? defaultProfile : avatar_url}
+            src={avatarUrl === '' ? defaultProfile : avatarUrl}
             alt="profile"
             className="w-8 mr-2"
           />
           <span>{name}</span>
         </div>
-
+        <div className="pt-2">
+          <span className={textCommonClass}>익스텐션 연동 코드</span>
+          <div className="text-sm bg-[#F3F3F3] text-[#5A5A5A] py-3 my-1 rounded-md grid grid-cols-7 place-items-center">
+            <div className="col-span-1"></div>
+            <span className="col-span-5 break-all">{data?.uuid}</span>
+            <div
+              className="col-span-1 cursor-pointer"
+              onClick={() => handleCopyClipBoard(data?.uuid || '')}
+            >
+              <TbCopy />
+            </div>
+          </div>
+        </div>
         <div className={contentCommonClass}>
           <span className={textCommonClass}>복습 난이도 설정</span>
           {!isModifyDifficulty ? (
@@ -159,8 +202,12 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
             </div>
             {!isModifyAlarm ? (
               <div className="text-right">
-                {notifHour}:{notifMinute < 10 ? '0' + notifMinute : notifMinute}&nbsp;
-                {notifHour < 12 ? 'AM' : 'PM'}
+                {modifyInfo.notifHour}:
+                {Number(modifyInfo.notifMinute) < 10
+                  ? '0' + Number(modifyInfo.notifMinute)
+                  : Number(modifyInfo.notifMinute)}
+                &nbsp;
+                {Number(modifyInfo.notifHour) < 12 ? 'AM' : 'PM'}
               </div>
             ) : (
               <TimePicker hour={10} minute={0} />
