@@ -12,6 +12,7 @@ import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.problem.repository.ProblemRepository;
 import com.clover.recode.domain.problem.repository.TagRepository;
 import com.clover.recode.domain.problem.service.ProblemService;
+import com.clover.recode.domain.recode.service.RecodeService;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.global.result.error.ErrorCode;
 import com.clover.recode.global.result.error.exception.BusinessException;
@@ -32,6 +33,7 @@ public class ProblemServiceImpl implements ProblemService {
     private final CodeRepository codeRepository;
     private final TagRepository tagRepository;
 
+    private final RecodeService recodeService;
 
     @Override
     @Transactional
@@ -78,5 +80,7 @@ public class ProblemServiceImpl implements ProblemService {
             .build();
 
         codeRepository.save(code);
+
+        recodeService.saveRecode(code);
     }
 }
