@@ -33,7 +33,7 @@ public class StatisticsScheduler {
             for(Code code: codesToReview) {
                     TodayProblem todayProblem = TodayProblem.builder()
                             .isCompleted(false)
-                            .reviewCnt(code.getRecode().getSubmit_count())
+                            .reviewCnt(code.getRecode().getSubmitCount())
                             .code(code)
                             .name(code.getProblem().getTitle())
                             .date(today)
