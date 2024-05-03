@@ -17,7 +17,7 @@ const RecodeProgressBar = ({ total, cnt }: { total: number; cnt: number }) => {
           <div className={`bg-[#217FEE] w-2 h-2 rounded-full absolute right-0`} />
         </div>
       </div>
-      <span className="text-[12px] text-gray-700">
+      <span className="text-md text-gray-700">
         오늘 복습 문제 <span className="text-MAIN1">{total}</span>문제 중{' '}
         <span className="text-MAIN1">{cnt}</span>문제 완료
       </span>
