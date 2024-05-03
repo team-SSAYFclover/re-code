@@ -1,6 +1,4 @@
 package com.clover.recode.domain.problem.repository;
-
-import com.clover.recode.domain.problem.dto.CodeDTO;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.QCode;
 import com.clover.recode.domain.recode.entity.QRecode;
