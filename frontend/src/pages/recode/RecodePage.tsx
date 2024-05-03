@@ -42,7 +42,7 @@ const RecodePage = () => {
         </div>
         <RecodeList review={TodayReviewData} />
         <div className="h-20 flex justify-end items-center">
-          <button className="h-12 bg-MAIN1 text-MAIN2 px-4 font-semibold rounded-md hover:bg-[#2CD8AE]">
+          <button className="h-10 bg-MAIN1 text-MAIN2 px-3 rounded-md hover:bg-[#2CD8AE]">
             처음부터 복습하기
           </button>
         </div>

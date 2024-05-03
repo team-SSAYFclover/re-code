@@ -11,12 +11,12 @@ const RecodeItem = ({ problemNo, problemTitle, count, solvedYn }: IRecodeItemPro
       onClick={() => navigate(`/recode/1`)}
     >
       <div className="flex justify-between">
-        <div className="text-sm font-semibold text-gray-500">BOJ {problemNo}</div>
+        <div className="text-sm text-gray-500">BOJ {problemNo}</div>
         <div className="w-fit p-1 bg-MAIN2 text-MAIN1 rounded-md text-sm text-center">
           {count}번째 복습
         </div>
       </div>
-      <div className="text-md font-semibold">{problemTitle}</div>
+      <div className="text-md">{problemTitle}</div>
     </div>
   );
 };
