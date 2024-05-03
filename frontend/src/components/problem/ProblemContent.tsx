@@ -60,7 +60,7 @@ const ProblemContent: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full pt-10 pe-10">
+    <div className="w-full h-full pt-10 pe-10 overflow-auto">
       {/* 상단 옵션버튼, 검색창 */}
       <div className="w-full flex justify-between">
         <button

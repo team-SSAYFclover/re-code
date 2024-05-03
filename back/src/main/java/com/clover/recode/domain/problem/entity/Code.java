@@ -1,5 +1,6 @@
 package com.clover.recode.domain.problem.entity;
 
+import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -38,6 +39,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @JoinColumn(name = "problem_id")
         @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         private Problem problem;
+
+        @JoinColumn(name = "recode_id")
+        @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        private Recode recode;
 
         @Column(unique = true, nullable = false)
         private Integer codeNo;
