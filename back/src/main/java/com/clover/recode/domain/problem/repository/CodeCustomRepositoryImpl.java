@@ -28,7 +28,7 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
                 .join(code.recode, recode)
                 .where(code.deleted.eq(false),
                     code.reviewStatus.eq(true),
-                    recode.review_time.before(today.plusDays(1)))
+                    recode.reviewTime.before(today.atStartOfDay().plusDays(1)))
                 .fetch();
 
     }
