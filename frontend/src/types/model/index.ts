@@ -13,3 +13,12 @@ export interface ISettingInfo {
   notificationStatus: boolean;
   notificationTime: string;
 }
+
+// 문제 정보
+export interface IProblemInfo {
+  problemId: number;
+  codeId: number;
+  name: string;
+  reviewCnt: number;
+  completed: boolean;
+}
