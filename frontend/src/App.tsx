@@ -3,10 +3,14 @@ import ErrorPage from '@/pages/error/ErrorPage';
 import GuidePage from '@/pages/guide/GuidePage';
 import HomePage from '@/pages/home/HomePage';
 import ProblemPage from '@/pages/problem/ProblemPage';
+import ProblemDetailPage from '@/pages/problem/ProblemDetailPage';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProblemLayout from './components/@common/ProblemLayout';
+import RecodeLayout from './components/@common/RecodeLayout';
 import PrivateRoute from './pages/private/PrivateRoute';
+import RecodeDetailPage from './pages/recode/RecodeDetailPage';
 import RecodePage from './pages/recode/RecodePage';
 import RedirectPage from './pages/redirect/RedirectPage';
 
@@ -20,24 +24,44 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: 'problem',
-        element: (
-          <PrivateRoute>
-            <ProblemPage />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: 'recode',
-        element: (
-          <PrivateRoute>
-            <RecodePage />
-          </PrivateRoute>
-        ),
-      },
-      {
         path: 'guide',
         element: <GuidePage />,
+      },
+    ],
+  },
+  {
+    path: '/problem',
+    element: (
+      <PrivateRoute>
+        <ProblemLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: '',
+        element: <ProblemPage />,
+      },
+      {
+        path: ':problemNo',
+        element: <ProblemDetailPage />,
+      },
+    ],
+  },
+  {
+    path: '/recode',
+    element: (
+      <PrivateRoute>
+        <RecodeLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: '',
+        element: <RecodePage />,
+      },
+      {
+        path: ':recodeId',
+        element: <RecodeDetailPage />,
       },
     ],
   },

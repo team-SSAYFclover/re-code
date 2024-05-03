@@ -41,6 +41,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         private Problem problem;
 
+        @JoinColumn(name = "recode_id")
+        @OneToOne(mappedBy = "code", orphanRemoval = true, fetch = FetchType.LAZY)
+        private Recode recode;
+
         @Column(unique = true, nullable = false)
         private Integer codeNo;
 
@@ -60,9 +64,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @Column(updatable = false)
         private LocalDateTime createdTime;
         private LocalDateTime updatedTime;
-
-        @OneToOne(mappedBy = "code", orphanRemoval = true, fetch = FetchType.LAZY)
-        private Recode recode;
 
         @PrePersist
         public void prePersist() {
