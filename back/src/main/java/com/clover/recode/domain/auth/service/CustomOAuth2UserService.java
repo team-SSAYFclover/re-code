@@ -5,7 +5,9 @@ import com.clover.recode.domain.auth.dto.GithubRes;
 import com.clover.recode.domain.auth.dto.TokenRes;
 import com.clover.recode.domain.auth.dto.OAuth2Res;
 import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.entity.WeekReview;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
+import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.domain.user.repository.SettingRepository;
@@ -26,6 +28,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   private final UserRepository userRepository;
   private final SettingRepository settingRepository;
   private final StatisticsRepository statisticsRepository;
+  private final WeekReviewRepository weekReviewRepository;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -68,6 +71,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             .build();
 
     statisticsRepository.save(statistics);
+
+    WeekReview weekReview= WeekReview.builder()
+            .statistics(statistics)
+            .build();
+
+    weekReviewRepository.save(weekReview);
+
+
 
     return user;
   }
