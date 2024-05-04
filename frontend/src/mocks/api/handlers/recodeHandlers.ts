@@ -1,9 +1,15 @@
+import { getRecode, getTodayRecodeList } from '@/mocks/api/data/recode';
 import { HttpResponse, http } from 'msw';
-import { getUserRes } from '../data/user';
 
-export const userHandlers = [
+export const recodeHandlers = [
   http.get('/statistics/today/reviews', () => {
-    return HttpResponse.json(getUserRes, {
+    return HttpResponse.json(getTodayRecodeList, {
+      status: 200,
+    });
+  }),
+
+  http.get('/problems/recode/:codeId', () => {
+    return HttpResponse.json(getRecode, {
       status: 200,
     });
   }),
