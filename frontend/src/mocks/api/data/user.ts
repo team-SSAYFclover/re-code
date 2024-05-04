@@ -21,8 +21,3 @@ export const getUserRes: APIResponse<IGetUserInfoRes> = {
     },
   },
 };
-
-// export const getUserCodeRes: APIResponse<IGetUserCodeRes> = {
-//   status: 200,
-//   message:
-// }
