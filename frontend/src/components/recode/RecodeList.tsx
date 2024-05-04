@@ -1,16 +1,17 @@
-import { IRecodeItemProps } from '@/pages/recode/RecodePage';
+import { IProblemInfo } from '@/types/model';
 import RecodeItem from './RecodeItem';
 
-const RecodeList = ({ review }: { review: IRecodeItemProps[] }) => {
+const RecodeList = ({ review }: { review: IProblemInfo[] }) => {
   return (
-    <div className="h-[calc(100%-160px)] overflow-y-scroll overflow-x-hidden">
+    <div className="h-full overflow-y-scroll overflow-x-hidden">
       {review.map((item) => (
         <RecodeItem
-          key={item.problemNo}
-          problemNo={item.problemNo}
-          problemTitle={item.problemTitle}
-          count={item.count}
-          solvedYn={item.solvedYn}
+          key={item.problemId}
+          problemId={item.problemId}
+          codeId={item.codeId}
+          name={item.name}
+          reviewCnt={item.reviewCnt}
+          completed={item.completed}
         />
       ))}
     </div>
