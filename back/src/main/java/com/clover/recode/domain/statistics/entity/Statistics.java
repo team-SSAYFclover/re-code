@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @ToString
+@DynamicInsert
 public class Statistics {
 
     @Id
@@ -25,18 +27,18 @@ public class Statistics {
 
     @NotNull
     @ColumnDefault("100")
-    private int ranking;
+    private Integer ranking;
 
     @NotNull
     @ColumnDefault("1806")
-    private int supplementaryNo;
+    private Integer supplementaryNo;
 
     @ColumnDefault("2178")
-    private int randomNo;
+    private Integer randomNo;
 
     @NotNull
     @ColumnDefault("0")
-    private int sequence;
+    private Integer sequence;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
