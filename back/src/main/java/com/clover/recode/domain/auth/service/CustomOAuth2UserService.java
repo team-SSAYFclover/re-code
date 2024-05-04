@@ -4,6 +4,8 @@ import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.auth.dto.GithubRes;
 import com.clover.recode.domain.auth.dto.TokenRes;
 import com.clover.recode.domain.auth.dto.OAuth2Res;
+import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.domain.user.repository.SettingRepository;
@@ -23,6 +25,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
   private final UserRepository userRepository;
   private final SettingRepository settingRepository;
+  private final StatisticsRepository statisticsRepository;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -59,6 +62,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         .build();
 
     settingRepository.save(setting);
+
+    Statistics statistics= Statistics.builder()
+            .user(user)
+            .build();
+
+    statisticsRepository.save(statistics);
 
     return user;
   }
