@@ -23,6 +23,7 @@ public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "statistics_id")
     private Long id;
 
     @NotNull
