@@ -5,6 +5,7 @@ import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
+import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 @Slf4j
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private final UserRepository userRepository;
     private final StatisticsRepository statisticsRepository;
+    private final WeekReviewRepository weekReviewRepository;
 
 
     @Override
@@ -41,11 +42,11 @@ public class StatisticsServiceImpl implements StatisticsService {
             LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-            List<Integer> weekReviewList= statisticsRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
+            List<Integer> weekReviewList= weekReviewRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
             //List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
 
-            List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
+           // List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
 
         StatisticsListRes response = new StatisticsListRes();
         response.setSequence(statistics.getSequence());
@@ -54,7 +55,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
         response.setRandomQuestion(statistics.getRandomNo());
         //response.setTodayProblems(todayProblemList);
-        response.setAlgoReview(algoReviewList);
+       // response.setAlgoReview(algoReviewList);
 
         return response;
     }
@@ -68,7 +69,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         Statistics statistics = statisticsRepository.findById(userId)
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
-        return statisticsRepository.countByTodayWeview(statistics.getId(), LocalDate.now());
+        return weekReviewRepository.countByTodayWeview(statistics.getId(), LocalDate.now());
 
 
     }

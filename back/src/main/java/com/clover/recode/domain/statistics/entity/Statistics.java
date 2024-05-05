@@ -45,4 +45,7 @@ public class Statistics {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne(mappedBy = "statistics")
+    private AlgoReview algoReview;
+
 }
