@@ -4,14 +4,18 @@ import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.auth.dto.GithubRes;
 import com.clover.recode.domain.auth.dto.TokenRes;
 import com.clover.recode.domain.auth.dto.OAuth2Res;
+import com.clover.recode.domain.statistics.entity.AlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.entity.WeekReview;
+import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.domain.user.repository.SettingRepository;
 import com.clover.recode.domain.user.repository.UserRepository;
+
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -29,6 +33,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   private final SettingRepository settingRepository;
   private final StatisticsRepository statisticsRepository;
   private final WeekReviewRepository weekReviewRepository;
+  private final AlgoReviewRepository algoReviewRepository;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -74,11 +79,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     WeekReview weekReview= WeekReview.builder()
             .statistics(statistics)
+            .date(LocalDate.now())
             .build();
 
     weekReviewRepository.save(weekReview);
 
+    AlgoReview algoReview= AlgoReview.builder()
+            .id(statistics.getId())
+            .statistics(statistics)
+            .build();
 
+    algoReviewRepository.save(algoReview);
 
     return user;
   }

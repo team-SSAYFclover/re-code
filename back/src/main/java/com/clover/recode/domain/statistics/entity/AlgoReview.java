@@ -17,38 +17,37 @@ import org.hibernate.annotations.DynamicInsert;
 public class AlgoReview {
 
     @Id
+    @Column(name = "statistics_id")
     private Long id;
 
-    private Integer count;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "statistics_id")
     private Statistics statistics;
 
     @ColumnDefault("0")
-    private Integer count1;
+    private Integer mathCnt;
 
     @ColumnDefault("0")
-    private Integer count2;
+    private Integer implementationCnt;
 
     @ColumnDefault("0")
-    private Integer count3;
+    private Integer greedyCnt;
 
     @ColumnDefault("0")
-    private Integer count4;
+    private Integer stringCnt;
 
     @ColumnDefault("0")
-    private Integer count5;
+    private Integer data_structuresCnt;
 
     @ColumnDefault("0")
-    private Integer count6;
+    private Integer graphsCnt;
 
     @ColumnDefault("0")
-    private Integer count7;
+    private Integer dpCnt;
 
     @ColumnDefault("0")
-    private Integer count8;
+    private Integer geometryCnt;
 
 
 
