@@ -43,7 +43,7 @@ export const getTodayRecodeList: APIResponse<IGetTodayRecodeListRes> = {
       },
       {
         problemId: 1197,
-        codeId: 13,
+        codeId: 133,
         name: '최소 스패닝 트리',
         reviewCnt: 3,
         completed: false,
