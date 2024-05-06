@@ -3,6 +3,7 @@ package com.clover.recode.domain.user.service;
 import static com.clover.recode.global.result.error.ErrorCode.*;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
+import com.clover.recode.domain.auth.dto.OAuth2Res;
 import com.clover.recode.domain.user.dto.idRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final SettingRepository settingRepository;
   private final JWTUtil jwtUtil;
+
 
   @Override
   public UserRes getUserInfo(Authentication authentication) {
@@ -120,4 +122,39 @@ public class UserServiceImpl implements UserService {
 
     return cookie;
   }
+
+  @Transactional
+  public User registerUser(OAuth2Res oAuth2Response) {
+
+    User user = userRepository.findByGithubId(Long.parseLong(oAuth2Response.getProviderId()));
+    if(user == null) {
+      user = createUser(oAuth2Response);
+    } else {
+      user.setName(oAuth2Response.getName());
+      userRepository.save(user);
+    }
+
+    return user;
+  }
+
+  private User createUser(OAuth2Res oAuth2Response) {
+    User user = User.builder()
+        .githubId(Long.parseLong(oAuth2Response.getProviderId()))
+        .avatarUrl(oAuth2Response.getAvatarUrl())
+        .name(oAuth2Response.getName())
+        .uuid(UUID.randomUUID().toString())
+        .build();
+
+    userRepository.save(user);
+
+    Setting setting = Setting.builder()
+        .user(user)
+        .build();
+
+    settingRepository.save(setting);
+
+    return user;
+  }
+
+
 }
