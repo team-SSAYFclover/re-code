@@ -57,7 +57,8 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-
+    //Firebase Admin 자바 SDK
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
 }
 
 

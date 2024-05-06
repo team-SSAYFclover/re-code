@@ -37,3 +37,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### FCM KEY ###
+src/main/resources/firebase/**
