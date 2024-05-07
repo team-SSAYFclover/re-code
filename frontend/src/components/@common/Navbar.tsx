@@ -40,7 +40,7 @@ const Navbar = () => {
 
   if (currentPath.includes('recode')) {
     return (
-      <nav className="w-16 h-full shadow-lg relative">
+      <nav className="w-16 h-full min-w-[64px] shadow-lg relative">
         <div className="flex justify-center items-center h-20"></div>
         <div className="py-4">
           {navInfo.map((nav, idx) => {
