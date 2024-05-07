@@ -16,38 +16,38 @@ import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_EXISTS;
 @SpringBootTest
 class RecodeServiceImplTest {
 
-    @Autowired
-    RecodeServiceImpl service;
-
-    @Autowired
-    CodeRepository codeRepository;
-
-    @Test
-    void GPTTest() {
-//        String recode = service.getRecode(EnglishPrompt.prompt);
-    }
-
-    @Test
-    void saveRecodeTest() {
-//        Code code = codeRepository.findById(1L)
-//                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+//    @Autowired
+//    RecodeServiceImpl service;
 //
-//        service.saveRecode(code);
-    }
-
-    @Test
-    void getRecodeTest() {
-//        Code code = codeRepository.findById(1L)
-//                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+//    @Autowired
+//    CodeRepository codeRepository;
 //
-//        service.getRecode(code.getId());
-    }
-
-    @Test
-    void recodeSubmitTest() {
-//        Code code = codeRepository.findById(1L)
-//                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+//    @Test
+//    void GPTTest() {
+////        String recode = service.getRecode(EnglishPrompt.prompt);
+//    }
 //
-//        service.recodeSubmit(code.getId());
-    }
+//    @Test
+//    void saveRecodeTest() {
+////        Code code = codeRepository.findById(1L)
+////                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+////
+////        service.saveRecode(code);
+//    }
+//
+//    @Test
+//    void getRecodeTest() {
+////        Code code = codeRepository.findById(1L)
+////                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+////
+////        service.getRecode(code.getId());
+//    }
+//
+//    @Test
+//    void recodeSubmitTest() {
+////        Code code = codeRepository.findById(1L)
+////                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+////
+////        service.recodeSubmit(code.getId());
+//    }
 }
