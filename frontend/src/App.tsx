@@ -13,6 +13,9 @@ import PrivateRoute from './pages/private/PrivateRoute';
 import RecodeDetailPage from './pages/recode/RecodeDetailPage';
 import RecodePage from './pages/recode/RecodePage';
 import RedirectPage from './pages/redirect/RedirectPage';
+import { requestPermission } from '@/utils/firebaseMessageSW.ts';
+import { useEffect } from 'react';
+import userStore from './stores/userStore';
 
 const router = createBrowserRouter([
   {
@@ -76,6 +79,12 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const { isLogin } = userStore();
+
+  useEffect(() => {
+    if (isLogin) requestPermission();
+  }, []);
+
   return (
     <>
       <RouterProvider router={router} />
