@@ -1,9 +1,9 @@
-import { IGetProblemRes } from '@/pages/recode/RecodeDetailPage';
+import { IGetRecodeRes } from '@/types/recode';
 import { Resizable } from 're-resizable';
 import MarkdownParser from './MarkdownParser';
 import RecodeSolveBox from './RecodeSolveBox';
 
-const RecodeSolveContent = ({ recode }: { recode: IGetProblemRes }) => {
+const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
   return (
     <div className="w-full h-[calc(100vh-120px)] flex">
       <Resizable
@@ -31,7 +31,7 @@ const RecodeSolveContent = ({ recode }: { recode: IGetProblemRes }) => {
         }}
       >
         <div className="w-full h-full p-4 overflow-y-scroll">
-          <MarkdownParser markdown={recode.content} />
+          <MarkdownParser markdown={recode.problem.content} />
         </div>
       </Resizable>
       <div className="flex-1 p-4 ml-[15px] overflow-y-scroll">

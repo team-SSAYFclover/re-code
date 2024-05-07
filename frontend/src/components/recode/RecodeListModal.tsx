@@ -1,22 +1,25 @@
 import clover from '@/assets/clover.png';
 import RecodeList from '@/components/recode/RecodeList';
-import { IRecodeItemProps } from '@/pages/recode/RecodePage';
+import { useRecode } from '@/hooks/recode/useRecode';
 import Modal from '../@common/Modal';
+import Progressbar from '../@common/Progressbar';
 
 const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
-  const TodayReviewData: IRecodeItemProps[] = [
-    { problemNo: 3302, problemTitle: 'Job Scheduling', count: 2, solvedYn: true },
-    { problemNo: 11779, problemTitle: '최소비용 구하기 2', count: 1, solvedYn: false },
-    { problemNo: 1486, problemTitle: '등산', count: 1, solvedYn: true },
-    { problemNo: 1261, problemTitle: '알고스팟', count: 2, solvedYn: false },
-    { problemNo: 11559, problemTitle: 'Puyo Puyo', count: 2, solvedYn: false },
-    { problemNo: 1197, problemTitle: '최소 스패닝 트리', count: 3, solvedYn: false },
-    { problemNo: 17471, problemTitle: '게리맨더링', count: 1, solvedYn: false },
-  ];
+  const { useGetTodayRecodeList } = useRecode();
+  const { data, isLoading } = useGetTodayRecodeList();
 
+  if (isLoading) {
+    return <div>로딩 중</div>;
+  }
+
+  if (!data) {
+    return <div>데이터 없음</div>;
+  }
   const solvedCnt = () => {
-    return TodayReviewData.filter((x) => x.solvedYn).length;
+    return data.filter((x) => x.completed).length;
   };
+
+  const percentage: number = (solvedCnt() / data.length) * 100;
 
   return (
     <Modal width="w-1/2" height="h-2/3" onClose={onClose}>
@@ -29,11 +32,20 @@ const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
             <div className="text-xl font-semibold">오늘의 복습 리스트</div>
             <div className="text-sm">문제를 눌러 복습을 시작해보아요.</div>
           </div>
-          <div className="w-[50px] text-md">
-            {solvedCnt()} / {TodayReviewData.length}
+          <div className="w-[180px] text-right">
+            <div className=" pr-1 text-md text-right text-gray-500">
+              <span className="text-MAIN1">{data.length}</span>문제 중&nbsp;
+              <span className="text-MAIN1">{solvedCnt()}</span>문제 복습 완료
+            </div>
+            <div className="flex justify-center items-center">
+              <Progressbar percentage={percentage} height="h-2" roundWidth="w-2" />
+              <span className="text-sm text-[#51A1FF]">&nbsp;{Math.floor(percentage)}%&nbsp;</span>
+            </div>
           </div>
         </div>
-        <RecodeList review={TodayReviewData} />
+        <div className="h-[calc(100%-108px)]">
+          <RecodeList review={data} />
+        </div>
       </div>
     </Modal>
   );

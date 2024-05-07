@@ -2,8 +2,8 @@ import Layout from '@/components/@common/Layout';
 import ErrorPage from '@/pages/error/ErrorPage';
 import GuidePage from '@/pages/guide/GuidePage';
 import HomePage from '@/pages/home/HomePage';
-import ProblemPage from '@/pages/problem/ProblemPage';
 import ProblemDetailPage from '@/pages/problem/ProblemDetailPage';
+import ProblemPage from '@/pages/problem/ProblemPage';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
         element: <RecodePage />,
       },
       {
-        path: ':recodeId',
+        path: ':codeId',
         element: <RecodeDetailPage />,
       },
     ],
