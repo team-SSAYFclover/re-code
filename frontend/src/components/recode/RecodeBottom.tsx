@@ -1,7 +1,7 @@
-import { IGetProblemRes } from '@/pages/recode/RecodeDetailPage';
+import { IGetRecodeRes } from '@/types/recode';
 import RecodeProgressBar from './RecodeProgressBar';
 
-const RecodeBottom = ({ recode }: { recode: IGetProblemRes }) => {
+const RecodeBottom = ({ recode }: { recode: IGetRecodeRes }) => {
   console.log(recode);
   const btnCommonClass = 'px-3 py-2 rounded-md text-sm shadow-md font-semibold';
 

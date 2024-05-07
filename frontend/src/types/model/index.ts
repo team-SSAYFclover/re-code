@@ -13,3 +13,24 @@ export interface ISettingInfo {
   notificationStatus: boolean;
   notificationTime: string;
 }
+
+// 문제 정보
+export interface IProblemInfo {
+  problemId: number;
+  codeId: number;
+  name: string;
+  reviewCnt: number;
+  completed: boolean;
+}
+
+// 레코드 조회 시 주는 문제 정보
+export interface IRecodeProblemInfo {
+  problemId: number;
+  codeId: number;
+  name: string;
+  reviewCnt: number;
+  completed: boolean;
+  level: number;
+  tags: string[];
+  content: string;
+}
