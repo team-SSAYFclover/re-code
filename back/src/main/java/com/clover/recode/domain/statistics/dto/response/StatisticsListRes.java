@@ -23,6 +23,6 @@ public class StatisticsListRes {
 
     private int randomQuestion;
 
-    private List<Integer> algoReview;
+    private AlgoReviewRes algoReview;
 
 }
