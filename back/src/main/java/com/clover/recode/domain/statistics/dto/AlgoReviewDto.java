@@ -1,13 +1,13 @@
 package com.clover.recode.domain.statistics.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AlgoReviewDto {
 
     private int math;

@@ -1,10 +1,13 @@
 package com.clover.recode.domain.statistics.service;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
+import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
 import com.clover.recode.domain.statistics.dto.TodayProblemDto;
 import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
+import com.clover.recode.domain.statistics.entity.AlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
@@ -18,6 +21,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
@@ -28,6 +32,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private final StatisticsRepository statisticsRepository;
     private final WeekReviewRepository weekReviewRepository;
+    private final AlgoReviewRepository algoReviewRepository;
 
     @Override
     @Transactional
@@ -55,16 +60,27 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             //List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
 
-           // List<Integer> algoReviewList = statisticsRepository.findAlgoReviewList(statistics.getId());
+        AlgoReview algoReview = algoReviewRepository.findById(statistics.getId()).orElseThrow();
+        AlgoReviewDto algoReviewDto= AlgoReviewDto.builder()
+                .math(algoReview.getMathCnt())
+                .implementation(algoReview.getImplementationCnt())
+                .greedy(algoReview.getGreedyCnt())
+                .string(algoReview.getStringCnt())
+                .data_structures(algoReview.getData_structuresCnt())
+                .graphs(algoReview.getGraphsCnt())
+                .dp(algoReview.getDpCnt())
+                .geometry(algoReview.getGeometryCnt())
+                .build();
 
-        StatisticsListRes response = new StatisticsListRes();
-        response.setSequence(statistics.getSequence());
-        response.setRanking(statistics.getRanking());
-        response.setWeekReviews(weekReviewDto);
-        response.setSupplementaryQuestion(statistics.getSupplementaryNo());
-        response.setRandomQuestion(statistics.getRandomNo());
-        //response.setTodayProblems(todayProblemList);
-       // response.setAlgoReview(algoReviewList);
+
+        StatisticsListRes response = StatisticsListRes.builder()
+                .sequence(statistics.getSequence())
+                .ranking(statistics.getRanking())
+                .weekReviews(weekReviewDto)
+                .supplementaryQuestion(statistics.getSupplementaryNo())
+                .randomQuestion(statistics.getRandomNo())
+                .algoReview(algoReviewDto)
+                .build();
 
         return response;
     }

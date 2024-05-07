@@ -24,7 +24,6 @@ public class AlgoReview {
     @JoinColumn(name = "statistics_id")
     private Statistics statistics;
 
-
     private int mathCnt;
 
     private int implementationCnt;
