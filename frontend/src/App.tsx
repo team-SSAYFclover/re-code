@@ -7,6 +7,7 @@ import ProblemPage from '@/pages/problem/ProblemPage';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-tooltip/dist/react-tooltip.css';
 import ProblemLayout from './components/@common/ProblemLayout';
 import RecodeLayout from './components/@common/RecodeLayout';
 import PrivateRoute from './pages/private/PrivateRoute';
