@@ -3,14 +3,14 @@ package com.clover.recode.domain.statistics.dto.response;
 import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
 import com.clover.recode.domain.statistics.dto.TodayProblemDto;
 import com.clover.recode.domain.statistics.dto.WeekReviewDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class StatisticsListRes {
 
