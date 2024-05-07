@@ -14,8 +14,9 @@ import java.io.IOException;
 @Configuration
 @Slf4j
 public class FirebaseConfig {
+
     @Value("${firebase.config-path}")
-    private static String FIREBASE_CONFIG_PATH;
+    private String FIREBASE_CONFIG_PATH;
     // json파일을 찾아서 맞는 정보인지 확인한 후 FirebaseApp.initializeApp()을 통해서 실행
     // 서버 실행 시, 단 한번 실행되어야 하므로 PostConstruct 어노테이션 필요
     @PostConstruct
