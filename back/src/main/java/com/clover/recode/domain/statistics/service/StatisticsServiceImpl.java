@@ -7,12 +7,10 @@ import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
-import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
-import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
@@ -66,6 +64,21 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             List<TodayProblemDto> todayProblem = todayProblemRepository.findByUserId(customUserDetails.getId());
 
+            // 문제 제목별로 카운팅하기 위한 맵
+            Map<String, Integer> titleCount = new HashMap<>();
+
+                todayProblem.forEach(dto -> {
+                String originalTitle = dto.getTitle();
+                int count = titleCount.getOrDefault(originalTitle, 0) + 1;
+                titleCount.put(originalTitle, count); // 제목별로 카운트 증가
+
+                // 첫 번째 아이템이 아니라면 제목 뒤에 (count)를 붙임
+                if (count > 1) {
+                    String newTitle = originalTitle + "(" + count + ")";
+                    dto.setTitle(newTitle);
+                }
+            });
+
 
         AlgoReview algoReview = algoReviewRepository.findById(statistics.getId()).orElseThrow();
         AlgoReviewDto algoReviewDto= AlgoReviewDto.builder()
@@ -102,7 +115,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         Statistics statistics = statisticsRepository.findById(customUserDetails.getId())
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
-        return weekReviewRepository.countByTodayWeview(statistics.getId(), LocalDate.now());
+        return weekReviewRepository.countByTodayReview(statistics.getId(), LocalDate.now());
 
 
     }
