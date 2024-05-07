@@ -1,4 +1,4 @@
-package com.clover.recode.domain.statistics.dto.response;
+package com.clover.recode.domain.statistics.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Getter
 @NoArgsConstructor
-public class AlgoReviewRes {
+public class AlgoReviewDto {
 
     private Integer math;
 

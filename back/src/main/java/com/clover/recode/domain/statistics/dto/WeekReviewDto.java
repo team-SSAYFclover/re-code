@@ -1,6 +1,6 @@
-package com.clover.recode.domain.statistics.dto.response;
+package com.clover.recode.domain.statistics.dto;
 
-public class WeekReviewRes {
+public class WeekReviewDto {
 
     int mon;
 

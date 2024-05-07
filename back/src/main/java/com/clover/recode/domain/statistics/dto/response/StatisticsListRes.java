@@ -1,5 +1,8 @@
 package com.clover.recode.domain.statistics.dto.response;
 
+import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
+import com.clover.recode.domain.statistics.dto.TodayProblemDto;
+import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,14 +18,14 @@ public class StatisticsListRes {
 
     private int ranking;
 
-    private List<Integer> weekReviews;
+    private List<WeekReviewDto> weekReviews;
 
-    private List<TodayProblemRes> todayProblems;
+    private List<TodayProblemDto> todayProblems;
 
     private int supplementaryQuestion;
 
     private int randomQuestion;
 
-    private AlgoReviewRes algoReview;
+    private AlgoReviewDto algoReview;
 
 }
