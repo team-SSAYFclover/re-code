@@ -10,19 +10,19 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 public class AlgoReviewDto {
 
-    private Integer math;
+    private int math;
 
-    private Integer implementation;
+    private int implementation;
 
-    private Integer greedy;
+    private int greedy;
 
-    private Integer string;
+    private int string;
 
-    private Integer data_structures;
+    private int data_structures;
 
-    private Integer graphs;
+    private int graphs;
 
-    private Integer dp;
+    private int dp;
 
-    private Integer geometry;
+    private int geometry;
 }

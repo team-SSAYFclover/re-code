@@ -18,7 +18,7 @@ public class StatisticsListRes {
 
     private int ranking;
 
-    private List<WeekReviewDto> weekReviews;
+    private WeekReviewDto weekReviews;
 
     private List<TodayProblemDto> todayProblems;
 
