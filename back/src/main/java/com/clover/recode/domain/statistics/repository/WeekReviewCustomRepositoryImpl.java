@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class WeekReviewRepositoryImpl implements WeekReviewRepository{
+public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
 

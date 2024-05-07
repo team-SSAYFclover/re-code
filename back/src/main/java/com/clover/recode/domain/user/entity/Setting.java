@@ -43,6 +43,7 @@ public class Setting {
   @ColumnDefault("1")
   private Integer difficulty;
 
+
   @ColumnDefault("true")
   private Boolean notificationStatus;
 
