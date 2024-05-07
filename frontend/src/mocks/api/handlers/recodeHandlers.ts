@@ -1,4 +1,4 @@
-import { getRecode, getTodayRecodeList } from '@/mocks/api/data/recode';
+import { completeRecode, getRecode, getTodayRecodeList } from '@/mocks/api/data/recode';
 import { HttpResponse, http } from 'msw';
 
 export const recodeHandlers = [
@@ -11,6 +11,12 @@ export const recodeHandlers = [
   http.get('/problems/recode/:codeId', () => {
     return HttpResponse.json(getRecode, {
       status: 200,
+    });
+  }),
+
+  http.put('/problems/recode/:codeId', () => {
+    return HttpResponse.json(completeRecode, {
+      status: 201,
     });
   }),
 ];

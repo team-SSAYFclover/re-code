@@ -1,5 +1,6 @@
-import { getRecode, getTodayRecodeList } from '@/services/recode';
-import { useQuery } from '@tanstack/react-query';
+import Toast from '@/components/@common/Toast';
+import { completeRecode, getRecode, getTodayRecodeList } from '@/services/recode';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useRecode = () => {
   const useGetTodayRecodeList = () => {
@@ -18,5 +19,17 @@ export const useRecode = () => {
     });
   };
 
-  return { useGetTodayRecodeList, useGetRecode };
+  const usePutRecode = (codeId: string) => {
+    return useMutation({
+      mutationFn: () => completeRecode(codeId),
+      onSuccess: () => {
+        Toast.success('복습을 완료했습니다.');
+      },
+      onError: () => {
+        Toast.error('복습을 완료하지 못했습니다.');
+      },
+    });
+  };
+
+  return { useGetTodayRecodeList, useGetRecode, usePutRecode };
 };
