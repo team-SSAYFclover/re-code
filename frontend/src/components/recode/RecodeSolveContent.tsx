@@ -15,15 +15,21 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
   const specialChar = '‽▢'; // 특수 문자 설정
   const codeParts = recode.recode.split(specialChar);
   const [inputs, setInputs] = useState<string[]>(Array(codeParts.length - 1).fill('')); // 빈칸 배열
+  const [isCorrect, setIsCorrect] = useState<boolean[]>(
+    Array.from({ length: recode.answers.length }, () => false)
+  );
 
   const completedCnt = todayRecodes.filter((x) => x.completed).length;
 
-  const handleInputChange = (index: number, value: string) => {
-    setInputs(inputs.map((input, i) => (i === index ? value : input)));
-  };
-
   const resetInput = () => {
-    setInputs(inputs.map(() => ''));
+    setInputs(
+      inputs.map((input, idx) => {
+        if (isCorrect[idx]) {
+          return input;
+        }
+        return '';
+      })
+    );
   };
 
   const completeRepeat = () => {
@@ -93,8 +99,10 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
           <RecodeSolveBox
             inputs={inputs}
             codeParts={codeParts}
-            handleInputChange={handleInputChange}
+            setInputs={setInputs}
             answer={recode.answers}
+            isCorrect={isCorrect}
+            setIsCorrect={setIsCorrect}
           />
         </div>
       </div>
