@@ -17,6 +17,7 @@ export default {
         wiggle: 'wiggle 7s ease-in-out infinite',
         modalOpen: 'FadeIn 0.3s ease-in-out',
         modalClose: 'FadeOut 0.3s ease-in-out',
+        shake: 'shake 0.2s ease-in-out',
       },
       keyframes: {
         wiggle: {
@@ -30,6 +31,11 @@ export default {
         FadeOut: {
           from: { opacity: 1, transform: 'translate(-50%, -50%)' },
           to: { opacity: 0, transform: 'translate(-50%, -40%)' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-3px)' },
+          '75%': { transform: 'translateX(3px)' },
         },
       },
     },
