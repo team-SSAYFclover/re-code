@@ -1,4 +1,4 @@
-package com.clover.recode.domain.statistics.dto.response;
+package com.clover.recode.domain.statistics.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodayProblemRes {
+public class TodayProblemDto {
 
     private Long problemId;
 

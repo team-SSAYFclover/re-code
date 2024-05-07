@@ -1,5 +1,7 @@
 package com.clover.recode.domain.statistics.repository;
 
+import com.clover.recode.domain.statistics.dto.WeekReviewDto;
+
 import java.time.LocalDate;
 import java.util.List;
 
