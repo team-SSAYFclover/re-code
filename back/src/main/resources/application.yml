@@ -69,3 +69,6 @@ springdoc: #swagger
       enabled: true
   cache:
     disabled: true
+
+firebase:
+  config-path: ${FIREBASE_CONFIG_PATH}

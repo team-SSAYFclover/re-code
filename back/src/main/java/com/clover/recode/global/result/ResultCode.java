@@ -24,7 +24,16 @@ public enum ResultCode {
 
     //Recode
     GET_Recode_SUCCESS(200, "레코드를 가져오는데 성공했습니다."),
-    PUT_Recode_SUCCESS(201, "레코드 푼 횟수를 추가하는데 성공했습니다.");
+    PUT_Recode_SUCCESS(201, "레코드 푼 횟수를 추가하는데 성공했습니다."),
+
+
+    //FCM token
+    REGIST_FCM_TOKEN_SUCCESS(201, "FCM 토큰 등록에 성공했습니다."),
+
+    //사용자 문제 조회
+    USER_PROBLEM_SUCCESS(200, "사용자별 문제 조회에 성공했습니다.");
+
+
 
     private final int status;
     private final String message;
