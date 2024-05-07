@@ -10,8 +10,15 @@ import java.sql.Time;
 import java.util.List;
 public interface SettingRepository extends JpaRepository<Setting, Long> {
 
+    //JPQL
     @EntityGraph(attributePaths = {"user"})
     @Query("select s from Setting s where s.notificationStatus = true and s.notificationTime = :notificationTime")
     List<Setting> findSettingsByNotificationTime(@Param("notificationTime") Time notificationTime);
+
+    //쿼리 메서드
+//    List<Setting> findByNotificationTimeAndNotificationStatusIsTrue(Time notificationTime);
+
+
+
 
 }
