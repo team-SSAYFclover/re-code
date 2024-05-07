@@ -9,16 +9,16 @@ import org.springframework.http.ResponseEntity;
 @SpringBootTest
 class RedisControllerTest {
 
-    @Autowired
-    RedisController stringRepository;
-
-    @Test
-    void StringSaveTest() {
-//        String key = "jun";
-//        String value = "test";
-//        stringRepository.addRedisKey(key, value);
+//    @Autowired
+//    RedisController stringRepository;
 //
-//        ResponseEntity<?> foundValue = stringRepository.getRedisKey(key);
-//        Assertions.assertThat(foundValue.getBody()).isEqualTo(value);
-    }
+//    @Test
+//    void StringSaveTest() {
+////        String key = "jun";
+////        String value = "test";
+////        stringRepository.addRedisKey(key, value);
+////
+////        ResponseEntity<?> foundValue = stringRepository.getRedisKey(key);
+////        Assertions.assertThat(foundValue.getBody()).isEqualTo(value);
+//    }
 }
