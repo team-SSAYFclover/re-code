@@ -25,29 +25,21 @@ public class AlgoReview {
     private Statistics statistics;
 
 
-    @ColumnDefault("0")
-    private Integer mathCnt;
+    private int mathCnt;
 
-    @ColumnDefault("0")
-    private Integer implementationCnt;
+    private int implementationCnt;
 
-    @ColumnDefault("0")
-    private Integer greedyCnt;
+    private int greedyCnt;
 
-    @ColumnDefault("0")
-    private Integer stringCnt;
+    private int stringCnt;
 
-    @ColumnDefault("0")
-    private Integer data_structuresCnt;
+    private int data_structuresCnt;
 
-    @ColumnDefault("0")
-    private Integer graphsCnt;
+    private int graphsCnt;
 
-    @ColumnDefault("0")
-    private Integer dpCnt;
+    private int dpCnt;
 
-    @ColumnDefault("0")
-    private Integer geometryCnt;
+    private int geometryCnt;
 
 
 
