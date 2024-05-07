@@ -1,8 +1,9 @@
 package com.clover.recode.domain.statistics.service;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
+import com.clover.recode.domain.statistics.dto.TodayProblemDto;
+import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
-import com.clover.recode.domain.statistics.dto.response.TodayProblemRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
@@ -32,17 +33,17 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     @Transactional
-    public StatisticsListRes getStatisticsList(Long userId, Authentication authentication) {
+    public StatisticsListRes getStatisticsList(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        Statistics statistics = statisticsRepository.findById(userId)
+        Statistics statistics = statisticsRepository.findById(customUserDetails.getId())
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
             LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-            List<Integer> weekReviewList= weekReviewRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
+            WeekReviewDto weekReviewList= weekReviewRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
 
             //List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
 
@@ -51,7 +52,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         StatisticsListRes response = new StatisticsListRes();
         response.setSequence(statistics.getSequence());
         response.setRanking(statistics.getRanking());
-        response.setWeekReviews(weekReviewList);
+        //response.setWeekReviews(weekReviewList);
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
         response.setRandomQuestion(statistics.getRandomNo());
         //response.setTodayProblems(todayProblemList);
@@ -61,12 +62,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Integer getReviewCnt(Long userId, Authentication authentication) {
+    public Integer getReviewCnt(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
 
-        Statistics statistics = statisticsRepository.findById(userId)
+        Statistics statistics = statisticsRepository.findById(customUserDetails.getId())
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
         return weekReviewRepository.countByTodayWeview(statistics.getId(), LocalDate.now());
@@ -75,7 +76,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<TodayProblemRes> getReviews(Long userId, Authentication authentication) {
+    public List<TodayProblemDto> getReviews(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
