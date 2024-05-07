@@ -7,9 +7,12 @@ import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
+import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
+import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +37,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final StatisticsRepository statisticsRepository;
     private final WeekReviewRepository weekReviewRepository;
     private final AlgoReviewRepository algoReviewRepository;
+    private final TodayProblemRepository todayProblemRepository;
+
 
     @Override
     @Transactional
@@ -58,7 +64,8 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .sun(weekReviewList.get(6))
                 .build();
 
-            //List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
+            List<TodayProblemDto> todayProblem = todayProblemRepository.findByUserId(customUserDetails.getId());
+
 
         AlgoReview algoReview = algoReviewRepository.findById(statistics.getId()).orElseThrow();
         AlgoReviewDto algoReviewDto= AlgoReviewDto.builder()
@@ -80,6 +87,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .supplementaryQuestion(statistics.getSupplementaryNo())
                 .randomQuestion(statistics.getRandomNo())
                 .algoReview(algoReviewDto)
+                .todayProblems(todayProblem)
                 .build();
 
         return response;
@@ -103,7 +111,6 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List<TodayProblemDto> getReviews(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
-
 
         return null;
         //return todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
