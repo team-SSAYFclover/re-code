@@ -7,7 +7,6 @@ import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
-import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,6 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final StatisticsRepository statisticsRepository;
     private final WeekReviewRepository weekReviewRepository;
 
-
     @Override
     @Transactional
     public StatisticsListRes getStatisticsList(Authentication authentication) {
@@ -43,7 +41,17 @@ public class StatisticsServiceImpl implements StatisticsService {
             LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
             LocalDate endOfWeek = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-            WeekReviewDto weekReviewList= weekReviewRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
+        List<Integer> weekReviewList= weekReviewRepository.findReviewsBetweenDates(startOfWeek, endOfWeek, statistics.getId());
+
+        WeekReviewDto weekReviewDto= WeekReviewDto.builder()
+                .mon(weekReviewList.get(0))
+                .tue(weekReviewList.get(1))
+                .wed(weekReviewList.get(2))
+                .thu(weekReviewList.get(3))
+                .fri(weekReviewList.get(4))
+                .sat(weekReviewList.get(5))
+                .sun(weekReviewList.get(6))
+                .build();
 
             //List<TodayProblemRes> todayProblemList = todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
 
@@ -52,7 +60,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         StatisticsListRes response = new StatisticsListRes();
         response.setSequence(statistics.getSequence());
         response.setRanking(statistics.getRanking());
-        //response.setWeekReviews(weekReviewList);
+        response.setWeekReviews(weekReviewDto);
         response.setSupplementaryQuestion(statistics.getSupplementaryNo());
         response.setRandomQuestion(statistics.getRandomNo());
         //response.setTodayProblems(todayProblemList);
