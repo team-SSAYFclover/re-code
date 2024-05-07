@@ -1,6 +1,7 @@
 package com.clover.recode.domain.statistics.entity;
 
 import com.clover.recode.domain.problem.entity.Code;
+import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +24,6 @@ public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "statistics_id")
     private Long id;
 
     @NotNull
@@ -44,8 +44,5 @@ public class Statistics {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToOne(mappedBy = "statistics")
-    private AlgoReview algoReview;
 
 }

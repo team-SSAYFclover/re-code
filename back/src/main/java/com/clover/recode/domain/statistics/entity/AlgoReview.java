@@ -17,13 +17,13 @@ import org.hibernate.annotations.DynamicInsert;
 public class AlgoReview {
 
     @Id
-    @Column(name = "statistics_id")
-    private Long id;
+    private Long statisticsId;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "statistics_id")
     private Statistics statistics;
+
 
     @ColumnDefault("0")
     private Integer mathCnt;

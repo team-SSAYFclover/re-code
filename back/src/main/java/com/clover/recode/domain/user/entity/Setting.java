@@ -40,16 +40,13 @@ public class Setting {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @Column(nullable = false)
   @ColumnDefault("1")
   private Integer difficulty;
 
 
-  @Column(nullable = false)
   @ColumnDefault("true")
   private Boolean notificationStatus;
 
-  @Column(nullable = false)
   @ColumnDefault("150000")
   private Time notificationTime;
 
