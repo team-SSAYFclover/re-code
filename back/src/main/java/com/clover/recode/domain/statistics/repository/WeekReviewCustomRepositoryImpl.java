@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.repository;
 
+import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import com.clover.recode.domain.statistics.entity.QWeekReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -17,27 +18,29 @@ public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepositor
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Integer> findReviewsBetweenDates(LocalDate mon, LocalDate sun, Long statisticsId) {
-        QWeekReview weeklyReview = QWeekReview.weekReview;
-        return jpaQueryFactory
-                .select(weeklyReview.count)
-                .from(weeklyReview)
-                .where(weeklyReview.statistics.id.eq(statisticsId))
-                .where(weeklyReview.date.between(mon, sun))
-                .orderBy(weeklyReview.date.asc()) // 날짜 순으로 오름차순 정렬
-                .fetch();
+    public WeekReviewDto findReviewsBetweenDates(LocalDate mon, LocalDate sun, Long statisticsId) {
+        return null;
+//        QWeekReview weeklyReview = QWeekReview.weekReview;
+//        return jpaQueryFactory
+//                .select(weeklyReview.count)
+//                .from(weeklyReview)
+//                .where(weeklyReview.statistics.id.eq(statisticsId))
+//                .where(weeklyReview.date.between(mon, sun))
+//                .orderBy(weeklyReview.date.asc()) // 날짜 순으로 오름차순 정렬
+//                .fetch();
 
     }
 
     @Override
     public Integer countByTodayWeview(Long statisticsId, LocalDate today) {
-        QWeekReview weekReview= QWeekReview.weekReview;
-
-        return jpaQueryFactory
-                .select(weekReview.count)
-                .from(weekReview)
-                .where(weekReview.date.eq(today))
-                .fetchOne();
+        return null;
+//        QWeekReview weekReview= QWeekReview.weekReview;
+//
+//        return jpaQueryFactory
+//                .select(weekReview.count)
+//                .from(weekReview)
+//                .where(weekReview.date.eq(today))
+//                .fetchOne();
 
     }
 
