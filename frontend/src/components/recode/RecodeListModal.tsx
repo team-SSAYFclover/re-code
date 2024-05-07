@@ -1,25 +1,17 @@
 import clover from '@/assets/clover.png';
 import RecodeList from '@/components/recode/RecodeList';
-import { useRecode } from '@/hooks/recode/useRecode';
+import recodeListStore from '@/stores/recodeListStore';
 import Modal from '../@common/Modal';
 import Progressbar from '../@common/Progressbar';
 
 const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
-  const { useGetTodayRecodeList } = useRecode();
-  const { data, isLoading } = useGetTodayRecodeList();
+  const { todayRecodes } = recodeListStore();
 
-  if (isLoading) {
-    return <div>로딩 중</div>;
-  }
-
-  if (!data) {
-    return <div>데이터 없음</div>;
-  }
   const solvedCnt = () => {
-    return data.filter((x) => x.completed).length;
+    return todayRecodes.filter((x) => x.completed).length;
   };
 
-  const percentage: number = (solvedCnt() / data.length) * 100;
+  const percentage: number = (solvedCnt() / todayRecodes.length) * 100;
 
   return (
     <Modal width="w-1/2" height="h-2/3" onClose={onClose}>
@@ -34,7 +26,7 @@ const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
           </div>
           <div className="w-[180px] text-right">
             <div className=" pr-1 text-md text-right text-gray-500">
-              <span className="text-MAIN1">{data.length}</span>문제 중&nbsp;
+              <span className="text-MAIN1">{todayRecodes.length}</span>문제 중&nbsp;
               <span className="text-MAIN1">{solvedCnt()}</span>문제 복습 완료
             </div>
             <div className="flex justify-center items-center">
@@ -44,7 +36,7 @@ const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
           </div>
         </div>
         <div className="h-[calc(100%-108px)]">
-          <RecodeList review={data} />
+          <RecodeList review={todayRecodes} />
         </div>
       </div>
     </Modal>
