@@ -3,6 +3,8 @@ package com.clover.recode.domain.statistics.entity;
 import com.clover.recode.domain.problem.entity.Tag;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Getter
 @Setter
@@ -11,21 +13,34 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @ToString
+@DynamicInsert
 public class AlgoReview {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long statisticsId;
 
-    private Integer count;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "statistics_id")
     private Statistics statistics;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+
+    private int mathCnt;
+
+    private int implementationCnt;
+
+    private int greedyCnt;
+
+    private int stringCnt;
+
+    private int data_structuresCnt;
+
+    private int graphsCnt;
+
+    private int dpCnt;
+
+    private int geometryCnt;
+
 
 
 }

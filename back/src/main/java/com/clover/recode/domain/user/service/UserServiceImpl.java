@@ -3,6 +3,13 @@ package com.clover.recode.domain.user.service;
 import static com.clover.recode.global.result.error.ErrorCode.*;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
+import com.clover.recode.domain.auth.dto.OAuth2Res;
+import com.clover.recode.domain.statistics.entity.AlgoReview;
+import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.entity.WeekReview;
+import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
+import com.clover.recode.domain.statistics.repository.StatisticsRepository;
+import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.domain.user.dto.idRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
@@ -14,6 +21,8 @@ import com.clover.recode.global.jwt.JWTUtil;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +38,11 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final SettingRepository settingRepository;
+  private final StatisticsRepository statisticsRepository;
+  private final WeekReviewRepository weekReviewRepository;
+  private final AlgoReviewRepository algoReviewRepository;
   private final JWTUtil jwtUtil;
+
 
   @Override
   public UserRes getUserInfo(Authentication authentication) {
@@ -120,4 +133,58 @@ public class UserServiceImpl implements UserService {
 
     return cookie;
   }
+
+  @Transactional
+  public User registerUser(OAuth2Res oAuth2Response) {
+
+    User user = userRepository.findByGithubId(Long.parseLong(oAuth2Response.getProviderId()));
+    if(user == null) {
+      user = createUser(oAuth2Response);
+    } else {
+      user.setName(oAuth2Response.getName());
+      userRepository.save(user);
+    }
+
+    return user;
+  }
+
+  private User createUser(OAuth2Res oAuth2Response) {
+    User user = User.builder()
+        .githubId(Long.parseLong(oAuth2Response.getProviderId()))
+        .avatarUrl(oAuth2Response.getAvatarUrl())
+        .name(oAuth2Response.getName())
+        .uuid(UUID.randomUUID().toString())
+        .build();
+
+    userRepository.save(user);
+
+    Setting setting = Setting.builder()
+        .user(user)
+        .build();
+
+    settingRepository.save(setting);
+
+    Statistics statistics= Statistics.builder()
+            .user(user)
+            .build();
+
+    statisticsRepository.save(statistics);
+
+    WeekReview weekReview= WeekReview.builder()
+            .statistics(statistics)
+            .date(LocalDate.now())
+            .build();
+
+    weekReviewRepository.save(weekReview);
+
+    AlgoReview algoReview= AlgoReview.builder()
+            .statistics(statistics)
+            .build();
+
+    algoReviewRepository.save(algoReview);
+
+    return user;
+  }
+
+
 }
