@@ -2,6 +2,7 @@ package com.clover.recode.domain.statistics.entity;
 
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.Problem;
+import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,13 +24,19 @@ public class TodayProblem {
 
     private int reviewCnt;
 
-    private String name;
+    private String title;
+
+    private int problemNo;
 
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_id")
     private Code code;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 }

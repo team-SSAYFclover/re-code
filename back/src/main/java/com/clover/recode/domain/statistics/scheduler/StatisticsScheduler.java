@@ -49,7 +49,7 @@ public class StatisticsScheduler {
                             .isCompleted(false)
                             //.reviewCnt(code.getRecode().getSubmit_count())
                             .code(code)
-                            .name(code.getProblem().getTitle())
+                            .title(code.getProblem().getTitle())
                             .date(today)
                             .build();
 
