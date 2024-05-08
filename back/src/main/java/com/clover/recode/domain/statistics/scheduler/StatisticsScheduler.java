@@ -52,7 +52,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 58 21 * * *")
+    @Scheduled(cron = "0 27 22 * * *")
     @Transactional
     public void updateRanking() {
 
@@ -120,16 +120,9 @@ public class StatisticsScheduler {
 
             Integer randomNo = -1;
 
-            log.info("id: "+st.getId());
             if (!unsolvedProblemNos.isEmpty()) {
-                log.info("비어있진 않아요");
-                for(int x: unsolvedProblemNos){
-                    System.out.println("x: "+x);
-                }
                 Collections.shuffle(unsolvedProblemNos);
                 randomNo = unsolvedProblemNos.getFirst();
-            }else{
-                log.info("비어있어요 대체 왜지");
             }
 
             st.setRandomNo(randomNo);
@@ -139,19 +132,28 @@ public class StatisticsScheduler {
 //
 //
 //
-//            //연속복습일
-//            //어제 푼 문제가 없으면 0으로 초기화
-//            //사용자가 문제를 풀면 +1해주기
-//            LocalDate yesterday= LocalDate.now().minusDays(1);
-//
-//                List<WeekReview> isSolvedYesterday= jpaQueryFactory.selectFrom(weekReview)
-//                                .where(weekReview.date.eq(yesterday))
-//                                .fetch();
-//
-//                if(isSolvedYesterday.isEmpty()) st.setSequence(0);
-//
-//            statisticsRepository.save(st);
+            //연속복습일
+            //어제 푼 문제가 없으면 0으로 초기화
+            //사용자가 문제를 풀면 +1해주기
+            LocalDate yesterday= LocalDate.now().minusDays(1);
 
+                List<WeekReview> isSolvedYesterday= jpaQueryFactory.selectFrom(weekReview)
+                                .where(weekReview.date.eq(yesterday)
+                                        .and(weekReview.statistics.id.eq(st.getId())))
+                                .fetch();
+
+            
+            if(isSolvedYesterday.isEmpty())
+                st.setSequence(0);
+
+
+
+            log.info("id: "+ st.getId());
+            log.info("시퀀스: "+ st.getSequence());
+
+            statisticsRepository.save(st);
+
+            
         }
     }
 
