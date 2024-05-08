@@ -11,6 +11,7 @@ import com.google.firebase.messaging.Notification;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,35 +21,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Slf4j
 public class NotificationServiceImpl implements NotificationService{
 
-    //private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
     private final SettingRepository settingRepository;
 
 
     @Scheduled(cron = "0 */30 * * * ?") // 매 30분마다 실행
     public void sendScheduledNotification() {
-        Calendar now = Calendar.getInstance();
+        Calendar now = Calendar.getInstance(TimeZone.getTimeZone("Asia/seoul"));
         now.set(Calendar.SECOND, 0);  // 초를 0으로 설정
+        now.set(Calendar.MILLISECOND, 0);
         java.util.Date nowDate = now.getTime();
         Time currentTime = new Time(nowDate.getTime());
 
-//        List<Setting> settings = settingRepository.findSettingsByNotificationTime(currentTime);
-//        for (Setting setting : settings) {
-//            User user = setting.getUser();
-//            if (user != null && user.getFcmToken() != null) {
-//                try {
-//                        sendNotification(user.getFcmToken(),
-//                        "RE:CODE",
-//                        "오늘의 복습 문제가 기다리고 있어요!");
-//
-//                } catch (Exception e) {
-//                    log.error("Failed to send notification to " + user.getId() + ": " + e.getMessage());
-//                }
-//            }
-//        }
+        List<String> tokens = userRepository.findByFcmTokens(currentTime);
+
+        log.info("tokens : {}, time : {}", tokens, currentTime);
+
+        for(String token : tokens) {
+            try {
+                sendNotification(token,
+                    "RE:CODE",
+                    "오늘의 복습 문제가 기다리고 있어요!");
+
+            } catch (Exception e) {
+                log.error("Failed to send notification");
+            }
+        }
+
     }
 
     // 푸시 알림 보내기

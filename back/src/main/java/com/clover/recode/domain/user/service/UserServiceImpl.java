@@ -153,6 +153,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public void postFcmToken(FcmReq fcmReq, Authentication authentication) {
 
     CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
