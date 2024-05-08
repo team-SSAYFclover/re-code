@@ -52,7 +52,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 55 20 * * *")
+    @Scheduled(cron = "0 58 21 * * *")
     @Transactional
     public void updateRanking() {
 
@@ -96,26 +96,43 @@ public class StatisticsScheduler {
 
 
             statisticsRepository.save(st);
-//
-//            //내가 풀지 않은 문제 중에서 랜덤문제를 가져온다
-//            List<Integer> unsolvedProblemNos = jpaQueryFactory
-//                    .select(problem.problemNo)
-//                    .from(problem)
-//                    .where(problem.problemNo.notIn(
-//                            JPAExpressions.select(problem.problemNo)
-//                                    .from(qcode)
-//                                    .where(qcode.user.id.eq(st.getUser().getId()))
-//                    ))
-//                    .fetch();
-//
-//            Integer randomNo = -1;
-//
-//            if (!unsolvedProblemNos.isEmpty()) {
-//                Collections.shuffle(unsolvedProblemNos);
-//                randomNo = unsolvedProblemNos.getFirst();
-//            }
-//
-//            st.setRandomNo(randomNo);
+
+            List<Integer> test= jpaQueryFactory.select(problem.problemNo)
+                    .from(qcode)
+                    .where(qcode.user.id.eq(st.getUser().getId()))
+                    .fetch();
+
+            log.info("test 가보자고");
+            for(int a: test){
+                System.out.println("a: "+a);
+            }
+
+            //내가 풀지 않은 문제 중에서 랜덤문제를 가져온다
+            List<Integer> unsolvedProblemNos = jpaQueryFactory
+                    .select(problem.problemNo)
+                    .from(problem)
+                    .where(problem.problemNo.notIn(
+                            JPAExpressions.select(qcode.problem.problemNo)
+                                    .from(qcode)
+                                    .where(qcode.user.id.eq(st.getUser().getId()))
+                    ))
+                    .fetch();
+
+            Integer randomNo = -1;
+
+            log.info("id: "+st.getId());
+            if (!unsolvedProblemNos.isEmpty()) {
+                log.info("비어있진 않아요");
+                for(int x: unsolvedProblemNos){
+                    System.out.println("x: "+x);
+                }
+                Collections.shuffle(unsolvedProblemNos);
+                randomNo = unsolvedProblemNos.getFirst();
+            }else{
+                log.info("비어있어요 대체 왜지");
+            }
+
+            st.setRandomNo(randomNo);
 //
 //            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
 //            //알고리즘 분류가 적은 문제 중에서 내가 풀지 않은 문제의 id를 가져온다
