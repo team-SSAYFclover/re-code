@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getMessaging, getToken } from 'firebase/messaging';
+import { axiosCommonInstance } from '@/apis/axiosInstance';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,11 +12,8 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-});
+export const app = initializeApp(firebaseConfig);
+export const messaging = getMessaging(app);
 
 export const requestPermission = async () => {
   let token = localStorage.getItem('RECODE_FCM_TOKEN');
@@ -28,4 +26,12 @@ export const requestPermission = async () => {
 
   token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
   localStorage.setItem('RECODE_FCM_TOKEN', token);
+
+  const res = await axiosCommonInstance.post('/users/fcm', {
+    token,
+  });
+
+  if (res.status != 200) {
+    localStorage.removeItem('RECODE_FCM_TOKEN');
+  }
 };
