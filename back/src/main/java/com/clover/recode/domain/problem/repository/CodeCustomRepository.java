@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface CodeCustomRepository {
 
-    List<Code> findByReviewStatusFalseAndReviewTimeBefore(LocalDate today);
+    List<Code> findByReviewStatusFalseAndReviewTimeBefore();
 
 }
