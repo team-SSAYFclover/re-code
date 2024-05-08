@@ -65,7 +65,7 @@ public class SecurityConfig {
         .authorizeHttpRequests((auth) -> auth
             // Swagger
             .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-            .requestMatchers("/users/refresh", "/users/code", "/problem").permitAll()
+            .requestMatchers("/users/refresh", "/users/code", "/problems").permitAll()
            .anyRequest().authenticated());
 
     http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
