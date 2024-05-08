@@ -37,7 +37,10 @@ public class RecodeServiceImpl implements RecodeService {
     @Transactional
     public void saveRecode(Code code) {
 
-        List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + code.getContent() + "\n```"));
+        List<Message> prompts = new ArrayList<>();
+        prompts.add(new Message("system", EnglishPrompt.systemPrompt));
+        prompts.add(new Message("user", EnglishPrompt.answerPrompt + code.getContent() + "\n```"));
+
         GptRequestDto request = new GptRequestDto("gpt-3.5-turbo-0125", prompts, 1, 1, 0, 0);
 //        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
