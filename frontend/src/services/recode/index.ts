@@ -11,3 +11,8 @@ export const getRecode = async (codeId: string): Promise<APIResponse<IGetRecodeR
   const res = await axiosCommonInstance.get(`/problems/recode/${codeId}`);
   return res.data;
 };
+
+export const completeRecode = async (codeId: string): Promise<APIResponse<null>> => {
+  const res = await axiosCommonInstance.put(`/problems/recode/${codeId}`);
+  return res.data;
+};
