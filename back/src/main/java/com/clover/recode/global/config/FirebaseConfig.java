@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternUtils;
+import  org.springframework.core.io.DefaultResourceLoader;
 
 import java.io.IOException;
 
@@ -22,8 +25,12 @@ public class FirebaseConfig {
     @PostConstruct
     public void initialize() {
         try {
+            Resource[] resources = ResourcePatternUtils
+                    .getResourcePatternResolver(new DefaultResourceLoader())
+                    .getResources("classpath*:" + FIREBASE_CONFIG_PATH);
+
             GoogleCredentials googleCredentials = GoogleCredentials
-                    .fromStream(new ClassPathResource(FIREBASE_CONFIG_PATH).getInputStream()); //resources 폴더 아래에 있는 괄호 안 경로를 찾음.
+                    .fromStream(resources[0].getInputStream()); //resources 폴더 아래에 있는 괄호 안 경로를 찾음.
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(googleCredentials)
                     .build();
