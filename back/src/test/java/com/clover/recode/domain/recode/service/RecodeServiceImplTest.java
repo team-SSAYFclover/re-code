@@ -29,10 +29,10 @@ class RecodeServiceImplTest {
 //
 //    @Test
 //    void saveRecodeTest() {
-////        Code code = codeRepository.findById(1L)
-////                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
-////
-////        service.saveRecode(code);
+//        Code code = codeRepository.findById(1L)
+//                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+//
+//        service.saveRecode(code);
 //    }
 //
 //    @Test
