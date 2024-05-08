@@ -37,7 +37,10 @@ public class RecodeServiceImpl implements RecodeService {
     @Transactional
     public void saveRecode(Code code) {
 
-        List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + code.getContent() + "\n```"));
+        List<Message> prompts = new ArrayList<>();
+        prompts.add(new Message("system", EnglishPrompt.systemPrompt));
+        prompts.add(new Message("user", EnglishPrompt.answerPrompt + code.getContent() + "\n```"));
+
         GptRequestDto request = new GptRequestDto("gpt-3.5-turbo-0125", prompts, 1, 1, 0, 0);
 //        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
@@ -82,35 +85,54 @@ public class RecodeServiceImpl implements RecodeService {
         StringBuilder sb = new StringBuilder();
         List<String> answers = new ArrayList<>();
         int length = content.length();
-        for (int i = 0; i < length; i++) {
+        int start = 0;
+        int end = length - 1;
+        if (length > 4 && content.startsWith("```\n")) {
+            start = 4;
+
+            if (content.endsWith("\n```"))
+                end = length - 4;
+            else
+                log.error("이상한 recode : {}", content);
+        }
+
+        mainLoop: for (int i = start; i < end; i++) {
             char ch = content.charAt(i);
 
             if (ch == '‽') {
-                int blockDifficulty = 1;
+                int blockDifficultyStart = 1;
                 while (content.charAt(i + 1) == '‽') {
-                    blockDifficulty++;
+                    blockDifficultyStart++;
                     i++;
                 }
 
-                if (blockDifficulty == userDifficulty) {
-                    sb.append("‽").append("▢");
-
+                if (blockDifficultyStart == userDifficulty) {
                     StringBuilder answer = new StringBuilder();
                     while (content.charAt(i + 1) != '▢') {
                         answer.append(content.charAt(i + 1));
                         i++;
+
+                        if (i == end - 1 || content.charAt(i + 1) == '‽') {
+                            sb.append(answer);
+                            continue mainLoop;
+                        }
                     }
 
+                    sb.append("‽").append("▢");
                     answers.add(answer.toString());
                 } else {
                     while (content.charAt(i + 1) != '▢') {
                         sb.append(content.charAt(i + 1));
                         i++;
+
+                        if (i == end - 1 || content.charAt(i + 1) == '‽')
+                            continue mainLoop;
                     }
                 }
 
-                i += blockDifficulty;
-            } else
+                while (content.charAt(i + 1) == '▢')
+                    i++;
+            } else if (ch != '▢')
                 sb.append(ch);
         }
 
