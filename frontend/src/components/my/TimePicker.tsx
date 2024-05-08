@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { IModifyInfo } from './MySettingModal';
 
 interface ITimePickerProps {
   hour: number;
   minute: number;
+  setModifyInfo: Dispatch<SetStateAction<IModifyInfo>>;
 }
 
 interface ISelectedTime {
@@ -11,8 +13,8 @@ interface ISelectedTime {
   type: 'AM' | 'PM';
 }
 
-const TimePicker = ({ hour, minute }: ITimePickerProps) => {
-  const hours = Array.from({ length: 12 }, (_, idx) => idx + 1);
+const TimePicker = ({ hour, minute, setModifyInfo }: ITimePickerProps) => {
+  const hours = Array.from({ length: 12 }, (_, idx) => idx);
   const mins = Array.from({ length: 4 }, (_, idx) => idx * 15);
 
   const [selectedTime, setSelectedTime] = useState<ISelectedTime>({
@@ -28,6 +30,46 @@ const TimePicker = ({ hour, minute }: ITimePickerProps) => {
         [type]: value,
       };
     });
+
+    console.log('value', value);
+
+    if (type === 'hour') {
+      console.log(selectedTime);
+      setModifyInfo((prev) => {
+        return {
+          ...prev,
+          notifHour: selectedTime.type === 'PM' ? 12 + Number(value) : Number(value),
+        };
+      });
+    } else if (type === 'minute') {
+      setModifyInfo((prev) => {
+        console.log(prev);
+        return {
+          ...prev,
+          notifMinute: Number(value),
+        };
+      });
+    } else if (type === 'type') {
+      if (value === 'AM') {
+        if (selectedTime.type === 'PM') {
+          setModifyInfo((prev) => {
+            return {
+              ...prev,
+              notifHour: Number(prev.notifHour) - 12,
+            };
+          });
+        }
+      } else {
+        if (selectedTime.type === 'AM') {
+          setModifyInfo((prev) => {
+            return {
+              ...prev,
+              notifHour: Number(prev.notifHour) + 12,
+            };
+          });
+        }
+      }
+    }
   };
 
   const inputCommonClass =
@@ -37,7 +79,7 @@ const TimePicker = ({ hour, minute }: ITimePickerProps) => {
     <div className="flex justify-between items-center px-4 py-3 rounded-sm">
       <div>
         <select
-          value={selectedTime.hour > 12 ? selectedTime.hour - 12 : selectedTime.hour}
+          value={selectedTime.hour >= 12 ? selectedTime.hour - 12 : selectedTime.hour}
           className={inputCommonClass}
           onChange={(e) => handleTime('hour', e.target.value)}
         >
