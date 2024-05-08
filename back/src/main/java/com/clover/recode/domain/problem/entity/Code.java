@@ -61,8 +61,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @ColumnDefault("true")
         private boolean reviewStatus;
 
-        @ColumnDefault("true")
-        private boolean reviewTime;
 
         @CreatedDate
         @Column(updatable = false)
