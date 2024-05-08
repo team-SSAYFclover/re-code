@@ -4,21 +4,13 @@ import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.QCode;
 import com.clover.recode.domain.problem.entity.QProblem;
 import com.clover.recode.domain.problem.repository.CodeCustomRepository;
-import com.clover.recode.domain.recode.entity.QRecode;
 import com.clover.recode.domain.statistics.entity.*;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
-import com.clover.recode.domain.user.entity.QUser;
-import com.clover.recode.domain.user.entity.User;
-import com.clover.recode.domain.user.repository.UserRepository;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,7 +52,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 50 17 * * *")
+    @Scheduled(cron = "0 55 20 * * *")
     @Transactional
     public void updateRanking() {
 
@@ -83,6 +74,8 @@ public class StatisticsScheduler {
                 .from(weekReview)
                 .fetchOne();
 
+        log.info(total.toString());
+
         List<Statistics> statisticsList= jpaQueryFactory.selectFrom(statistics)
                                         .fetch();
 
@@ -97,46 +90,50 @@ public class StatisticsScheduler {
                             .and(weekReview.date.between(mon, today)))
                     .fetchOne();
 
-            int ranking= 100- (st_sum/total * 100);
+            Integer ranking= (int) (100- (double) st_sum/total * 100);
+
             st.setRanking(ranking);
 
-            //내가 풀지 않은 문제 중에서 랜덤문제를 가져온다
-            List<Integer> unsolvedProblemNos = jpaQueryFactory
-                    .select(problem.problemNo)
-                    .from(problem)
-                    .where(problem.problemNo.notIn(
-                            JPAExpressions.select(problem.problemNo)
-                                    .from(qcode)
-                                    .where(qcode.user.id.eq(st.getUser().getId()))
-                    ))
-                    .fetch();
-
-            Integer randomNo = -1;
-
-            if (!unsolvedProblemNos.isEmpty()) {
-                Collections.shuffle(unsolvedProblemNos);
-                randomNo = unsolvedProblemNos.getFirst();
-            }
-
-            st.setRandomNo(randomNo);
-
-            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
-            //알고리즘 분류가 적은 문제 중에서 내가 풀지 않은 문제의 id를 가져온다
-
-
-
-            //연속복습일
-            //어제 푼 문제가 없으면 0으로 초기화
-            //사용자가 문제를 풀면 +1해주기
-            LocalDate yesterday= LocalDate.now().minusDays(1);
-
-                List<WeekReview> isSolvedYesterday= jpaQueryFactory.selectFrom(weekReview)
-                                .where(weekReview.date.eq(yesterday))
-                                .fetch();
-
-                if(isSolvedYesterday.isEmpty()) st.setSequence(0);
 
             statisticsRepository.save(st);
+//
+//            //내가 풀지 않은 문제 중에서 랜덤문제를 가져온다
+//            List<Integer> unsolvedProblemNos = jpaQueryFactory
+//                    .select(problem.problemNo)
+//                    .from(problem)
+//                    .where(problem.problemNo.notIn(
+//                            JPAExpressions.select(problem.problemNo)
+//                                    .from(qcode)
+//                                    .where(qcode.user.id.eq(st.getUser().getId()))
+//                    ))
+//                    .fetch();
+//
+//            Integer randomNo = -1;
+//
+//            if (!unsolvedProblemNos.isEmpty()) {
+//                Collections.shuffle(unsolvedProblemNos);
+//                randomNo = unsolvedProblemNos.getFirst();
+//            }
+//
+//            st.setRandomNo(randomNo);
+//
+//            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
+//            //알고리즘 분류가 적은 문제 중에서 내가 풀지 않은 문제의 id를 가져온다
+//
+//
+//
+//            //연속복습일
+//            //어제 푼 문제가 없으면 0으로 초기화
+//            //사용자가 문제를 풀면 +1해주기
+//            LocalDate yesterday= LocalDate.now().minusDays(1);
+//
+//                List<WeekReview> isSolvedYesterday= jpaQueryFactory.selectFrom(weekReview)
+//                                .where(weekReview.date.eq(yesterday))
+//                                .fetch();
+//
+//                if(isSolvedYesterday.isEmpty()) st.setSequence(0);
+//
+//            statisticsRepository.save(st);
 
         }
     }
