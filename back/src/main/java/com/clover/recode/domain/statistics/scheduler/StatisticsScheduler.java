@@ -122,6 +122,24 @@ public class StatisticsScheduler {
 
             st.setRandomNo(randomNo);
 
+            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
+            //알고리즘 분류가 적은 문제 중에서 내가 풀지 않은 문제의 id를 가져온다
+
+
+
+            //연속복습일
+            //어제 푼 문제가 없으면 0으로 초기화
+            //사용자가 문제를 풀면 +1해주기
+            LocalDate yesterday= LocalDate.now().minusDays(1);
+
+                Integer isSolvedYesterday= jpaQueryFactory.select(weekReview.count)
+                                .from(weekReview)
+                                .where(weekReview.date.eq(yesterday))
+                                .fetchOne();
+
+                if(isSolvedYesterday == null) st.setSequence(0);
+
+            statisticsRepository.save(st);
 
         }
     }
