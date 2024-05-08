@@ -36,7 +36,7 @@ public class User {
 
   private String uuid;
 
-  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
   private Setting setting;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

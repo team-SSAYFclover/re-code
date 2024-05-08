@@ -48,7 +48,7 @@ function addModal() {
 
     bojData.code.name = document.getElementById("nameinput").value || "빈 제목 입니다.";
 
-    fetch("https://www.recode-d210.com/api/problem", {
+    fetch("https://www.recode-d210.com/api/problems", {
       method: "POST",
       body: JSON.stringify(bojData),
       headers: {
