@@ -45,6 +45,8 @@ public class StatisticsScheduler {
                             .code(code)
                             .title(code.getProblem().getTitle())
                             .date(today)
+                            .problemNo(code.getProblem().getProblemNo())
+                            .user(code.getUser())
                             .build();
 
                 todayProblemRepository.save(todayProblem);
