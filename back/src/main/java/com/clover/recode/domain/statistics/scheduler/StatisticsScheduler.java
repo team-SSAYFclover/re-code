@@ -5,10 +5,7 @@ import com.clover.recode.domain.problem.entity.QCode;
 import com.clover.recode.domain.problem.entity.QProblem;
 import com.clover.recode.domain.problem.repository.CodeCustomRepository;
 import com.clover.recode.domain.recode.entity.QRecode;
-import com.clover.recode.domain.statistics.entity.QStatistics;
-import com.clover.recode.domain.statistics.entity.QWeekReview;
-import com.clover.recode.domain.statistics.entity.Statistics;
-import com.clover.recode.domain.statistics.entity.TodayProblem;
+import com.clover.recode.domain.statistics.entity.*;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
 import com.clover.recode.domain.user.entity.QUser;
@@ -43,7 +40,7 @@ public class StatisticsScheduler {
     private final StatisticsRepository statisticsRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Scheduled(cron = "0 0 4 * * *")
+    @Scheduled(cron = "0 37 5 * * *")
     @Transactional
     public void updateTodayProblem() {
 
@@ -64,7 +61,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 05 17 * * *")
+    @Scheduled(cron = "0 50 17 * * *")
     @Transactional
     public void updateRanking() {
 
@@ -96,11 +93,12 @@ public class StatisticsScheduler {
             Integer st_sum= jpaQueryFactory
                     .select(weekReview.count.sum())
                     .from(weekReview)
-                    .where(weekReview.statistics.id.eq(st.getId()))
-                    .where(weekReview.date.between(mon, today))
+                    .where(weekReview.statistics.id.eq(st.getId())
+                            .and(weekReview.date.between(mon, today)))
                     .fetchOne();
 
-            st.setRanking(st_sum/total * 100);
+            int ranking= 100- (st_sum/total * 100);
+            st.setRanking(ranking);
 
             //내가 풀지 않은 문제 중에서 랜덤문제를 가져온다
             List<Integer> unsolvedProblemNos = jpaQueryFactory
@@ -132,12 +130,11 @@ public class StatisticsScheduler {
             //사용자가 문제를 풀면 +1해주기
             LocalDate yesterday= LocalDate.now().minusDays(1);
 
-                Integer isSolvedYesterday= jpaQueryFactory.select(weekReview.count)
-                                .from(weekReview)
+                List<WeekReview> isSolvedYesterday= jpaQueryFactory.selectFrom(weekReview)
                                 .where(weekReview.date.eq(yesterday))
-                                .fetchOne();
+                                .fetch();
 
-                if(isSolvedYesterday == null) st.setSequence(0);
+                if(isSolvedYesterday.isEmpty()) st.setSequence(0);
 
             statisticsRepository.save(st);
 
