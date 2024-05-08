@@ -48,7 +48,7 @@ public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepositor
     }
 
     @Override
-    public Integer countByTodayWeview(Long statisticsId, LocalDate today) {
+    public Integer countByTodayReview(Long statisticsId, LocalDate today) {
         QWeekReview weekReview= QWeekReview.weekReview;
 
         return jpaQueryFactory
