@@ -4,13 +4,16 @@ import static com.clover.recode.global.result.error.ErrorCode.*;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.auth.dto.OAuth2Res;
+import com.clover.recode.domain.fcmtoken.entity.FcmToken;
+import com.clover.recode.domain.fcmtoken.repository.FcmTokenRepository;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.entity.WeekReview;
 import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
-import com.clover.recode.domain.user.dto.idRes;
+import com.clover.recode.domain.user.dto.FcmReq;
+import com.clover.recode.domain.user.dto.IdRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
 import com.clover.recode.domain.user.entity.Setting;
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final SettingRepository settingRepository;
+  private final FcmTokenRepository fcmTokenRepository;
   private final StatisticsRepository statisticsRepository;
   private final WeekReviewRepository weekReviewRepository;
   private final AlgoReviewRepository algoReviewRepository;
@@ -117,8 +121,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public idRes getGithubId(String uuid) {
-    idRes id = userRepository.findByUuid(uuid)
+  public IdRes getGithubId(String uuid) {
+    IdRes id = userRepository.findByUuid(uuid)
         .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
     return id;
   }
@@ -146,6 +150,23 @@ public class UserServiceImpl implements UserService {
     }
 
     return user;
+  }
+
+  @Override
+  @Transactional
+  public void postFcmToken(FcmReq fcmReq, Authentication authentication) {
+
+    CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+
+    User user = userRepository.findById(customUserDetails.getId())
+        .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+
+    FcmToken fcmToken = FcmToken.builder()
+        .token(fcmReq.getToken())
+        .user(user)
+        .build();
+
+    fcmTokenRepository.save(fcmToken);
   }
 
   private User createUser(OAuth2Res oAuth2Response) {
