@@ -24,9 +24,6 @@ public class Recode {
     @OneToOne(fetch = FetchType.LAZY)
     private Code code;
 
-    @Column(nullable = false)
-    private LocalDateTime reviewTime;
-
     @Column()
     private LocalDateTime submitTime;
 
