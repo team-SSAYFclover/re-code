@@ -52,7 +52,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 27 22 * * *")
+    @Scheduled(cron = "0 36 22 * * *")
     @Transactional
     public void updateRanking() {
 
@@ -126,30 +126,30 @@ public class StatisticsScheduler {
             }
 
             st.setRandomNo(randomNo);
-//
-//            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
-//            //알고리즘 분류가 적은 문제 중에서 내가 풀지 않은 문제의 id를 가져온다
-//
-//
-//
+
+            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
+            //알고리즘 분류가 적은 문제 중에서 내가 풀지 않은 문제의 id를 가져온다
+
+
+
             //연속복습일
             //어제 푼 문제가 없으면 0으로 초기화
             //사용자가 문제를 풀면 +1해주기
             LocalDate yesterday= LocalDate.now().minusDays(1);
 
-                List<WeekReview> isSolvedYesterday= jpaQueryFactory.selectFrom(weekReview)
+                Integer isSolvedYesterday= jpaQueryFactory
+                                .selectOne()
+                                .from(weekReview)
                                 .where(weekReview.date.eq(yesterday)
                                         .and(weekReview.statistics.id.eq(st.getId())))
-                                .fetch();
+                                .fetchFirst();
 
             
-            if(isSolvedYesterday.isEmpty())
+            if(isSolvedYesterday == null)
                 st.setSequence(0);
 
-
-
-            log.info("id: "+ st.getId());
-            log.info("시퀀스: "+ st.getSequence());
+            log.info("id: "+st.getId());
+            log.info("시퀀스: "+st.getSequence());
 
             statisticsRepository.save(st);
 
