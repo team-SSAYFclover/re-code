@@ -1,8 +1,9 @@
 import { completeRecode, getRecode, getTodayRecodeList } from '@/mocks/api/data/recode';
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 
 export const recodeHandlers = [
-  http.get('/statistics/today/reviews', () => {
+  http.get('/statistics/today/reviews', async () => {
+    await delay(2000);
     return HttpResponse.json(getTodayRecodeList, {
       status: 200,
     });
