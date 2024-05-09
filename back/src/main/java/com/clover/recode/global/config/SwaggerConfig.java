@@ -40,6 +40,7 @@ public class SwaggerConfig {
 
         Server server = new Server();
         server.setUrl("https://www.recode-d210.com/api");
+        server.setUrl("http://localhost:8080/api");
 
         return new OpenAPI()
                 .servers(List.of(server))
