@@ -8,7 +8,7 @@ public interface WeekReviewCustomRepository {
 
     List<Integer> findReviewsBetweenDates(LocalDate startOfWeek, LocalDate endOfWeek, Long statisticsId);
 
-    Integer countByTodayReview(Long statisticsId, LocalDate today);
+    Long countByTodayReview(Long statisticsId);
 
 
 }
