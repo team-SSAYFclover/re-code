@@ -37,7 +37,8 @@ public class StatisticsScheduler {
     private final StatisticsRepository statisticsRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Scheduled(cron = "0 37 5 * * *")
+
+    @Scheduled(cron = "0 12 10 * * *")
     @Transactional
     public void updateTodayProblem() {
 
@@ -60,7 +61,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 36 22 * * *")
+    @Scheduled(cron = "0 49 10 * * *")
     @Transactional
     public void updateRanking() {
 
@@ -143,10 +144,10 @@ public class StatisticsScheduler {
             QAlgoReview qAlgoReview= QAlgoReview.algoReview;
 
             //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
-            AlgoReview algoReview= (AlgoReview) jpaQueryFactory
+            AlgoReview algoReview= jpaQueryFactory
                     .selectFrom(qAlgoReview)
                     .where(qAlgoReview.statisticsId.eq(st.getId()))
-                    .fetch();
+                    .fetchOne();
 
             Map<String, Integer> map= new HashMap<>();
             map.put("math", algoReview.getMathCnt());
@@ -160,6 +161,8 @@ public class StatisticsScheduler {
 
             String leastAlgoCategory= algoReview.getMinFieldName(map);
 
+            log.info("제일 작은 값: "+ algoReview.getMinFieldName(map));
+
             List<Integer> unsolvedAlgoProblem = jpaQueryFactory
                     .select(qproblem.problemNo)
                     .from(qproblem)
@@ -172,11 +175,14 @@ public class StatisticsScheduler {
                     )))
                     .fetch();
 
+            for(Integer x: unsolvedAlgoProblem)
+                log.info("풀지 않은 문제들: "+ x);
+
             Integer supplementary_question = -1;
 
             if (!unsolvedAlgoProblem.isEmpty()) {
-                Collections.shuffle(unsolvedProblemNos);
-                supplementary_question = unsolvedProblemNos.getFirst();
+                Collections.shuffle(unsolvedAlgoProblem);
+                supplementary_question = unsolvedAlgoProblem.getFirst();
             }
 
             st.setSupplementaryNo(supplementary_question);
