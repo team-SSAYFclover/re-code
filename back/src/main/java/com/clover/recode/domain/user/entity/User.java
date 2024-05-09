@@ -1,9 +1,10 @@
 package com.clover.recode.domain.user.entity;
 
-import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.fcmtoken.entity.FcmToken;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +34,14 @@ public class User {
   private String name;
   private String avatarUrl;
 
-  private String fcmToken;
   private String uuid;
 
-  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
   private Setting setting;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<FcmToken> fcmToken;
+
 
   @CreatedDate
   @Column(updatable = false)

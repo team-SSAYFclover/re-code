@@ -2,7 +2,8 @@ package com.clover.recode.domain.user.controller;
 
 import static com.clover.recode.global.result.ResultCode.*;
 
-import com.clover.recode.domain.user.dto.idRes;
+import com.clover.recode.domain.user.dto.FcmReq;
+import com.clover.recode.domain.user.dto.IdRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
 import com.clover.recode.domain.user.service.UserService;
@@ -40,7 +41,7 @@ public class UserController {
   }
 
   @Operation(summary = "액세스 토큰 재발급")
-  @PostMapping("/refresh")
+  @PostMapping("/reissue")
   public ResponseEntity<ResultResponse> refreshToken(HttpServletRequest request,
       HttpServletResponse response) {
 
@@ -70,7 +71,17 @@ public class UserController {
   @Operation(summary = "사용자 코드로 고유 번호 조회")
   @GetMapping("/code")
   public ResponseEntity<ResultResponse> getGithubId(String uuid) {
-    idRes id = userService.getGithubId(uuid);
+    IdRes id = userService.getGithubId(uuid);
     return ResponseEntity.ok(ResultResponse.of(GET_USER_NUMBER_SUCCESS, id));
   }
+
+  @Operation(summary = "FCM 토큰 등록")
+  @PostMapping("/fcm")
+  public ResponseEntity<ResultResponse> postFcmToken(@RequestBody FcmReq fcmReq,Authentication authentication) {
+    userService.postFcmToken(fcmReq, authentication);
+    return ResponseEntity.ok(ResultResponse.of(POST_TOKEN_SUCCESS));
+  }
+
+
+
 }

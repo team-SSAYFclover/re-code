@@ -1,13 +1,16 @@
 package com.clover.recode.domain.statistics.dto.response;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
+import com.clover.recode.domain.statistics.dto.TodayProblemDto;
+import com.clover.recode.domain.statistics.dto.WeekReviewDto;
+import lombok.*;
 
 import java.util.List;
 
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class StatisticsListRes {
 
@@ -15,14 +18,14 @@ public class StatisticsListRes {
 
     private int ranking;
 
-    private List<Integer> weekReviews;
+    private WeekReviewDto weekReviews;
 
-    private List<TodayProblemRes> todayProblems;
+    private List<TodayProblemDto> todayProblems;
 
     private int supplementaryQuestion;
 
     private int randomQuestion;
 
-    private AlgoReviewRes algoReview;
+    private AlgoReviewDto algoReview;
 
 }

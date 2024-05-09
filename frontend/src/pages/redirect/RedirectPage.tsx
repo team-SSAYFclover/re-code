@@ -2,6 +2,7 @@ import LoadingLottie from '@/assets/lotties/loading.json';
 import Toast from '@/components/@common/Toast';
 import { useUser } from '@/hooks/user/useUser';
 import userStore from '@/stores/userStore';
+import { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -12,31 +13,30 @@ const RedirectPage = () => {
     animationData: LoadingLottie,
   };
 
-  const navigate = useNavigate();
+  const naviagate = useNavigate();
+  const { login } = userStore();
   const [searchParams] = useSearchParams();
   const accessToken = searchParams.get('access_token');
-
-  if (!accessToken) {
-    Toast.error('로그인을 다시 진행해 주세요.');
-    navigate('/');
-    return;
-  }
-
-  localStorage.setItem('RECODE_ACCESS_TOKEN', accessToken);
-
-  const { login } = userStore();
+  const [isTokenStored, setIsTokenStored] = useState<boolean>(false);
   const { useGetUser } = useUser();
-  const { data, isLoading } = useGetUser();
+  const { data, isLoading } = useGetUser(isTokenStored);
 
-  if (!data || isLoading) {
-    console.log('data', data, isLoading);
-    return;
-  }
+  useEffect(() => {
+    if (accessToken) {
+      localStorage.setItem('RECODE_ACCESS_TOKEN', accessToken);
+      setIsTokenStored(true);
+    } else {
+      Toast.error('로그인을 다시 진행해 주세요.');
+      naviagate('/');
+    }
+  }, [accessToken, naviagate]);
 
-  if (accessToken) {
-    login(data.name, data.avatarUrl);
-    navigate('/');
-  }
+  useEffect(() => {
+    if (data && !isLoading) {
+      login(data.name, data.avatarUrl);
+      naviagate('/');
+    }
+  }, [data, isLoading, login, naviagate]);
 
   return (
     <div className="w-screen h-screen flex justify-center items-center flex-col">
