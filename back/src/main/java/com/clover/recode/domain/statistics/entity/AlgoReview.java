@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @Builder
@@ -39,6 +41,24 @@ public class AlgoReview {
     private int dpCnt;
 
     private int geometryCnt;
+
+
+    public String getMinFieldName(Map<String, Integer> fields) {
+        String minFieldName = null;
+        int minValue = Integer.MAX_VALUE;
+
+        for (Map.Entry<String, Integer> entry : fields.entrySet()) {
+            String fieldName = entry.getKey();
+            int value = entry.getValue();
+
+            if (value < minValue) {
+                minFieldName = fieldName;
+                minValue = value;
+            }
+        }
+
+        return minFieldName;
+    }
 
 
 
