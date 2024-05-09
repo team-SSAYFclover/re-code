@@ -125,8 +125,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        return null;
-        //return todayReviewCustomRepository.findTodayReviews(userId, LocalDate.now());
+        return todayProblemRepository.findByUserId(customUserDetails.getId());
 
     }
 }
