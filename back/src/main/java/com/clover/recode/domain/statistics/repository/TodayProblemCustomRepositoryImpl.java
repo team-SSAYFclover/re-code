@@ -36,8 +36,8 @@ public class TodayProblemCustomRepositoryImpl implements TodayProblemCustomRepos
                 )
                 )
                 .from(todayProblem)
-                .where(todayProblem.date.eq(today))
-                .where(todayProblem.user.id.eq(userId))
+                .where(todayProblem.date.eq(today)
+                        .and((todayProblem.user.id.eq(userId))))
                 .fetch();
 
     }
