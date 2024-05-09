@@ -21,3 +21,9 @@ export const getUserRes: APIResponse<IGetUserInfoRes> = {
     },
   },
 };
+
+export const putUserRes: APIResponse<null> = {
+  status: 201,
+  message: '유저 정보 수정에 성공했습니다',
+  data: null,
+};
