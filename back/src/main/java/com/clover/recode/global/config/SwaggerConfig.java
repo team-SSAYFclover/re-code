@@ -6,10 +6,13 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -35,7 +38,11 @@ public class SwaggerConfig {
         Components components = new Components()
                 .addSecuritySchemes("Authorization", bearer);
 
+        Server server = new Server();
+        server.setUrl("https://www.recode-d210.com/api");
+
         return new OpenAPI()
+                .servers(List.of(server))
                 .components(components)
                 .addSecurityItem(addSecurityItem)
                 .info(info);
