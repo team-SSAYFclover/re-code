@@ -51,5 +51,5 @@ export default {
     },
   },
   // eslint-disable-next-line no-undef
-  plugins: [scrollbarHide, require('@tailwindcss/typography')],
+  plugins: [scrollbarHide, require('@tailwindcss/typography'), require('daisyui')],
 };
