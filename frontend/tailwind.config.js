@@ -50,5 +50,6 @@ export default {
       },
     },
   },
-  plugins: [scrollbarHide, import('@tailwindcss/typography')],
+  // eslint-disable-next-line no-undef
+  plugins: [scrollbarHide, require('@tailwindcss/typography')],
 };
