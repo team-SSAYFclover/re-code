@@ -1,5 +1,4 @@
-import '@/index.css';
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { Flip, ToastOptions, toast } from 'react-toastify';
 
 const defaultToastOption: ToastOptions = {
@@ -9,17 +8,54 @@ const defaultToastOption: ToastOptions = {
   closeButton: false,
   delay: 500,
   transition: Flip,
+  icon: false,
+};
+
+const commonStyle: CSSProperties = {
+  position: 'fixed',
+  top: '25px',
+  left: '0px',
+  right: '0px',
+  borderRadius: '10px',
+  color: 'white',
+  textAlign: 'center',
+  margin: 'auto',
+  width: '300px',
+  height: 'auto',
+  padding: '0px 10px',
+  fontSize: '15px',
+  fontFamily: 'Pretendard-Regular',
 };
 
 const Toast = {
-  info: (message: ReactNode, options: ToastOptions = {}) => {
-    toast.info(message, { ...defaultToastOption, icon: false, ...options });
+  info: (message: ReactNode) => {
+    toast.info(message, {
+      ...defaultToastOption,
+      style: {
+        ...commonStyle,
+        backgroundColor: 'rgb(73, 73, 73)',
+      },
+    });
   },
-  success: (message: ReactNode, options: ToastOptions = {}) => {
-    toast.success(message, { ...defaultToastOption, icon: false, ...options });
+  success: (message: ReactNode) => {
+    toast.success(message, {
+      ...defaultToastOption,
+      style: {
+        ...commonStyle,
+        backgroundColor: '#ecfffa',
+        color: '#53edc7',
+      },
+    });
   },
-  error: (message: ReactNode, options: ToastOptions = {}) => {
-    toast.error(message, { ...defaultToastOption, icon: false, ...options });
+  error: (message: ReactNode) => {
+    toast.error(message, {
+      ...defaultToastOption,
+      style: {
+        ...commonStyle,
+        backgroundColor: 'rgb(255, 114, 114)',
+        color: 'white',
+      },
+    });
   },
 };
 

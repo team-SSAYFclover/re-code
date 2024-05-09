@@ -25,6 +25,25 @@ const ProblemDetailContent: React.FC = () => {
     code: [],
   });
 
+  const toggleReviewStatus = (id: number) => {
+    setProblemData((prevData) => {
+      const updatedCodes = prevData.code.map((code) => {
+        if (code.id === id) {
+          return { ...code, reviewStatus: !code.reviewStatus };
+        }
+        return code;
+      });
+      return { ...prevData, code: updatedCodes };
+    });
+  };
+
+  const deleteCode = (id: number) => {
+    setProblemData((prevData) => ({
+      ...prevData,
+      code: prevData.code.filter((code) => code.id !== id),
+    }));
+  };
+
   useEffect(() => {
     setProblemData((prevData) => ({
       ...prevData,
@@ -38,14 +57,16 @@ const ProblemDetailContent: React.FC = () => {
         {
           id: 1,
           name: '240501 다익스트라로 풀었음',
-          content: '다익스트라코드',
+          content:
+            'import java.io.BufferedReader;\r\nimport java.io.InputStreamReader;\r\nimport java.util.ArrayDeque;\r\nimport java.util.Arrays;\r\nimport java.util.Stack;\r\nimport java.util.StringTokenizer;\r\n\r\npublic class Main {\r\n\r\n  public static void main(String[] args) throws Exception {\r\n\r\n    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\r\n    StringTokenizer st;\r\n\r\n    st = new StringTokenizer(br.readLine());\r\n    int N = Integer.parseInt(st.nextToken());\r\n    int L = Integer.parseInt(st.nextToken());\r\n    int R = Integer.parseInt(st.nextToken());\r\n\r\n    int[] p = new int[N*N]; // 서로소집합\r\n    int[][] map = new int[N][N]; // 인구 맵\r\n\r\n    int idx = 0;\r\n    for(int i = 0; i < N; i++) {\r\n      st = new StringTokenizer(br.readLine());\r\n      for (int j = 0; j < N; j++) {\r\n        map[i][j] = Integer.parseInt(st.nextToken());\r\n        p[idx] = idx++;\r\n      }\r\n    }\r\n\r\n    int[] mP = new int[N*N];\r\n    boolean isContinue = true;\r\n    int[] dx = {1,0}, dy = {0,1};\r\n    int[][] sumMap = new int[N][N];\r\n    int[][] cnt = new int[N][N];\r\n    int ans = 0;\r\n    int pIdx;\r\n    while(‽▢) {\r\n      isContinue = ‽▢;\r\n      for(int i = 0; i < N; i++) {\r\n        Arrays.fill(‽▢, 0);\r\n        Arrays.fill(cnt[i], 0);\r\n      }\r\n      mP = p.clone();\r\n\r\n      for(int i = 0; i < N; i++) {\r\n        for(int j = 0; j < N; j++) {\r\n          int tx = i + 1;\r\n          int ty = j + 1;\r\n\r\n          if(tx < N) {\r\n            int diff = Math.abs(map[i][j] - map[tx][j]);\r\n            if (‽▢ && union(i * N + j, tx * N + j, mP)) {\r\n              if(!isContinue) {\r\n                ans++;\r\n                isContinue = true;\r\n              }\r\n            }\r\n          }\r\n\r\n          if(ty < N) {\r\n            int diff = Math.abs(map[i][j] - map[i][ty]);\r\n            if (‽▢ && union(i * N + j, i * N + ty, mP)) {\r\n              if(!isContinue) {\r\n                ans++;\r\n                isContinue = true;\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n\r\n      pIdx = 0;\r\n      for(int i = 0; i < N; i++) {\r\n        for(int j = 0; j < N; j++) {\r\n          int pnum = find(pIdx, mP);\r\n          sumMap[pnum / N][pnum % N] += map[i][j];\r\n          cnt[pnum / N][pnum % N]++;\r\n          pIdx++;\r\n        }\r\n      }\r\n\r\n      pIdx = 0;\r\n      for(int i = 0; i < N; i++) {\r\n        for(int j = 0; j < N; j++) {\r\n          int pnum = find(pIdx, mP);\r\n          int c = cnt[pnum / N][pnum % N];\r\n          if(c > 1) {\r\n            map[i][j] = sumMap[pnum / N][pnum % N] / ‽▢;\r\n          }\r\n          pIdx++;\r\n        }\r\n      }\r\n\r\n    }\r\n\r\n    System.out.println(ans);\r\n\r\n  }\r\n\r\n  static int find(int a, int[] p) {\r\n    if(a == p[a]) return a;\r\n    return p[a] = find(p[a], p);\r\n  }\r\n\r\n  static boolean union(int a, int b, int[] p) {\r\n    a = find(a, p);\r\n    b = find(b, p);\r\n\r\n    if(a == b) return false;\r\n\r\n    p[b] = a;\r\n    return true;\r\n  }\r\n\r\n',
           reviewStatus: true,
           date: '24-05-01',
         },
         {
           id: 2,
           name: '240502 플로이드워샬로 풀었음',
-          content: '플로이드워샬코드',
+          content:
+            'import java.io.BufferedReader;\r\nimport java.io.InputStreamReader;\r\nimport java.util.ArrayDeque;\r\nimport java.util.Arrays;\r\nimport java.util.Stack;\r\nimport java.util.StringTokenizer;\r\n\r\npublic class Main {\r\n\r\n  public static void main(String[] args) throws Exception {\r\n\r\n    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));\r\n    StringTokenizer st;\r\n\r\n    st = new StringTokenizer(br.readLine());\r\n    int N = Integer.parseInt(st.nextToken());\r\n    int L = Integer.parseInt(st.nextToken());\r\n    int R = Integer.parseInt(st.nextToken());\r\n\r\n    int[] p = new int[N*N]; // 서로소집합\r\n    int[][] map = new int[N][N]; // 인구 맵\r\n\r\n    int idx = 0;\r\n    for(int i = 0; i < N; i++) {\r\n      st = new StringTokenizer(br.readLine());\r\n      for (int j = 0; j < N; j++) {\r\n        map[i][j] = Integer.parseInt(st.nextToken());\r\n        p[idx] = idx++;\r\n      }\r\n    }\r\n\r\n    int[] mP = new int[N*N];\r\n    boolean isContinue = true;\r\n    int[] dx = {1,0}, dy = {0,1};\r\n    int[][] sumMap = new int[N][N];\r\n    int[][] cnt = new int[N][N];\r\n    int ans = 0;\r\n    int pIdx;\r\n    while(‽▢) {\r\n      isContinue = ‽▢;\r\n      for(int i = 0; i < N; i++) {\r\n        Arrays.fill(‽▢, 0);\r\n        Arrays.fill(cnt[i], 0);\r\n      }\r\n      mP = p.clone();\r\n\r\n      for(int i = 0; i < N; i++) {\r\n        for(int j = 0; j < N; j++) {\r\n          int tx = i + 1;\r\n          int ty = j + 1;\r\n\r\n          if(tx < N) {\r\n            int diff = Math.abs(map[i][j] - map[tx][j]);\r\n            if (‽▢ && union(i * N + j, tx * N + j, mP)) {\r\n              if(!isContinue) {\r\n                ans++;\r\n                isContinue = true;\r\n              }\r\n            }\r\n          }\r\n\r\n          if(ty < N) {\r\n            int diff = Math.abs(map[i][j] - map[i][ty]);\r\n            if (‽▢ && union(i * N + j, i * N + ty, mP)) {\r\n              if(!isContinue) {\r\n                ans++;\r\n                isContinue = true;\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n\r\n      pIdx = 0;\r\n      for(int i = 0; i < N; i++) {\r\n        for(int j = 0; j < N; j++) {\r\n          int pnum = find(pIdx, mP);\r\n          sumMap[pnum / N][pnum % N] += map[i][j];\r\n          cnt[pnum / N][pnum % N]++;\r\n          pIdx++;\r\n        }\r\n      }\r\n\r\n      pIdx = 0;\r\n      for(int i = 0; i < N; i++) {\r\n        for(int j = 0; j < N; j++) {\r\n          int pnum = find(pIdx, mP);\r\n          int c = cnt[pnum / N][pnum % N];\r\n          if(c > 1) {\r\n            map[i][j] = sumMap[pnum / N][pnum % N] / ‽▢;\r\n          }\r\n          pIdx++;\r\n        }\r\n      }\r\n\r\n    }\r\n\r\n    System.out.println(ans);\r\n\r\n  }\r\n\r\n  static int find(int a, int[] p) {\r\n    if(a == p[a]) return a;\r\n    return p[a] = find(p[a], p);\r\n  }\r\n\r\n  static boolean union(int a, int b, int[] p) {\r\n    a = find(a, p);\r\n    b = find(b, p);\r\n\r\n    if(a == b) return false;\r\n\r\n    p[b] = a;\r\n    return true;\r\n  }\r\n\r\n',
           reviewStatus: false,
           date: '24-05-02',
         },
@@ -100,14 +121,16 @@ const ProblemDetailContent: React.FC = () => {
       {/* 하단부 : 코드 내역 */}
       <div className="w-full h-fit">
         <div className="w-full h-0.5 mb-3 bg-gray-100"></div>
-        {problemData.code.map((item: ICode, index: number) => (
+        {problemData.code.map((item: ICode) => (
           <ProblemDetailCodeComp
-            key={index}
+            key={item.id}
             id={item.id}
             name={item.name}
             content={item.content}
             reviewStatus={item.reviewStatus}
             date={item.date}
+            toggleReviewStatus={() => toggleReviewStatus(item.id)}
+            deleteCode={() => deleteCode(item.id)}
           />
         ))}
       </div>

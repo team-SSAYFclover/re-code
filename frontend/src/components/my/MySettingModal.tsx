@@ -12,29 +12,33 @@ interface IDifficultyInfo {
   text: string;
 }
 
-interface IModifyInfo {
+export interface IModifyInfo {
   difficulty: difficultyLevelType;
-  notifStatus: boolean;
+  notificationStatus: boolean;
   notifHour: number;
   notifMinute: number;
 }
 
 const MySettingModal = ({ onClose }: { onClose: () => void }) => {
-  const { useGetUser } = useUser();
-  const { data } = useGetUser();
-  const { name, avatarUrl } = userStore();
+  const { useGetUser, usePatchUser } = useUser();
+  const { data } = useGetUser(true);
+  const { mutate } = usePatchUser();
 
   console.log(data);
 
+  const { name, avatarUrl } = userStore();
+
   const [modifyInfo, setModifyInfo] = useState<IModifyInfo>({
     difficulty: 1,
-    notifStatus: false,
+    notificationStatus: false,
     notifHour: 0,
     notifMinute: 0,
   });
 
   const [isModifyDifficulty, setIsModifyDifficulty] = useState<boolean>(false);
   const [isModifyAlarm, setIsModifyAlarm] = useState<boolean>(false);
+  const [prevDifficulty, setPrevDifficulty] = useState<difficultyLevelType>(1);
+  const [prevAlarmTime, setPrevAlarmTime] = useState<string>('');
 
   const difficultyBtns: IDifficultyInfo[] = [
     {
@@ -53,13 +57,15 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
 
   useEffect(() => {
     if (data) {
-      const [hour, min, _] = data.settings.notificationTime.split(':');
+      const [hour, min, sec] = data.settings.notificationTime.split(':');
+
+      console.log(sec);
 
       setModifyInfo((prev) => {
         return {
           ...prev,
           difficulty: data.settings.difficulty,
-          notifStatus: data.settings.notificationStatus,
+          notificationStatus: data.settings.notificationStatus,
           notifHour: Number(hour),
           notifMinute: Number(min),
         };
@@ -78,37 +84,108 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
     });
   };
 
+  // 알림 수정
   const handleAlarmStatus = () => {
-    // @TODO: api 호출 결과 성공이면 바꾸기
+    mutate(
+      {
+        key: 'notificationStatus',
+        value: !modifyInfo.notificationStatus,
+      },
+      {
+        onSuccess: () => {
+          setModifyInfo((prev) => {
+            return {
+              ...prev,
+              notificationStatus: !prev.notificationStatus,
+            };
+          });
+        },
+      }
+    );
+  };
+
+  // 복습 난이도 수정
+  const handleModifyDifficulty = () => {
+    // 저장 상태일때
+    if (isModifyDifficulty) {
+      mutate(
+        {
+          key: 'difficulty',
+          value: modifyInfo.difficulty,
+        },
+        {
+          onError: () => {
+            setModifyInfo((prev) => {
+              return {
+                ...prev,
+                difficulty: prevDifficulty,
+              };
+            });
+          },
+        }
+      );
+
+      setIsModifyDifficulty(false);
+    }
+    // 수정 상태일때
+    else {
+      setIsModifyDifficulty(true);
+      setPrevDifficulty(modifyInfo.difficulty);
+    }
+  };
+
+  const handleCancelModifyDifficulty = () => {
     setModifyInfo((prev) => {
       return {
         ...prev,
-        notifStatus: !prev.notifStatus,
+        difficulty: prevDifficulty,
       };
     });
-  };
 
-  const handleModifyLevel = () => {
-    // @TODO : 복습 난이도 정보 저장하는 api 호출
-    if (isModifyDifficulty) {
-      setIsModifyDifficulty(false);
-    } else {
-      setIsModifyDifficulty(true);
-    }
+    setIsModifyDifficulty(false);
   };
 
   const handleModifyAlarm = () => {
-    // @TODO: 수정 중인 상태에서 누르면 알림 시간을 저장하는 api 호출
+    // 저장 상태일때
     if (isModifyAlarm) {
+      mutate(
+        {
+          key: 'notificationTime',
+          value: `${modifyInfo.notifHour}:${modifyInfo.notifMinute}:00`,
+        },
+        {
+          onError: () => {
+            setModifyInfo((prev) => {
+              return {
+                ...prev,
+                notifHour: Number(prevAlarmTime.split(':')[0]),
+                notifMinute: Number(prevAlarmTime.split(':')[1]),
+              };
+            });
+          },
+        }
+      );
+
       setIsModifyAlarm(false);
-    } else {
+    }
+    // 수정 상태일때
+    else {
       setIsModifyAlarm(true);
+      setPrevAlarmTime(`${modifyInfo.notifHour}:${modifyInfo.notifMinute}`);
     }
   };
 
-  const modifyBtnClass = 'text-sm leading-6 text-MAIN1';
-  const contentCommonClass = 'flex justify-between pt-6 pb-2';
-  const textCommonClass = 'text-sm leading-6';
+  const handleCancelModifyAlarm = () => {
+    setModifyInfo((prev) => {
+      return {
+        ...prev,
+        notifHour: Number(prevAlarmTime.split(':')[0]),
+        notifMinute: Number(prevAlarmTime.split(':')[1]),
+      };
+    });
+
+    setIsModifyAlarm(false);
+  };
 
   const handleCopyClipBoard = async (text: string) => {
     try {
@@ -119,6 +196,11 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
+  const modifyBtnClass = 'text-sm leading-6 text-MAIN1';
+  const contentCommonClass = 'flex justify-between pt-6 pb-2';
+  const textCommonClass = 'text-sm leading-6';
+
+  console.log(modifyInfo);
   return (
     <>
       <div className="w-screen h-screen fixed top-0 left-0" onClick={() => onClose()}></div>
@@ -148,15 +230,15 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
         <div className={contentCommonClass}>
           <span className={textCommonClass}>복습 난이도 설정</span>
           {!isModifyDifficulty ? (
-            <button className={modifyBtnClass} onClick={handleModifyLevel}>
+            <button className={modifyBtnClass} onClick={handleModifyDifficulty}>
               수정
             </button>
           ) : (
             <div className="text-sm">
-              <button className="text-gray-300 mr-1" onClick={() => setIsModifyDifficulty(false)}>
+              <button className="text-gray-300 mr-1" onClick={handleCancelModifyDifficulty}>
                 취소
               </button>
-              <button className="text-MAIN1" onClick={handleModifyLevel}>
+              <button className="text-MAIN1" onClick={handleModifyDifficulty}>
                 저장
               </button>
             </div>
@@ -179,9 +261,9 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
 
         <div className={contentCommonClass}>
           <span className={textCommonClass}>알림 설정</span>
-          <Toggle isOn={modifyInfo.notifStatus} handleToggle={handleAlarmStatus} />
+          <Toggle isOn={modifyInfo.notificationStatus} handleToggle={handleAlarmStatus} />
         </div>
-        {modifyInfo.notifStatus && (
+        {modifyInfo.notificationStatus && (
           <>
             <div className={contentCommonClass}>
               <span className={textCommonClass}>알림 시간</span>
@@ -191,7 +273,7 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
                 </button>
               ) : (
                 <div className="text-sm">
-                  <button className="text-gray-300 mr-1" onClick={() => setIsModifyAlarm(false)}>
+                  <button className="text-gray-300 mr-1" onClick={handleCancelModifyAlarm}>
                     취소
                   </button>
                   <button className="text-MAIN1" onClick={handleModifyAlarm}>
@@ -210,7 +292,11 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
                 {Number(modifyInfo.notifHour) < 12 ? 'AM' : 'PM'}
               </div>
             ) : (
-              <TimePicker hour={10} minute={0} />
+              <TimePicker
+                hour={modifyInfo.notifHour}
+                minute={modifyInfo.notifMinute}
+                setModifyInfo={setModifyInfo}
+              />
             )}
           </>
         )}

@@ -1,7 +1,8 @@
 package com.clover.recode.domain.user.service;
 
 import com.clover.recode.domain.auth.dto.OAuth2Res;
-import com.clover.recode.domain.user.dto.idRes;
+import com.clover.recode.domain.user.dto.FcmReq;
+import com.clover.recode.domain.user.dto.IdRes;
 import com.clover.recode.domain.user.dto.SettingDto;
 import com.clover.recode.domain.user.dto.UserRes;
 import com.clover.recode.domain.user.entity.User;
@@ -17,7 +18,9 @@ public interface UserService {
 
   void patchSetting(SettingDto setting, Authentication authentication);
 
-  idRes getGithubId(String uuid);
+  IdRes getGithubId(String uuid);
 
   User registerUser(OAuth2Res oAuth2Response);
+
+  void postFcmToken(FcmReq fcmReq, Authentication authentication);
 }
