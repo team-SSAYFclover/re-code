@@ -25,7 +25,7 @@ public class NotificationServiceImpl implements NotificationService{
     private final FcmTokenRepository fcmTokenRepository;
 
 
-    @Scheduled(cron = "0 */1 * * * ?") // 매 30분마다 실행
+    @Scheduled(cron = "0 */15 * * * ?") // 매 30분마다 실행
     @Transactional
     public void sendScheduledNotification() {
         Calendar now = Calendar.getInstance(TimeZone.getTimeZone("Asia/seoul"));
