@@ -32,11 +32,6 @@ public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepositor
         // 리뷰 수 리스트 생성
         List<Integer> reviewCounts = new ArrayList<>();
 
-        log.info("왜 오늘꺼는 조회가 안될까?");
-
-        for(WeekReview weekReview: reviews)
-            log.info("id: "+weekReview.getId()+" 날짜: "+weekReview.getDate());
-
         // 각 날짜의 리뷰 수 계산 및 리스트에 추가
         for (LocalDate date = mon; date.isBefore(sun.plusDays(1)); date = date.plusDays(1)) {
             int count = 0;
