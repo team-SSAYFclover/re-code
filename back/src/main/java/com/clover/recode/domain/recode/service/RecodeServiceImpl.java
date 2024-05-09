@@ -25,9 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_EXISTS;
 
@@ -210,19 +212,31 @@ public class RecodeServiceImpl implements RecodeService {
 
         //매주 복습량 테이블 오늘 날짜 복습량 +1 변경
         Long statisticsId= code.getUser().getStatistics().getId();
-        WeekReview weekReview= weekReviewRepository.findByIdAndDateToday(statisticsId);
-        int count= weekReview.getCount();
+        weekReviewRepository.findByIdAndDateToday(statisticsId).ifPresentOrElse(weekReview -> {
 
-        if(count== 0){
-            //오늘 푼 문제가 하나도 없다면
-            int sqn= weekReview.getStatistics().getSequence();
-            sqn++;
-            weekReview.getStatistics().setSequence(sqn);
-        }
-        count++;
-        weekReview.setCount(count);
+            int count= weekReview.getCount();
+
+            if(count== 0){
+                //오늘 푼 문제가 하나도 없다면
+                int sqn= weekReview.getStatistics().getSequence();
+                sqn++;
+                weekReview.getStatistics().setSequence(sqn);
+            }
+            count++;
+            weekReview.setCount(count);
+
+            weekReviewRepository.save(weekReview);
+
+        }, ()->{
+
+        WeekReview weekReview= WeekReview.builder()
+                .statistics(code.getUser().getStatistics())
+                .date(LocalDate.now())
+                .build();
 
         weekReviewRepository.save(weekReview);
+
+        });
 
 
         //알고리즘 별 복습한 문제 +1 변경

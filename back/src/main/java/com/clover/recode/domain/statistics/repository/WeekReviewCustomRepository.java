@@ -4,6 +4,7 @@ import com.clover.recode.domain.statistics.entity.WeekReview;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface WeekReviewCustomRepository {
 
@@ -12,5 +13,5 @@ public interface WeekReviewCustomRepository {
 
     Integer countByTodayReview(Long statisticsId);
 
-    WeekReview findByIdAndDateToday(Long statisticsId);
+    Optional<WeekReview> findByIdAndDateToday(Long statisticsId);
 }
