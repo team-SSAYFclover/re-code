@@ -218,8 +218,6 @@ public class RecodeServiceImpl implements RecodeService {
             count++;
             weekReview.setCount(count);
 
-            weekReviewRepository.save(weekReview);
-
         }, ()->{
 
         WeekReview weekReview= WeekReview.builder()
@@ -228,26 +226,37 @@ public class RecodeServiceImpl implements RecodeService {
                 .count(1)
                 .build();
 
+
+        int sqn= weekReview.getStatistics().getSequence();
+        sqn++;
+        weekReview.getStatistics().setSequence(sqn);
+
         weekReviewRepository.save(weekReview);
 
         });
 
 
+
+
         //알고리즘 별 복습한 문제 +1 변경
         List<Tag> tags= code.getProblem().getTags();
+        for(Tag tag: tags)
+            log.info(tag.getId().toString());
+
         AlgoReview algoReview= algoReviewRepository.findById(statisticsId).orElseThrow();
 
         for(Tag tag: tags){
 
+            log.info("tag..getId(): "+ tag.getId());
             switch (tag.getId()){
-                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1);
-                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1);
-                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1);
-                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1);
-                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1);
-                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1);
-                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1);
-                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1);
+                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
+                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
+                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
+                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
+                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
+                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
+                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
+                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
 
             }
 
