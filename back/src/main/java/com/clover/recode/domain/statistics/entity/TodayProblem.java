@@ -1,7 +1,6 @@
 package com.clover.recode.domain.statistics.entity;
 
 import com.clover.recode.domain.problem.entity.Code;
-import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,8 +16,7 @@ import java.time.LocalDate;
 public class TodayProblem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long codeId;
 
     private boolean isCompleted;
 
@@ -31,6 +29,7 @@ public class TodayProblem {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "code_id")
     private Code code;
 

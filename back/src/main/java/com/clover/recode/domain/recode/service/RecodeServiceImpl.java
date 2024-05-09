@@ -8,19 +8,28 @@ import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.dto.*;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
+import com.clover.recode.domain.statistics.entity.AlgoReview;
+import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.entity.TodayProblem;
+import com.clover.recode.domain.statistics.entity.WeekReview;
+import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
+import com.clover.recode.domain.statistics.repository.StatisticsRepository;
+import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
+import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_EXISTS;
 
@@ -33,10 +42,12 @@ public class RecodeServiceImpl implements RecodeService {
     private final RestTemplate restTemplate;
     private final RecodeRepository recodeRepository;
     private final CodeRepository codeRepository;
+    private final TodayProblemRepository todayProblemRepository;
+    private final WeekReviewRepository weekReviewRepository;
+    private final AlgoReviewRepository algoReviewRepository;
 
     @Override
     @Transactional
-    @Async
     public void saveRecode(Code code) {
 
         List<Message> prompts = new ArrayList<>();
@@ -187,8 +198,71 @@ public class RecodeServiceImpl implements RecodeService {
         recode.setReviewTime(submitTime.plusDays(addDays));
 
         recodeRepository.save(recode);
-        codeRepository.save(code);
 
+        //문제를 풀고 난 후, 통계 업데이트 해주기
+
+        //오늘의 복습문제 is_complete true로 변경
+       todayProblemRepository.findById(codeId).ifPresent(todayProblem -> {
+
+           todayProblem.setCompleted(true);
+
+           todayProblemRepository.save(todayProblem);
+
+        });
+
+        //매주 복습량 테이블 오늘 날짜 복습량 +1 변경
+        Long statisticsId= code.getUser().getStatistics().getId();
+        weekReviewRepository.findByIdAndDateToday(statisticsId).ifPresentOrElse(weekReview -> {
+
+            int count= weekReview.getCount();
+            count++;
+            weekReview.setCount(count);
+
+        }, ()->{
+
+        WeekReview weekReview= WeekReview.builder()
+                .statistics(code.getUser().getStatistics())
+                .date(LocalDate.now())
+                .count(1)
+                .build();
+
+
+        int sqn= weekReview.getStatistics().getSequence();
+        sqn++;
+        weekReview.getStatistics().setSequence(sqn);
+
+        weekReviewRepository.save(weekReview);
+
+        });
+
+
+
+
+        //알고리즘 별 복습한 문제 +1 변경
+        List<Tag> tags= code.getProblem().getTags();
+        for(Tag tag: tags)
+            log.info(tag.getId().toString());
+
+        AlgoReview algoReview= algoReviewRepository.findById(statisticsId).orElseThrow();
+
+        for(Tag tag: tags){
+
+            log.info("tag..getId(): "+ tag.getId());
+            switch (tag.getId()){
+                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
+                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
+                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
+                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
+                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
+                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
+                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
+                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
+
+            }
+
+            algoReviewRepository.save(algoReview);
+
+        }
     }
 
 }
