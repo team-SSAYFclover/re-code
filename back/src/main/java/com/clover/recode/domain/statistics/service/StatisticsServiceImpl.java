@@ -107,7 +107,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Integer getReviewCnt(Authentication authentication) {
+    public Long getReviewCnt(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
@@ -115,7 +115,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         Statistics statistics = statisticsRepository.findById(customUserDetails.getId())
                 .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
 
-        return weekReviewRepository.countByTodayReview(statistics.getId(), LocalDate.now());
+        return weekReviewRepository.countByTodayReview(statistics.getId());
 
 
     }
