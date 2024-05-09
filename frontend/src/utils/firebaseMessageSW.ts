@@ -24,14 +24,19 @@ export const requestPermission = async () => {
 
   if (permission != 'granted') return;
 
-  token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
-  localStorage.setItem('RECODE_FCM_TOKEN', token);
+  try {
+    token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+  } catch (err) {
+    token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+  }
 
-  const res = await axiosCommonInstance.post('/users/fcm', {
-    token,
-  });
+  if (token) {
+    const res = await axiosCommonInstance.post('/users/fcm', {
+      token,
+    });
 
-  if (res.status != 200) {
-    localStorage.removeItem('RECODE_FCM_TOKEN');
+    if (res.status == 200) {
+      localStorage.setItem('RECODE_FCM_TOKEN', token);
+    }
   }
 };
