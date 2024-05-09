@@ -1,10 +1,10 @@
+import Toast from '@/components/@common/Toast';
 import { useRecode } from '@/hooks/recode/useRecode';
 import recodeListStore from '@/stores/recodeListStore';
 import { IGetRecodeRes } from '@/types/recode';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Toast from '../@common/Toast';
 import MarkdownParser from './MarkdownParser';
 import RecodeProgressBar from './RecodeProgressBar';
 import RecodeSolveBox from './RecodeSolveBox';
@@ -34,6 +34,8 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
         return '';
       })
     );
+
+    Toast.success('모든 빈칸을 초기화했습니다.');
   };
 
   const getNextIdx = () => {
@@ -57,7 +59,7 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
   };
 
   const completeRepeat = () => {
-    for (let ele of isCorrect) {
+    for (const ele of isCorrect) {
       if (!ele) {
         Toast.error('빈칸을 모두 채워야 복습을 완료할 수 있습니다.');
         return;
@@ -79,6 +81,10 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
   };
 
   const skip = () => {
+    if (!window.confirm('다음 문제로 건너뛰겠습니까?')) {
+      return;
+    }
+
     if (completedCnt === todayRecodes.length) {
       Toast.error('더이상 풀 문제가 없어요.');
       return;
@@ -86,9 +92,10 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
 
     const idx = getNextIdx();
     navigate(`/recode/${todayRecodes[idx].codeId}`);
+    Toast.success('다음 문제로 이동했습니다.');
   };
 
-  const btnCommonClass = 'px-3 py-2 rounded-md text-sm shadow-md font-semibold';
+  const btnCommonClass = 'px-3 py-2 rounded-md text-sm shadow-md font-semibold outline-none';
 
   return (
     <>
@@ -118,7 +125,7 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
           }}
         >
           <div className="w-full h-full p-4 overflow-y-scroll">
-            <MarkdownParser markdown={recode.problem.content} />
+            <MarkdownParser markdown={recode.problemDto.content} />
           </div>
         </Resizable>
         <div className="flex-1 p-4 ml-[15px] overflow-y-scroll">

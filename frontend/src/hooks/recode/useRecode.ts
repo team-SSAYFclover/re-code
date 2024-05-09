@@ -7,7 +7,7 @@ export const useRecode = () => {
     return useQuery({
       queryKey: ['todayRecode'],
       queryFn: () => getTodayRecodeList(),
-      select: (data) => data.data.todayProblems,
+      select: (data) => data.data,
     });
   };
 
