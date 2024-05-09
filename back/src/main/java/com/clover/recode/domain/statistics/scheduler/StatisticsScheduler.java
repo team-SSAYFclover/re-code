@@ -38,7 +38,7 @@ public class StatisticsScheduler {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-    @Scheduled(cron = "0 12 10 * * *")
+    @Scheduled(cron = "0 13 11 * * *")
     @Transactional
     public void updateTodayProblem() {
 
@@ -61,7 +61,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 49 10 * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     @Transactional
     public void updateRanking() {
 
