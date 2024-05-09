@@ -1,6 +1,7 @@
 package com.clover.recode.domain.user.entity;
 
 import com.clover.recode.domain.fcmtoken.entity.FcmToken;
+import com.clover.recode.domain.statistics.entity.Statistics;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -42,6 +43,8 @@ public class User {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<FcmToken> fcmToken;
 
+  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+  private Statistics statistics;
 
   @CreatedDate
   @Column(updatable = false)
