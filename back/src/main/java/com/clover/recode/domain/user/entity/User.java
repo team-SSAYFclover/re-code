@@ -43,7 +43,7 @@ public class User {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<FcmToken> fcmToken;
 
-  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
   private Statistics statistics;
 
   @CreatedDate

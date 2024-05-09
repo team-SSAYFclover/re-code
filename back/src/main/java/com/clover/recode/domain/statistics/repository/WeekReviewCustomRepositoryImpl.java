@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.repository;
 
+import ch.qos.logback.core.util.Loader;
 import com.clover.recode.domain.statistics.entity.QWeekReview;
 import com.clover.recode.domain.statistics.entity.WeekReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -59,5 +60,19 @@ public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepositor
                 .where(weekReview.date.eq(today)
                         .and(weekReview.statistics.id.eq(statisticsId)))
                 .fetchOne();
+    }
+
+    @Override
+    public WeekReview findByIdAndDateToday(Long statisticsId) {
+
+        QWeekReview qWeekReview= QWeekReview.weekReview;
+        LocalDate today= LocalDate.now();
+
+        return jpaQueryFactory
+                .selectFrom(qWeekReview)
+                .where(qWeekReview.date.eq(today)
+                        .and(qWeekReview.statistics.id.eq(statisticsId)))
+                .fetchOne();
+
     }
 }

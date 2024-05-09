@@ -191,12 +191,12 @@ public class UserServiceImpl implements UserService {
 
     statisticsRepository.save(statistics);
 
-    WeekReview weekReview= WeekReview.builder()
-            .statistics(statistics)
-            .date(LocalDate.now())
-            .build();
-
-    weekReviewRepository.save(weekReview);
+//    WeekReview weekReview= WeekReview.builder()
+//            .statistics(statistics)
+//            .date(LocalDate.now())
+//            .build();
+//
+//    weekReviewRepository.save(weekReview);
 
     AlgoReview algoReview= AlgoReview.builder()
             .statistics(statistics)
