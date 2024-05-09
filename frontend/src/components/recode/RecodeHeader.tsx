@@ -1,11 +1,22 @@
 import { ReactComponent as Tear } from '@/assets/tear.svg';
 import { IGetRecodeRes } from '@/types/recode';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PiNoteDuotone } from 'react-icons/pi';
+import { useLocation } from 'react-router-dom';
 import RecodeListModal from './RecodeListModal';
 
 const RecodeHeader = ({ recode }: { recode: IGetRecodeRes }) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
+
+  const location = useLocation();
+  const prevLocation = useRef(location);
+
+  useEffect(() => {
+    if (prevLocation.current.pathname !== location.pathname) {
+      setIsShowModal(false);
+      prevLocation.current = location;
+    }
+  }, [location]);
 
   const setTearColor = (tear: number): string => {
     if (tear <= 5) return '#ad5600';
@@ -24,12 +35,12 @@ const RecodeHeader = ({ recode }: { recode: IGetRecodeRes }) => {
     <div className="w-full h-14 px-4 flex justify-around items-center border-b-[1px]">
       <div className="w-full flex items-center">
         <div className="w-7 h-7 relative text-center">
-          <Tear width={28} height={28} fill={setTearColor(recode.problem.level)} />
+          <Tear width={28} height={28} fill={setTearColor(recode.problemDto.level)} />
           <span className="absolute bottom-[6px] left-0 right-[1px] text-white text-md font-semibold">
-            {getLevel(recode.problem.level)}
+            {getLevel(recode.problemDto.level)}
           </span>
         </div>
-        <div className="text-lg pl-2 font-semibold">{recode.problem.name}</div>
+        <div className="text-lg pl-2 font-semibold">{recode.problemDto.title}</div>
       </div>
       <div>
         <button
