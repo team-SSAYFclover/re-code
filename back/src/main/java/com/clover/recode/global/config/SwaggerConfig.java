@@ -46,7 +46,7 @@ public class SwaggerConfig {
         Server server2 = new Server();
         server2.setUrl("http://localhost:8080/api");
         try {
-            log.info("server name : {}", InetAddress.getLocalHost().getHostName());
+            log.info("server name : {}", InetAddress.getLocalHost().getHostAddress());
         } catch (UnknownHostException ignored) {
 
         }
