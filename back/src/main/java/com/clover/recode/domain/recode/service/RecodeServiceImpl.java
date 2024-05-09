@@ -215,13 +215,6 @@ public class RecodeServiceImpl implements RecodeService {
         weekReviewRepository.findByIdAndDateToday(statisticsId).ifPresentOrElse(weekReview -> {
 
             int count= weekReview.getCount();
-
-            if(count== 0){
-                //오늘 푼 문제가 하나도 없다면
-                int sqn= weekReview.getStatistics().getSequence();
-                sqn++;
-                weekReview.getStatistics().setSequence(sqn);
-            }
             count++;
             weekReview.setCount(count);
 
@@ -232,6 +225,7 @@ public class RecodeServiceImpl implements RecodeService {
         WeekReview weekReview= WeekReview.builder()
                 .statistics(code.getUser().getStatistics())
                 .date(LocalDate.now())
+                .count(1)
                 .build();
 
         weekReviewRepository.save(weekReview);
@@ -244,14 +238,18 @@ public class RecodeServiceImpl implements RecodeService {
         AlgoReview algoReview= algoReviewRepository.findById(statisticsId).orElseThrow();
 
         for(Tag tag: tags){
-            if(tag.getId() == 1) algoReview.setMathCnt(algoReview.getMathCnt()+1);
-            if(tag.getId() == 2) algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1);
-            if(tag.getId() == 3) algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1);
-            if(tag.getId() == 4) algoReview.setStringCnt(algoReview.getStringCnt()+1);
-            if(tag.getId() == 5) algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1);
-            if(tag.getId() == 6) algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1);
-            if(tag.getId() == 7) algoReview.setDpCnt(algoReview.getDpCnt()+1);
-            if(tag.getId() == 8) algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1);
+
+            switch (tag.getId()){
+                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1);
+                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1);
+                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1);
+                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1);
+                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1);
+                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1);
+                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1);
+                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1);
+
+            }
 
             algoReviewRepository.save(algoReview);
 

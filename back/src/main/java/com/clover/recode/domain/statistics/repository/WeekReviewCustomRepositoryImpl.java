@@ -68,11 +68,11 @@ public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepositor
         QWeekReview qWeekReview= QWeekReview.weekReview;
         LocalDate today= LocalDate.now();
 
-        return jpaQueryFactory
+        return Optional.ofNullable(jpaQueryFactory
                 .selectFrom(qWeekReview)
                 .where(qWeekReview.date.eq(today)
                         .and(qWeekReview.statistics.id.eq(statisticsId)))
-                .fetchOne();
+                .fetchOne());
 
     }
 }
