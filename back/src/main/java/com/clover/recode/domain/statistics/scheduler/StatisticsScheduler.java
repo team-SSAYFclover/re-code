@@ -3,25 +3,31 @@ package com.clover.recode.domain.statistics.scheduler;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.QCode;
 import com.clover.recode.domain.problem.entity.QProblem;
+import com.clover.recode.domain.problem.entity.QTag;
 import com.clover.recode.domain.problem.repository.CodeCustomRepository;
+import com.clover.recode.domain.recode.entity.QRecode;
 import com.clover.recode.domain.statistics.entity.*;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Slf4j
 public class StatisticsScheduler {
@@ -60,8 +66,8 @@ public class StatisticsScheduler {
 
         QStatistics statistics= QStatistics.statistics;
         QWeekReview weekReview= QWeekReview.weekReview;
-        QProblem problem= QProblem.problem;
-        QCode  qcode= QCode.code;
+        QProblem qproblem= QProblem.problem;
+        QCode qcode= QCode.code;
 
         //내 위치 백분율로 찾기
         //통계, 매주 복습량 테이블에서 전체 복습량 갯수에서
@@ -75,8 +81,6 @@ public class StatisticsScheduler {
                 .where(weekReview.date.between(mon, today))
                 .from(weekReview)
                 .fetchOne();
-
-        log.info(total.toString());
 
         List<Statistics> statisticsList= jpaQueryFactory.selectFrom(statistics)
                                         .fetch();
@@ -99,21 +103,11 @@ public class StatisticsScheduler {
 
             statisticsRepository.save(st);
 
-            List<Integer> test= jpaQueryFactory.select(problem.problemNo)
-                    .from(qcode)
-                    .where(qcode.user.id.eq(st.getUser().getId()))
-                    .fetch();
-
-            log.info("test 가보자고");
-            for(int a: test){
-                System.out.println("a: "+a);
-            }
-
             //내가 풀지 않은 문제 중에서 랜덤문제를 가져온다
             List<Integer> unsolvedProblemNos = jpaQueryFactory
-                    .select(problem.problemNo)
-                    .from(problem)
-                    .where(problem.problemNo.notIn(
+                    .select(qproblem.problemNo)
+                    .from(qproblem)
+                    .where(qproblem.problemNo.notIn(
                             JPAExpressions.select(qcode.problem.problemNo)
                                     .from(qcode)
                                     .where(qcode.user.id.eq(st.getUser().getId()))
@@ -128,11 +122,6 @@ public class StatisticsScheduler {
             }
 
             st.setRandomNo(randomNo);
-
-            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
-            //알고리즘 분류가 적은 문제 중에서 내가 풀지 않은 문제의 id를 가져온다
-
-
 
             //연속복습일
             //어제 푼 문제가 없으면 0으로 초기화
@@ -150,8 +139,47 @@ public class StatisticsScheduler {
             if(isSolvedYesterday == null)
                 st.setSequence(0);
 
-            log.info("id: "+st.getId());
-            log.info("시퀀스: "+st.getSequence());
+            QTag qtag= QTag.tag;
+            QAlgoReview qAlgoReview= QAlgoReview.algoReview;
+
+            //복습한 문제 중에서 가장 cnt가 적은 부분을 가져온다
+            AlgoReview algoReview= (AlgoReview) jpaQueryFactory
+                    .selectFrom(qAlgoReview)
+                    .where(qAlgoReview.statisticsId.eq(st.getId()))
+                    .fetch();
+
+            Map<String, Integer> map= new HashMap<>();
+            map.put("math", algoReview.getMathCnt());
+            map.put("implementation", algoReview.getImplementationCnt());
+            map.put("greedy", algoReview.getGreedyCnt());
+            map.put("string", algoReview.getStringCnt());
+            map.put("data_structures", algoReview.getData_structuresCnt());
+            map.put("graphs", algoReview.getGraphsCnt());
+            map.put("dp", algoReview.getDpCnt());
+            map.put("geometry", algoReview.getGeometryCnt());
+
+            String leastAlgoCategory= algoReview.getMinFieldName(map);
+
+            List<Integer> unsolvedAlgoProblem = jpaQueryFactory
+                    .select(qproblem.problemNo)
+                    .from(qproblem)
+                    .join(qproblem.tags, qtag)
+                    .where(qtag.name.eq(leastAlgoCategory)
+                        .and(qproblem.problemNo.notIn(
+                            JPAExpressions.select(qcode.problem.problemNo)
+                                    .from(qcode)
+                                    .where(qcode.user.id.eq(st.getUser().getId()))
+                    )))
+                    .fetch();
+
+            Integer supplementary_question = -1;
+
+            if (!unsolvedAlgoProblem.isEmpty()) {
+                Collections.shuffle(unsolvedProblemNos);
+                supplementary_question = unsolvedProblemNos.getFirst();
+            }
+
+            st.setSupplementaryNo(supplementary_question);
 
             statisticsRepository.save(st);
 
