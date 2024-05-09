@@ -13,9 +13,8 @@ import PrivateRoute from './pages/private/PrivateRoute';
 import RecodeDetailPage from './pages/recode/RecodeDetailPage';
 import RecodePage from './pages/recode/RecodePage';
 import RedirectPage from './pages/redirect/RedirectPage';
-import { requestPermission, messaging } from '@/utils/firebaseMessageSW.ts';
+import { requestPermission } from '@/utils/firebaseMessageSW.ts';
 import { useEffect } from 'react';
-import { onMessage } from 'firebase/messaging';
 import userStore from './stores/userStore';
 
 const router = createBrowserRouter([
@@ -81,10 +80,6 @@ const router = createBrowserRouter([
 
 const App = () => {
   const { isLogin } = userStore();
-
-  onMessage(messaging, (payload) => {
-    console.log('포그라운드 메시지 수신', payload);
-  });
 
   useEffect(() => {
     if (isLogin) requestPermission();
