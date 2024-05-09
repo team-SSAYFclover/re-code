@@ -1,6 +1,5 @@
 package com.clover.recode.domain.statistics.repository;
 
-import ch.qos.logback.core.util.Loader;
 import com.clover.recode.domain.statistics.entity.QWeekReview;
 import com.clover.recode.domain.statistics.entity.WeekReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -63,7 +63,7 @@ public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepositor
     }
 
     @Override
-    public WeekReview findByIdAndDateToday(Long statisticsId) {
+    public Optional<WeekReview> findByIdAndDateToday(Long statisticsId) {
 
         QWeekReview qWeekReview= QWeekReview.weekReview;
         LocalDate today= LocalDate.now();
