@@ -107,7 +107,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Long getReviewCnt(Authentication authentication) {
+    public Integer getReviewCnt(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
