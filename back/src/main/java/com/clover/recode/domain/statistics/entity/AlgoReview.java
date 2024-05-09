@@ -1,9 +1,7 @@
 package com.clover.recode.domain.statistics.entity;
 
-import com.clover.recode.domain.problem.entity.Tag;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.util.Map;
