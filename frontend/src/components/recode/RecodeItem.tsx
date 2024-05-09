@@ -1,7 +1,7 @@
 import { IProblemInfo } from '@/types/model';
 import { useNavigate } from 'react-router-dom';
 
-const RecodeItem = ({ problemId, codeId, name, reviewCnt, completed }: IProblemInfo) => {
+const RecodeItem = ({ problemNo, codeId, title, reviewCnt, completed }: IProblemInfo) => {
   const navigate = useNavigate();
 
   return (
@@ -14,14 +14,14 @@ const RecodeItem = ({ problemId, codeId, name, reviewCnt, completed }: IProblemI
     >
       <div className="flex justify-between">
         <div className={`text-sm text-gray-500 ${completed && 'text-[#51A1FF]'}`}>
-          BOJ {problemId}
+          BOJ {problemNo}
         </div>
         <div className="w-fit p-1 bg-MAIN2 text-MAIN1 rounded-md text-sm text-center">
           {reviewCnt}번째 복습
         </div>
       </div>
       <div className="text-md">
-        {name}
+        {title}
         {completed && (
           <span className="bg-blue-400 text-white px-1.5 py-0.5 ml-2 rounded-md text-[12px]">
             복습 완료

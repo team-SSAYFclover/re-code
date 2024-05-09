@@ -9,13 +9,12 @@ const RecodeDetailPage = () => {
   const params = useParams();
   const { useGetTodayRecodeList } = useRecode();
   const { data: todayRecodeList } = useGetTodayRecodeList();
-
   const { setTodayRecodes } = recodeListStore();
 
   useEffect(() => {
     if (!todayRecodeList) return;
     setTodayRecodes(todayRecodeList);
-  }, [todayRecodeList]);
+  }, [todayRecodeList, setTodayRecodes]);
 
   const { useGetRecode } = useRecode();
   const { data: recode, isLoading } = useGetRecode(params.codeId || '');
