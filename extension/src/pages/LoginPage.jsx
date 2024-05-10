@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef, useState } from 'react';
 
 const LoginPage = () => {
   const uuidRef = useRef();
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   const connService = () => {
     fetch(`https://www.recode-d210.com/api/users/code?uuid=${uuidRef.current.value}`)
@@ -12,7 +12,7 @@ const LoginPage = () => {
         window.location.reload();
       })
       .catch(() => {
-        setText("잘못된 코드입니다.");
+        setText('잘못된 코드입니다.');
       });
   };
 
@@ -38,7 +38,7 @@ const LoginPage = () => {
         <div className="w-full">
           <p className="text-center text-[14px]">
             <a href="https://www.recode-d210.com/guide" className="text-[#5A8AF2] hover:underline">
-              시작 가이드{" "}
+              시작 가이드{' '}
             </a>
             보러가기
           </p>
