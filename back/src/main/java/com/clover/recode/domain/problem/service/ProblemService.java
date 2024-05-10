@@ -9,12 +9,16 @@ import org.springframework.security.core.Authentication;
 
 import java.util.List;
 public interface ProblemService {
-    Page<ProblemRes> findProblemsByUserId(Long userId, Authentication authentication, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword);
+
     void saveProblemAndCode(ProblemCodeRegistReq problemCodeRegistReq);
+
+    //사용자별 문제 조회
+    Page<ProblemRes> findProblemsByUserId(Authentication authentication, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword);
+
     public Integer getReviewCount(Long problemId);
     public List<String> getTagNames(Long problemId);
 
-    public ProblemDetailRes getProblemDetails(Long userId, Authentication authentication, Integer problemNo);
+    public ProblemDetailRes getProblemDetails(Authentication authentication, Integer problemNo);
 
 
 }

@@ -41,7 +41,6 @@ public class ProblemController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "사용자별 문제 조회")
     public ResponseEntity<ResultResponse> userProblemList(
-            @PathVariable("userId") Long userId,
             Authentication authentication,
             @PageableDefault(size = 10) Pageable pageable,
             @RequestParam(required = false) Integer start,
@@ -51,17 +50,15 @@ public class ProblemController {
     ){
 
         return ResponseEntity.ok(ResultResponse.of(USER_PROBLEM_SUCCESS,
-                problemService.findProblemsByUserId(userId, authentication,pageable, start, end, tag, keyword)));
+                problemService.findProblemsByUserId(authentication,pageable, start, end, tag, keyword)));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{problemNo}")
     @Operation(summary = "문제 상세 조회")
-    public ResponseEntity<ResultResponse> getProblemDetails(@PathVariable("userId") Long userId, Authentication authentication, @PathVariable Integer problemNo) {
-        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
-//        List<ProblemDetailRes> details = problemService.getProblemDetails(problemNo);
+    public ResponseEntity<ResultResponse> getProblemDetails(Authentication authentication, @PathVariable Integer problemNo) {
         return ResponseEntity.ok(ResultResponse.of(PROBLEM_DETAIL_SUCCESS,
-                problemService.getProblemDetails(userId, authentication, problemNo)));
+                problemService.getProblemDetails(authentication, problemNo)));
     }
 
 
