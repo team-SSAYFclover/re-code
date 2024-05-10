@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -48,14 +49,14 @@ public class RecodeServiceImpl implements RecodeService {
 
     @Override
     @Transactional
+    @Async
     public void saveRecode(Code code) {
 
         List<Message> prompts = new ArrayList<>();
         prompts.add(new Message("system", EnglishPrompt.systemPrompt));
         prompts.add(new Message("user", EnglishPrompt.answerPrompt + code.getContent() + "\n```"));
 
-        GptRequestDto request = new GptRequestDto("gpt-3.5-turbo-0125", prompts, 1, 1, 0, 0);
-//        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
+        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
