@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class RecodeRes {
-    private Problem problem;
+    private ProblemDto problem;
     private String recode;
     private List<String> answers;
 }
