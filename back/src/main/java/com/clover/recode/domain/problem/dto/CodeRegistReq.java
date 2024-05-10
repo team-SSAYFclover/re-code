@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @Builder(toBuilder = true)
 @ToString
-public class CodeDto {
+public class CodeRegistReq {
   private Integer codeNo;
   private String name;
   private String content;

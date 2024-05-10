@@ -41,3 +41,5 @@ out/
 
 ### FCM KEY ###
 src/main/resources/firebase/**
+
+src/main/generated/**
