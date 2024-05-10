@@ -65,7 +65,7 @@ public class SecurityConfig {
         .authorizeHttpRequests((auth) -> auth
             // Swagger
             .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-            .requestMatchers("/users/refresh", "/users/code", "/problems").permitAll()
+            .requestMatchers("/users/reissue", "/users/code", "/problems", "/statistics/{userId}/reviews/cnt").permitAll()
            .anyRequest().authenticated());
 
     http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
@@ -101,7 +101,7 @@ public class SecurityConfig {
               configuration.setMaxAge(3600L);
 
               // 브라우저에 노출할 헤더 설정
-              configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
+              configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie", "access_token"));
               return configuration;
             }));
 
