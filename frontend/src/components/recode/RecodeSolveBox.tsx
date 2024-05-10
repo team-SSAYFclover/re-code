@@ -118,7 +118,7 @@ const RecodeSolveBox = ({
                 type="text"
                 value={inputs[idx]}
                 onChange={(e) => handleInputChange(idx, e.target.value)}
-                className={`bg-MAIN1/20 inline-block my-1 p-1 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && !isCorrect[idx] && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
+                className={`bg-MAIN1/20 inline-block my-1 p-1 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && isShowToolTip[idx] === 'fail' && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
                 style={{ width: `${answer[idx].length * 16}px` }}
                 disabled={isCorrect[idx]}
                 data-tooltip-id={`tooltip-${idx}`}
