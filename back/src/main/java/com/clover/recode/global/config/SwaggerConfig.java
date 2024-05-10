@@ -45,11 +45,7 @@ public class SwaggerConfig {
         server.setUrl("https://www.recode-d210.com/api");
         Server server2 = new Server();
         server2.setUrl("http://localhost:8080/api");
-        try {
-            log.info("server name : {}", InetAddress.getLocalHost().getHostAddress());
-        } catch (UnknownHostException ignored) {
-
-        }
+        log.info("server name : {}", System.getenv("HOSTNAME"));
 
         return new OpenAPI()
                 .servers(List.of(server, server2))
