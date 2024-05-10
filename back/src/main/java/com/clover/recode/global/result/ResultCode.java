@@ -16,6 +16,8 @@ public enum ResultCode {
 
     //Problem
     REGIST_CODE_SUCCESS(201, "코드 등록에 성공하였습니다."),
+    PATCH_CODE_SUCCESS(201, "코드 정보 수정에 성공하였습니다."),
+    DELETE_CODE_SUCCESS(200, "코드 삭제에 성공하였습니다."),
 
     //Statistics
     GET_Statistics_SUCCESS(200, "메인화면 통계를 가져오는 것에 성공했습니다."),
