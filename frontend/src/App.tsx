@@ -7,12 +7,16 @@ import ProblemPage from '@/pages/problem/ProblemPage';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-tooltip/dist/react-tooltip.css';
 import ProblemLayout from './components/@common/ProblemLayout';
 import RecodeLayout from './components/@common/RecodeLayout';
 import PrivateRoute from './pages/private/PrivateRoute';
 import RecodeDetailPage from './pages/recode/RecodeDetailPage';
 import RecodePage from './pages/recode/RecodePage';
 import RedirectPage from './pages/redirect/RedirectPage';
+import { requestPermission } from '@/utils/firebaseMessageSW.ts';
+import { useEffect } from 'react';
+import userStore from './stores/userStore';
 
 const router = createBrowserRouter([
   {
@@ -76,10 +80,16 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const { isLogin } = userStore();
+
+  useEffect(() => {
+    if (isLogin) requestPermission();
+  }, [isLogin]);
+
   return (
     <>
-      <RouterProvider router={router} />
       <ToastContainer />
+      <RouterProvider router={router} />
     </>
   );
 };

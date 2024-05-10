@@ -17,6 +17,9 @@ export default {
         wiggle: 'wiggle 7s ease-in-out infinite',
         modalOpen: 'FadeIn 0.3s ease-in-out',
         modalClose: 'FadeOut 0.3s ease-in-out',
+        toggleUp: 'slideUp 0.2s ease-in forwards',
+        toggleDown: 'slideDown 0.2s ease-out forwards',
+        shake: 'shake 0.2s ease-in-out',
       },
       keyframes: {
         wiggle: {
@@ -31,8 +34,22 @@ export default {
           from: { opacity: 1, transform: 'translate(-50%, -50%)' },
           to: { opacity: 0, transform: 'translate(-50%, -40%)' },
         },
+        slideUp: {
+          '0%': { transform: 'scaleY(1)', transformOrigin: 'top' },
+          '100%': { transform: 'scaleY(0)', transformOrigin: 'top' },
+        },
+        slideDown: {
+          '0%': { transform: 'scaleY(0)', transformOrigin: 'top' },
+          '100%': { transform: 'scaleY(1)', transformOrigin: 'top' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-3px)' },
+          '75%': { transform: 'translateX(3px)' },
+        },
       },
     },
   },
+  // eslint-disable-next-line no-undef
   plugins: [scrollbarHide, require('@tailwindcss/typography')],
 };

@@ -1,6 +1,7 @@
 package com.clover.recode.domain.problem.entity;
 
 import com.clover.recode.domain.recode.entity.Recode;
+import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -59,6 +60,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
         @ColumnDefault("true")
         private boolean reviewStatus;
+
 
         @CreatedDate
         @Column(updatable = false)

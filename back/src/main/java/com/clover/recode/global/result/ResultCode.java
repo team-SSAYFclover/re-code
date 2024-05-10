@@ -12,6 +12,7 @@ public enum ResultCode {
     GET_USER_NUMBER_SUCCESS(200, "회원 고유 번호 조회에 성공하였습니다."),
     TOKEN_REISSUE_SUCCESS(201, "액세스 토큰 재발급에 성공하였습니다."),
     PATCH_USER_SETTING_SUCCESS(201, "회원 설정 변경에 성공하였습니다."),
+    POST_TOKEN_SUCCESS(201, "FCM 토큰 등록에 성공하였습니다"),
 
     //Problem
     REGIST_CODE_SUCCESS(201, "코드 등록에 성공하였습니다."),
