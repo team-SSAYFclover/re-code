@@ -99,6 +99,8 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .weekReviews(weekReviewDto)
                 .supplementaryQuestion(statistics.getSupplementaryNo())
                 .randomQuestion(statistics.getRandomNo())
+                .supplementaryTitle(statistics.getSupplementaryTitle())
+                .randomTitle(statistics.getRandomTitle())
                 .algoReview(algoReviewDto)
                 .todayProblems(todayProblem)
                 .build();
