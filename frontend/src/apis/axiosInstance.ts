@@ -21,3 +21,4 @@ axiosCommonInstance.interceptors.request.use(setAuthorization);
 axiosRefreshInstance.interceptors.request.use(setAuthorization);
 
 axiosCommonInstance.interceptors.response.use(null, refresh);
+axiosRefreshInstance.interceptors.request.use(null, refresh);
