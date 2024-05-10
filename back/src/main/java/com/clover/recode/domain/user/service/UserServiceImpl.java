@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
       }
     }
 
-    String newAccess = jwtUtil.createJwt(id, 10800000L);
+    String newAccess = jwtUtil.createJwt(id, 1800000L);
     String updatedRefreshToken = UUID.randomUUID().toString();
     jwtUtil.addRefreshEntity(id, updatedRefreshToken);
     response.setHeader("access_token", newAccess);
