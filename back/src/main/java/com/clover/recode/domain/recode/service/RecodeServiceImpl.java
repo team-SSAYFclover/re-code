@@ -154,15 +154,6 @@ public class RecodeServiceImpl implements RecodeService {
         List<Tag> tags = problem.getTags();
         for (Tag tag : tags) tagNames.add(tag.getName());
 
-<<<<<<< Updated upstream
-        return new RecodeRes(ProblemRegistReq.builder()
-                .problemNo(problem.getProblemNo())
-                .title(problem.getTitle())
-                .level(problem.getLevel())
-                .content(problem.getContent())
-                .tags(tagNames)
-                .build()
-=======
         return new RecodeRes(com.clover.recode.domain.recode.dto.Problem.builder()
                     .problemNo(problem.getProblemNo())
                     .title(problem.getTitle())
@@ -170,7 +161,6 @@ public class RecodeServiceImpl implements RecodeService {
                     .content(problem.getContent())
                     .tags(tagNames)
                     .build()
->>>>>>> Stashed changes
                 , sb.toString()
                 , answers);
     }
