@@ -42,10 +42,14 @@ public class SwaggerConfig {
                 .addSecuritySchemes("Authorization", bearer);
 
         Server server = new Server();
-        server.setUrl("https://www.recode-d210.com/api");
         Server server2 = new Server();
-        server2.setUrl("http://localhost:8080/api");
-        log.info("server name : {}", System.getenv("HOSTNAME"));
+        if (System.getenv("HOSTNAME") == null) {
+            server.setUrl("http://localhost:8080/api");
+            server2.setUrl("https://www.recode-d210.com/api");
+        } else {
+            server.setUrl("https://www.recode-d210.com/api");
+            server2.setUrl("http://localhost:8080/api");
+        }
 
         return new OpenAPI()
                 .servers(List.of(server, server2))
