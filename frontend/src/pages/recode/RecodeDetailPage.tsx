@@ -1,3 +1,5 @@
+import ErrorContent from '@/components/@common/ErrorContent';
+import LoadingContent from '@/components/@common/LoadingContent';
 import RecodeHeader from '@/components/recode/RecodeHeader';
 import RecodeSolveContent from '@/components/recode/RecodeSolveContent';
 import { useRecode } from '@/hooks/recode/useRecode';
@@ -17,14 +19,14 @@ const RecodeDetailPage = () => {
   }, [todayRecodeList, setTodayRecodes]);
 
   const { useGetRecode } = useRecode();
-  const { data: recode, isLoading } = useGetRecode(params.codeId || '');
+  const { data: recode, isLoading, isError } = useGetRecode(params.codeId || '');
 
   if (isLoading) {
-    return <div>로딩중</div>;
+    return <LoadingContent />;
   }
 
-  if (!recode) {
-    return <div>데이터 없음</div>;
+  if (!recode || isError) {
+    return <ErrorContent />;
   }
 
   return (
