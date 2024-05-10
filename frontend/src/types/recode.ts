@@ -1,11 +1,10 @@
-import { IProblemInfo, IRecodeProblemInfo } from './model';
+import { IProblemInfo } from '@/types/model';
+import { IRecodeProblemInfo } from './model';
 
-export interface IGetTodayRecodeListRes {
-  todayProblems: IProblemInfo[];
-}
+export type IGetTodayRecodeListRes = IProblemInfo[];
 
 export interface IGetRecodeRes {
-  problem: IRecodeProblemInfo;
+  problemDto: IRecodeProblemInfo;
   recode: string;
   answers: string[];
 }

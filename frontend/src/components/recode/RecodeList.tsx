@@ -6,10 +6,10 @@ const RecodeList = ({ review }: { review: IProblemInfo[] }) => {
     <div className="h-full overflow-y-scroll overflow-x-hidden">
       {review.map((item) => (
         <RecodeItem
-          key={item.problemId}
-          problemId={item.problemId}
+          key={item.codeId}
+          problemNo={item.problemNo}
           codeId={item.codeId}
-          name={item.name}
+          title={item.title}
           reviewCnt={item.reviewCnt}
           completed={item.completed}
         />
