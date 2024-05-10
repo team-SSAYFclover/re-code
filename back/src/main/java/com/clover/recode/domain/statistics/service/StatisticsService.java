@@ -14,4 +14,7 @@ public interface StatisticsService {
 
      List<TodayProblemDto> getReviews(Authentication authentication);
 
+    Integer updateRandom(Authentication authentication);
+
+    Integer updateSupplement(Authentication authentication);
 }
