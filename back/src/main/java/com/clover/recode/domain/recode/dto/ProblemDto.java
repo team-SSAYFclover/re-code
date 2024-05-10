@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Builder(toBuilder = true)
 @ToString
-public class Problem {
+public class ProblemDto {
     private Integer problemNo;      // 문제 번호 (백준 문제 번호)
     private String title;           // 문제 제목 (달이 차오른다, 가자...)
     private Integer level;          // 문제 등급 (브론즈/실버/골드...)
