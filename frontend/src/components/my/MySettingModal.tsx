@@ -24,8 +24,6 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
   const { data } = useGetUser(true);
   const { mutate } = usePatchUser();
 
-  console.log(data);
-
   const { name, avatarUrl } = userStore();
 
   const [modifyInfo, setModifyInfo] = useState<IModifyInfo>({
@@ -200,106 +198,107 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
   const contentCommonClass = 'flex justify-between pt-6 pb-2';
   const textCommonClass = 'text-sm leading-6';
 
-  console.log(modifyInfo);
   return (
     <>
       <div className="w-screen h-screen fixed top-0 left-0" onClick={() => onClose()}></div>
-      <div className="absolute top-16 right-4 w-72 bg-white rounded-md shadow-lg p-6 z-20">
-        <span className="text-lg">내 정보</span>
-        <div className="flex mx-2 border-b-[1px] border-[#E9E9E9] py-2">
-          <img
-            src={avatarUrl === '' ? defaultProfile : avatarUrl}
-            alt="profile"
-            className="w-8 mr-2"
-          />
-          <span>{name}</span>
-        </div>
-        <div className="pt-2">
-          <span className={textCommonClass}>익스텐션 연동 코드</span>
-          <div className="text-sm bg-[#F3F3F3] text-[#5A5A5A] py-3 my-1 rounded-md grid grid-cols-7 place-items-center">
-            <div className="col-span-1"></div>
-            <span className="col-span-5 break-all">{data?.uuid}</span>
-            <div
-              className="col-span-1 cursor-pointer"
-              onClick={() => handleCopyClipBoard(data?.uuid || '')}
-            >
-              <TbCopy />
+      <div className="w-full h-[0px] relative">
+        <div className="absolute w-72 right-[20px] bg-white rounded-md shadow-lg p-6 z-20">
+          <span className="text-lg">내 정보</span>
+          <div className="flex mx-2 border-b-[1px] border-[#E9E9E9] py-2">
+            <img
+              src={avatarUrl === '' ? defaultProfile : avatarUrl}
+              alt="profile"
+              className="w-8 mr-2 rounded-full"
+            />
+            <span>{name}</span>
+          </div>
+          <div className="pt-2">
+            <span className={textCommonClass}>익스텐션 연동 코드</span>
+            <div className="text-sm bg-[#F3F3F3] text-[#5A5A5A] py-3 my-1 rounded-md grid grid-cols-7 place-items-center">
+              <div className="col-span-1"></div>
+              <span className="col-span-5 break-all">{data?.uuid}</span>
+              <div
+                className="col-span-1 cursor-pointer"
+                onClick={() => handleCopyClipBoard(data?.uuid || '')}
+              >
+                <TbCopy />
+              </div>
             </div>
           </div>
-        </div>
-        <div className={contentCommonClass}>
-          <span className={textCommonClass}>복습 난이도 설정</span>
-          {!isModifyDifficulty ? (
-            <button className={modifyBtnClass} onClick={handleModifyDifficulty}>
-              수정
-            </button>
-          ) : (
-            <div className="text-sm">
-              <button className="text-gray-300 mr-1" onClick={handleCancelModifyDifficulty}>
-                취소
+          <div className={contentCommonClass}>
+            <span className={textCommonClass}>복습 난이도 설정</span>
+            {!isModifyDifficulty ? (
+              <button className={modifyBtnClass} onClick={handleModifyDifficulty}>
+                수정
               </button>
-              <button className="text-MAIN1" onClick={handleModifyDifficulty}>
-                저장
-              </button>
-            </div>
+            ) : (
+              <div className="text-sm">
+                <button className="text-gray-300 mr-1" onClick={handleCancelModifyDifficulty}>
+                  취소
+                </button>
+                <button className="text-MAIN1" onClick={handleModifyDifficulty}>
+                  저장
+                </button>
+              </div>
+            )}
+          </div>
+          {/* 버튼 */}
+          <div className="grid grid-cols-3 gap-2">
+            {difficultyBtns.map((btn, idx) => {
+              return (
+                <button
+                  className={`rounded-md font-bold h-8 ${modifyInfo.difficulty === btn.difficulty ? 'bg-MAIN1 text-MAIN2' : 'bg-MAIN2 text-MAIN1'}`}
+                  key={idx}
+                  onClick={() => handleDifficult(btn.difficulty)}
+                >
+                  {btn.text}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className={contentCommonClass}>
+            <span className={textCommonClass}>알림 설정</span>
+            <Toggle isOn={modifyInfo.notificationStatus} handleToggle={handleAlarmStatus} />
+          </div>
+          {modifyInfo.notificationStatus && (
+            <>
+              <div className={contentCommonClass}>
+                <span className={textCommonClass}>알림 시간</span>
+                {!isModifyAlarm ? (
+                  <button className={modifyBtnClass} onClick={handleModifyAlarm}>
+                    수정
+                  </button>
+                ) : (
+                  <div className="text-sm">
+                    <button className="text-gray-300 mr-1" onClick={handleCancelModifyAlarm}>
+                      취소
+                    </button>
+                    <button className="text-MAIN1" onClick={handleModifyAlarm}>
+                      저장
+                    </button>
+                  </div>
+                )}
+              </div>
+              {!isModifyAlarm ? (
+                <div className="text-right">
+                  {modifyInfo.notifHour}:
+                  {Number(modifyInfo.notifMinute) < 10
+                    ? '0' + Number(modifyInfo.notifMinute)
+                    : Number(modifyInfo.notifMinute)}
+                  &nbsp;
+                  {Number(modifyInfo.notifHour) < 12 ? 'AM' : 'PM'}
+                </div>
+              ) : (
+                <TimePicker
+                  hour={modifyInfo.notifHour}
+                  minute={modifyInfo.notifMinute}
+                  setModifyInfo={setModifyInfo}
+                />
+              )}
+            </>
           )}
         </div>
-        {/* 버튼 */}
-        <div className="grid grid-cols-3 gap-2">
-          {difficultyBtns.map((btn, idx) => {
-            return (
-              <button
-                className={`rounded-md font-bold h-8 ${modifyInfo.difficulty === btn.difficulty ? 'bg-MAIN1 text-MAIN2' : 'bg-MAIN2 text-MAIN1'}`}
-                key={idx}
-                onClick={() => handleDifficult(btn.difficulty)}
-              >
-                {btn.text}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className={contentCommonClass}>
-          <span className={textCommonClass}>알림 설정</span>
-          <Toggle isOn={modifyInfo.notificationStatus} handleToggle={handleAlarmStatus} />
-        </div>
-        {modifyInfo.notificationStatus && (
-          <>
-            <div className={contentCommonClass}>
-              <span className={textCommonClass}>알림 시간</span>
-              {!isModifyAlarm ? (
-                <button className={modifyBtnClass} onClick={handleModifyAlarm}>
-                  수정
-                </button>
-              ) : (
-                <div className="text-sm">
-                  <button className="text-gray-300 mr-1" onClick={handleCancelModifyAlarm}>
-                    취소
-                  </button>
-                  <button className="text-MAIN1" onClick={handleModifyAlarm}>
-                    저장
-                  </button>
-                </div>
-              )}
-            </div>
-            {!isModifyAlarm ? (
-              <div className="text-right">
-                {modifyInfo.notifHour}:
-                {Number(modifyInfo.notifMinute) < 10
-                  ? '0' + Number(modifyInfo.notifMinute)
-                  : Number(modifyInfo.notifMinute)}
-                &nbsp;
-                {Number(modifyInfo.notifHour) < 12 ? 'AM' : 'PM'}
-              </div>
-            ) : (
-              <TimePicker
-                hour={modifyInfo.notifHour}
-                minute={modifyInfo.notifMinute}
-                setModifyInfo={setModifyInfo}
-              />
-            )}
-          </>
-        )}
       </div>
     </>
   );
