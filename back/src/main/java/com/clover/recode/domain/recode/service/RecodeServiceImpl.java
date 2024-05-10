@@ -194,6 +194,7 @@ public class RecodeServiceImpl implements RecodeService {
         recode.setReviewTime(submitTime.plusDays(addDays));
 
         recodeRepository.save(recode);
+        codeRepository.save(code);
 
         //문제를 풀고 난 후, 통계 업데이트 해주기
 
