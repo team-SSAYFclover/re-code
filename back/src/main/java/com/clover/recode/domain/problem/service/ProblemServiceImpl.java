@@ -14,7 +14,6 @@ import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -92,11 +91,10 @@ public class ProblemServiceImpl implements ProblemService {
 
     //사용자별 문제 조회
     @Override
-    public Page<ProblemRes> findProblemsByUserId(Long userId, Authentication authentication, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword) {
+    public Page<ProblemRes> findProblemsByUserId(Authentication authentication, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
-
-        Page<Problem> problemsPage = codeCustomRepository.findProblemsByUserId(userId, pageable, start, end, tags, keyword);
+        Page<Problem> problemsPage = codeCustomRepository.findProblemsByUserId(customUserDetails.getId(), pageable, start, end, tags, keyword);
 
         // Page<Problem>을 Page<ProblemRes>로 변환
         return problemsPage.map(problem -> {
@@ -163,7 +161,7 @@ public class ProblemServiceImpl implements ProblemService {
 
 
 //    @Override
-    public ProblemDetailRes getProblemDetails(Long userId, Authentication authentication, Integer problemNo) {
+    public ProblemDetailRes getProblemDetails(Authentication authentication, Integer problemNo) {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         // 문제 정보 조회해서 DTO(ProblemRes)에 담기
@@ -180,7 +178,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .build();
 
         // 코드 정보 조회해서 List로 반환
-        List<CodeRes> codesRes = findCodesByProblemNoAndUserId(problemNo, userId);
+        List<CodeRes> codesRes = findCodesByProblemNoAndUserId(problemNo, customUserDetails.getId());
 
         // 문제 정보와 코드 정보 합치기
 
