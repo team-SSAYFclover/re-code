@@ -2,7 +2,6 @@ package com.clover.recode.domain.problem.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -13,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ProblemDetailRes {
 
-    private ProblemRes problemRes;
-    private List<CodeRes> codeRes;
+    private ProblemResList problemResList;
+    private String content;
+    private List<CodeResList> codeReLists;
 
 }

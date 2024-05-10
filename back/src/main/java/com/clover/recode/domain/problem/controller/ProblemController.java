@@ -50,7 +50,7 @@ public class ProblemController {
     ){
 
         return ResponseEntity.ok(ResultResponse.of(USER_PROBLEM_SUCCESS,
-                problemService.findProblemsByUserId(authentication,pageable, start, end, tag, keyword)));
+                problemService.findUserProblems(authentication,pageable, start, end, tag, keyword)));
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -60,8 +60,5 @@ public class ProblemController {
         return ResponseEntity.ok(ResultResponse.of(PROBLEM_DETAIL_SUCCESS,
                 problemService.getProblemDetails(authentication, problemNo)));
     }
-
-
-
 
 }

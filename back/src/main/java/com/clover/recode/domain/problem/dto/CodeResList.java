@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 @ToString
 @AllArgsConstructor
-public class CodeRes {
+public class CodeResList {
     private Long id;
     private String name;    // 코드 제목
     private String content; // 코드 내용
-    private LocalDateTime createdTime; // 생성 시간
+    private LocalDateTime submitTime; // 생성 시간
 }
