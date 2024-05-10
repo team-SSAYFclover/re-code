@@ -32,7 +32,9 @@ public enum ResultCode {
     REGIST_FCM_TOKEN_SUCCESS(201, "FCM 토큰 등록에 성공했습니다."),
 
     //사용자 문제 조회
-    USER_PROBLEM_SUCCESS(200, "사용자별 문제 조회에 성공했습니다.");
+    USER_PROBLEM_SUCCESS(200, "사용자별 문제 조회에 성공했습니다."),
+
+    PROBLEM_DETAIL_SUCCESS(200, "문제 상세 조회에 성공했습니다.");
 
 
 
