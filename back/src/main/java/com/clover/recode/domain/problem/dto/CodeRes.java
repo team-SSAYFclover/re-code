@@ -1,7 +1,13 @@
 package com.clover.recode.domain.problem.dto;
 
-import java.time.LocalDateTime;
+import lombok.*;
 
+import java.time.LocalDateTime;
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@ToString
+@AllArgsConstructor
 public class CodeRes {
     private Long id;
     private String name;    // 코드 제목

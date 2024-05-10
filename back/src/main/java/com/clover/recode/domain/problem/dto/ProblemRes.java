@@ -1,9 +1,6 @@
 package com.clover.recode.domain.problem.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,6 +8,7 @@ import java.util.List;
 @Setter
 @Builder(toBuilder = true)
 @ToString
+@AllArgsConstructor
 public class ProblemRes {
 
     private Integer problemNo;      // 문제 번호 (백준 문제 번호)
