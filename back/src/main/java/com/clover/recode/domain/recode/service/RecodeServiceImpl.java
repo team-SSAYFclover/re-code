@@ -1,6 +1,5 @@
 package com.clover.recode.domain.recode.service;
 
-import com.clover.recode.domain.problem.dto.ProblemRegistReq;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.problem.entity.Tag;
@@ -9,11 +8,8 @@ import com.clover.recode.domain.recode.dto.*;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
-import com.clover.recode.domain.statistics.entity.Statistics;
-import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.entity.WeekReview;
 import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
-import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
@@ -30,7 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_EXISTS;
 
@@ -154,7 +149,7 @@ public class RecodeServiceImpl implements RecodeService {
         List<Tag> tags = problem.getTags();
         for (Tag tag : tags) tagNames.add(tag.getName());
 
-        return new RecodeRes(com.clover.recode.domain.recode.dto.Problem.builder()
+        return new RecodeRes(ProblemDto.builder()
                     .problemNo(problem.getProblemNo())
                     .title(problem.getTitle())
                     .level(problem.getLevel())
