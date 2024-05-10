@@ -24,6 +24,7 @@ public class StatisticsController {
 
     @Operation(summary = "메인화면의 모든 통계들 정보 조회")
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("")
     public ResponseEntity<ResultResponse> getStatisticsList(Authentication authentication) {
         return ResponseEntity.ok(ResultResponse.of(GET_Statistics_SUCCESS, statisticsService.getStatisticsList(authentication)));
     }
