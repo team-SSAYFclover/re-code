@@ -1,6 +1,6 @@
 package com.clover.recode.domain.recode.service;
 
-import com.clover.recode.domain.problem.dto.ProblemDto;
+import com.clover.recode.domain.problem.dto.ProblemRegistReq;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.problem.entity.Tag;
@@ -118,7 +118,7 @@ public class RecodeServiceImpl implements RecodeService {
         List<Tag> tags = problem.getTags();
         for (Tag tag : tags) tagNames.add(tag.getName());
 
-        return new RecodeRes(ProblemDto.builder()
+        return new RecodeRes(ProblemRegistReq.builder()
                 .problemNo(problem.getProblemNo())
                 .title(problem.getTitle())
                 .level(problem.getLevel())

@@ -1,7 +1,7 @@
 package com.clover.recode.domain.statistics.scheduler;
 
 import com.clover.recode.domain.problem.entity.Code;
-import com.clover.recode.domain.problem.repository.CodeCustomRepository;
+import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.entity.QRecode;
 import com.clover.recode.domain.statistics.entity.QStatistics;
 import com.clover.recode.domain.statistics.entity.QWeekReview;
@@ -9,13 +9,9 @@ import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
-import com.clover.recode.domain.user.repository.UserRepository;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -31,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class StatisticsScheduler {
 
-    private final CodeCustomRepository codeCustomRepository;
+    private final CodeRepository codeRepository;
     private final TodayProblemRepository todayProblemRepository;
     private final StatisticsRepository statisticsRepository;
 
@@ -42,7 +37,7 @@ public class StatisticsScheduler {
     public void updateTodayProblem() {
 
             LocalDate today = LocalDate.now();
-            List<Code> codesToReview = codeCustomRepository.findByReviewStatusFalseAndReviewTimeBefore(today);
+            List<Code> codesToReview = codeRepository.findByReviewStatusFalseAndReviewTimeBefore(today);
 
             for(Code code: codesToReview) {
                     TodayProblem todayProblem = TodayProblem.builder()
