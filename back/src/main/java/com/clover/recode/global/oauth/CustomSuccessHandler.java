@@ -27,7 +27,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     Long id = customUserDetails.getId();
 
-    String access = jwtUtil.createJwt(id, 10800000L);
+    String access = jwtUtil.createJwt(id, 1800000L);
     String refresh = UUID.randomUUID().toString();
     jwtUtil.addRefreshEntity(id, refresh);
 
