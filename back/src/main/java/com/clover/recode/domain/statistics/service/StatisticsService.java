@@ -10,7 +10,7 @@ public interface StatisticsService {
 
     StatisticsListRes getStatisticsList(Authentication authentication);
 
-    Integer getReviewCnt(Authentication authentication);
+    Integer getReviewCnt(Long userId);
 
      List<TodayProblemDto> getReviews(Authentication authentication);
 
