@@ -1,5 +1,6 @@
 package com.clover.recode.domain.problem.entity;
 
+import com.clover.recode.domain.problem.dto.CodePatchReq;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.user.entity.Setting;
@@ -39,7 +40,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         private User user;
 
         @JoinColumn(name = "problem_id")
-        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.LAZY)
         private Problem problem;
 
         @JoinColumn(name = "recode_id")
@@ -56,10 +57,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         private String content;
 
         @ColumnDefault("false")
-        private boolean deleted;
+        private Boolean deleted;
 
         @ColumnDefault("true")
-        private boolean reviewStatus;
+        private Boolean reviewStatus;
 
 
         @CreatedDate
@@ -77,5 +78,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @PreUpdate
         public void preUpdate() {
             updatedTime = LocalDateTime.now();
+        }
+
+
+        public void updateCode(CodePatchReq codePatchReq) {
+            if(codePatchReq.getReviewStatus() != null)
+                this.reviewStatus = codePatchReq.getReviewStatus();
+            if(codePatchReq.getName() != null)
+                this.name = codePatchReq.getName();
         }
     }
