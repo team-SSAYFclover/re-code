@@ -187,6 +187,12 @@ public class UserServiceImpl implements UserService {
 
     Statistics statistics= Statistics.builder()
             .user(user)
+            .ranking(100)
+            .supplementaryNo(1806)
+            .randomNo(2178)
+            .supplementaryTitle("부분합")
+            .randomTitle("미로 탐색")
+            .sequence(0)
             .build();
 
     statisticsRepository.save(statistics);
