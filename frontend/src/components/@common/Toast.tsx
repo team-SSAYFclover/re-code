@@ -20,7 +20,7 @@ const commonStyle: CSSProperties = {
   color: 'white',
   textAlign: 'center',
   margin: 'auto',
-  width: '300px',
+  width: '400px',
   height: 'auto',
   padding: '0px 10px',
   fontSize: '15px',

@@ -38,36 +38,13 @@ const Navbar = () => {
     },
   ];
 
-  if (currentPath.includes('recode')) {
-    return (
-      <nav className="w-16 h-full min-w-[64px] shadow-lg relative">
-        <div className="flex justify-center items-center h-20"></div>
-        <div className="py-4">
-          {navInfo.map((nav, idx) => {
-            return (
-              <div
-                key={idx}
-                className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath.includes(nav.url) && 'text-MAIN1 bg-MAIN2'}`}
-                onClick={() => navigate(`/${nav.url}`)}
-              >
-                <div className="text-[22px]">{nav.icon}</div>
-              </div>
-            );
-          })}
-
-          <button className="flex justify-center items-center absolute bottom-0 left-0 right-0 h-12 m-3 text-BLACK font-bold">
-            <div className="text-lg">
-              <LuLogOut />
-            </div>
-          </button>
-        </div>
-      </nav>
-    );
-  }
+  const isRecode = currentPath.includes('recode');
 
   return (
-    <nav className="w-60 h-full min-w-[200px] shadow-lg relative">
-      <div className="flex justify-center items-center h-20">re:code</div>
+    <nav
+      className={` ${isRecode ? 'w-16  min-w-[64px]' : 'w-60 min-w-[200px]'} h-full shadow-lg relative`}
+    >
+      <div className="flex justify-center items-center h-20">{isRecode ? '' : 'recode'}</div>
       <div className="py-4">
         {navInfo.map((nav, idx) => {
           return (
@@ -76,8 +53,8 @@ const Navbar = () => {
               className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath.includes(nav.url) && 'text-MAIN1 bg-MAIN2'}`}
               onClick={() => navigate(`/${nav.url}`)}
             >
-              <div className="text-lg">{nav.icon}</div>
-              <span className="text-sm ml-3">{nav.label}</span>
+              <div className={` ${isRecode ? 'text-[22px]' : 'text-lg'}`}>{nav.icon}</div>
+              {!isRecode && <span className="text-sm ml-3">{nav.label}</span>}
             </div>
           );
         })}
@@ -89,7 +66,7 @@ const Navbar = () => {
           <div className="text-lg">
             <LuLogOut />
           </div>
-          <span className="text-sm ml-3">로그아웃</span>
+          {!isRecode && <span className="text-sm ml-3">로그아웃</span>}
         </button>
       </div>
     </nav>

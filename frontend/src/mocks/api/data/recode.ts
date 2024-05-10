@@ -4,71 +4,67 @@ import { IGetRecodeRes, IGetTodayRecodeListRes } from '@/types/recode';
 export const getTodayRecodeList: APIResponse<IGetTodayRecodeListRes> = {
   status: 200,
   message: '오늘의 복습리스트 조회에 성공했습니다.',
-  data: {
-    todayProblems: [
-      {
-        problemId: 3302,
-        codeId: 10,
-        name: 'Job Scheduling',
-        reviewCnt: 2,
-        completed: true,
-      },
-      {
-        problemId: 11779,
-        codeId: 12,
-        name: '최소비용 구하기 2',
-        reviewCnt: 2,
-        completed: true,
-      },
-      {
-        problemId: 1486,
-        codeId: 3,
-        name: '등산',
-        reviewCnt: 1,
-        completed: false,
-      },
-      {
-        problemId: 1261,
-        codeId: 5,
-        name: '알고스팟',
-        reviewCnt: 2,
-        completed: true,
-      },
-      {
-        problemId: 11559,
-        codeId: 13,
-        name: 'Puyo Puyo',
-        reviewCnt: 1,
-        completed: false,
-      },
-      {
-        problemId: 1197,
-        codeId: 133,
-        name: '최소 스패닝 트리',
-        reviewCnt: 3,
-        completed: false,
-      },
-      {
-        problemId: 17471,
-        codeId: 29,
-        name: '게리맨더링',
-        reviewCnt: 1,
-        completed: true,
-      },
-    ],
-  },
+  data: [
+    {
+      problemNo: 3302,
+      codeId: 10,
+      title: 'Job Scheduling',
+      reviewCnt: 2,
+      completed: true,
+    },
+    {
+      problemNo: 11779,
+      codeId: 12,
+      title: '최소비용 구하기 2',
+      reviewCnt: 2,
+      completed: true,
+    },
+    {
+      problemNo: 1486,
+      codeId: 3,
+      title: '등산',
+      reviewCnt: 1,
+      completed: false,
+    },
+    {
+      problemNo: 1261,
+      codeId: 5,
+      title: '알고스팟',
+      reviewCnt: 2,
+      completed: true,
+    },
+    {
+      problemNo: 11559,
+      codeId: 13,
+      title: 'Puyo Puyo',
+      reviewCnt: 1,
+      completed: false,
+    },
+    {
+      problemNo: 1197,
+      codeId: 133,
+      title: '최소 스패닝 트리',
+      reviewCnt: 3,
+      completed: false,
+    },
+    {
+      problemNo: 17471,
+      codeId: 29,
+      title: '게리맨더링',
+      reviewCnt: 1,
+      completed: true,
+    },
+  ],
 };
 
 export const getRecode: APIResponse<IGetRecodeRes> = {
   status: 200,
   message: '레코드 조회에 성공했습니다.',
   data: {
-    problem: {
-      problemId: 16234,
-      codeId: 12,
-      name: '인구 이동',
+    problemDto: {
+      problemNo: 16234,
+      title: '인구 이동',
       level: 12,
-      completed: false,
       reviewCnt: 3,
       tags: ['구현', '그래프 이론', '그래프 탐색', '시뮬레이션', '너비 우선 탐색'],
       content:
