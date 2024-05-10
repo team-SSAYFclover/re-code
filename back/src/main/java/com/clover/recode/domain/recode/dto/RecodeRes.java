@@ -1,6 +1,5 @@
 package com.clover.recode.domain.recode.dto;
 
-import com.clover.recode.domain.problem.dto.ProblemRegistReq;
 import lombok.*;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class RecodeRes {
-    private ProblemRegistReq problemRegistReq;
+    private Problem problem;
     private String recode;
     private List<String> answers;
 }
