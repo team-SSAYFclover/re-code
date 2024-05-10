@@ -1,5 +1,6 @@
 package com.clover.recode.domain.problem.service;
 
+import com.clover.recode.domain.problem.dto.CodePatchReq;
 import com.clover.recode.domain.problem.dto.ProblemCodeRegistReq;
 import com.clover.recode.domain.problem.dto.ProblemDetailRes;
 import com.clover.recode.domain.problem.dto.ProblemResList;
@@ -16,6 +17,10 @@ public interface ProblemService {
     Page<ProblemResList> findUserProblems(Authentication authentication, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword);
 
     public ProblemDetailRes getProblemDetails(Authentication authentication, Integer problemNo);
+
+    void patchCode(Long codeId, CodePatchReq codePatchReq, Authentication authentication);
+
+    void deleteCode(Long codeId, Authentication authentication);
 
 
 }
