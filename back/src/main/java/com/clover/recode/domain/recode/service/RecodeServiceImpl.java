@@ -8,6 +8,14 @@ import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.dto.*;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
+import com.clover.recode.domain.statistics.entity.AlgoReview;
+import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.entity.TodayProblem;
+import com.clover.recode.domain.statistics.entity.WeekReview;
+import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
+import com.clover.recode.domain.statistics.repository.StatisticsRepository;
+import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
+import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_EXISTS;
 
@@ -32,12 +42,18 @@ public class RecodeServiceImpl implements RecodeService {
     private final RestTemplate restTemplate;
     private final RecodeRepository recodeRepository;
     private final CodeRepository codeRepository;
+    private final TodayProblemRepository todayProblemRepository;
+    private final WeekReviewRepository weekReviewRepository;
+    private final AlgoReviewRepository algoReviewRepository;
 
     @Override
     @Transactional
     public void saveRecode(Code code) {
 
-        List<Message> prompts = List.of(new Message("user", EnglishPrompt.prompt + code.getContent() + "\n```"));
+        List<Message> prompts = new ArrayList<>();
+        prompts.add(new Message("system", EnglishPrompt.systemPrompt));
+        prompts.add(new Message("user", EnglishPrompt.answerPrompt + code.getContent() + "\n```"));
+
         GptRequestDto request = new GptRequestDto("gpt-3.5-turbo-0125", prompts, 1, 1, 0, 0);
 //        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
@@ -82,35 +98,54 @@ public class RecodeServiceImpl implements RecodeService {
         StringBuilder sb = new StringBuilder();
         List<String> answers = new ArrayList<>();
         int length = content.length();
-        for (int i = 0; i < length; i++) {
+        int start = 0;
+        int end = length - 1;
+        if (length > 4 && content.startsWith("```\n")) {
+            start = 4;
+
+            if (content.endsWith("\n```"))
+                end = length - 4;
+            else
+                log.error("이상한 recode : {}", content);
+        }
+
+        mainLoop: for (int i = start; i < end; i++) {
             char ch = content.charAt(i);
 
             if (ch == '‽') {
-                int blockDifficulty = 1;
+                int blockDifficultyStart = 1;
                 while (content.charAt(i + 1) == '‽') {
-                    blockDifficulty++;
+                    blockDifficultyStart++;
                     i++;
                 }
 
-                if (blockDifficulty == userDifficulty) {
-                    sb.append("‽").append("▢");
-
+                if (blockDifficultyStart == userDifficulty) {
                     StringBuilder answer = new StringBuilder();
                     while (content.charAt(i + 1) != '▢') {
                         answer.append(content.charAt(i + 1));
                         i++;
+
+                        if (i == end - 1 || content.charAt(i + 1) == '‽') {
+                            sb.append(answer);
+                            continue mainLoop;
+                        }
                     }
 
+                    sb.append("‽").append("▢");
                     answers.add(answer.toString());
                 } else {
                     while (content.charAt(i + 1) != '▢') {
                         sb.append(content.charAt(i + 1));
                         i++;
+
+                        if (i == end - 1 || content.charAt(i + 1) == '‽')
+                            continue mainLoop;
                     }
                 }
 
-                i += blockDifficulty;
-            } else
+                while (content.charAt(i + 1) == '▢')
+                    i++;
+            } else if (ch != '▢')
                 sb.append(ch);
         }
 
@@ -164,6 +199,70 @@ public class RecodeServiceImpl implements RecodeService {
 
         recodeRepository.save(recode);
 
+        //문제를 풀고 난 후, 통계 업데이트 해주기
+
+        //오늘의 복습문제 is_complete true로 변경
+       todayProblemRepository.findById(codeId).ifPresent(todayProblem -> {
+
+           todayProblem.setCompleted(true);
+
+           todayProblemRepository.save(todayProblem);
+
+        });
+
+        //매주 복습량 테이블 오늘 날짜 복습량 +1 변경
+        Long statisticsId= code.getUser().getStatistics().getId();
+        weekReviewRepository.findByIdAndDateToday(statisticsId).ifPresentOrElse(weekReview -> {
+
+            int count= weekReview.getCount();
+            count++;
+            weekReview.setCount(count);
+
+        }, ()->{
+
+        WeekReview weekReview= WeekReview.builder()
+                .statistics(code.getUser().getStatistics())
+                .date(LocalDate.now())
+                .count(1)
+                .build();
+
+
+        int sqn= weekReview.getStatistics().getSequence();
+        sqn++;
+        weekReview.getStatistics().setSequence(sqn);
+
+        weekReviewRepository.save(weekReview);
+
+        });
+
+
+
+
+        //알고리즘 별 복습한 문제 +1 변경
+        List<Tag> tags= code.getProblem().getTags();
+        for(Tag tag: tags)
+            log.info(tag.getId().toString());
+
+        AlgoReview algoReview= algoReviewRepository.findById(statisticsId).orElseThrow();
+
+        for(Tag tag: tags){
+
+            log.info("tag..getId(): "+ tag.getId());
+            switch (tag.getId()){
+                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
+                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
+                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
+                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
+                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
+                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
+                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
+                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
+
+            }
+
+            algoReviewRepository.save(algoReview);
+
+        }
     }
 
 }

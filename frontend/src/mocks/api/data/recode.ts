@@ -86,3 +86,9 @@ export const getRecode: APIResponse<IGetRecodeRes> = {
     ],
   },
 };
+
+export const completeRecode: APIResponse<null> = {
+  status: 201,
+  message: '레코드 수정에 성공했습니다.',
+  data: null,
+};

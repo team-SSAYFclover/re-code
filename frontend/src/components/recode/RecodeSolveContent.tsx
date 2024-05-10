@@ -1,3 +1,4 @@
+import { useRecode } from '@/hooks/recode/useRecode';
 import recodeListStore from '@/stores/recodeListStore';
 import { IGetRecodeRes } from '@/types/recode';
 import { Resizable } from 're-resizable';
@@ -12,31 +13,30 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
   const params = useParams();
   const navigate = useNavigate();
   const { todayRecodes } = recodeListStore();
+  const { usePutRecode } = useRecode();
+  const { mutate } = usePutRecode(params.codeId || '');
+
   const specialChar = '‽▢'; // 특수 문자 설정
   const codeParts = recode.recode.split(specialChar);
   const [inputs, setInputs] = useState<string[]>(Array(codeParts.length - 1).fill('')); // 빈칸 배열
+  const [isCorrect, setIsCorrect] = useState<boolean[]>(
+    Array.from({ length: recode.answers.length }, () => false)
+  );
 
   const completedCnt = todayRecodes.filter((x) => x.completed).length;
 
-  const handleInputChange = (index: number, value: string) => {
-    setInputs(inputs.map((input, i) => (i === index ? value : input)));
-  };
-
   const resetInput = () => {
-    setInputs(inputs.map(() => ''));
+    setInputs(
+      inputs.map((input, idx) => {
+        if (isCorrect[idx]) {
+          return input;
+        }
+        return '';
+      })
+    );
   };
 
-  const completeRepeat = () => {
-    // @TODO: 복습 완료 api 호출
-  };
-
-  const skip = () => {
-    // @TODO: 건너뛰기 구현
-    if (completedCnt === todayRecodes.length) {
-      Toast.error('더이상 풀 문제가 없어요.');
-      return;
-    }
-
+  const getNextIdx = () => {
     let cnt = 0;
     let idx = todayRecodes.findIndex((recode) => recode.codeId === Number(params.codeId)) + 1;
 
@@ -53,6 +53,38 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
       idx++;
     }
 
+    return idx;
+  };
+
+  const completeRepeat = () => {
+    for (let ele of isCorrect) {
+      if (!ele) {
+        Toast.error('빈칸을 모두 채워야 복습을 완료할 수 있습니다.');
+        return;
+      }
+    }
+
+    mutate(undefined, {
+      onSuccess: () => {
+        if (completedCnt + 1 === todayRecodes.length) {
+          Toast.error('더이상 풀 문제가 없어요.');
+          navigate('/recode');
+          return;
+        } else {
+          const idx = getNextIdx();
+          navigate(`/recode/${todayRecodes[idx].codeId}`);
+        }
+      },
+    });
+  };
+
+  const skip = () => {
+    if (completedCnt === todayRecodes.length) {
+      Toast.error('더이상 풀 문제가 없어요.');
+      return;
+    }
+
+    const idx = getNextIdx();
     navigate(`/recode/${todayRecodes[idx].codeId}`);
   };
 
@@ -93,8 +125,10 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
           <RecodeSolveBox
             inputs={inputs}
             codeParts={codeParts}
-            handleInputChange={handleInputChange}
+            setInputs={setInputs}
             answer={recode.answers}
+            isCorrect={isCorrect}
+            setIsCorrect={setIsCorrect}
           />
         </div>
       </div>

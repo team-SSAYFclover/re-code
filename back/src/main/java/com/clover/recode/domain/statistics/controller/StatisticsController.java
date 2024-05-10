@@ -24,23 +24,23 @@ public class StatisticsController {
 
     @Operation(summary = "메인화면의 모든 통계들 정보 조회")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{userId}")
-    public ResponseEntity<ResultResponse> getStatisticsList(@PathVariable("userId") Long userId, Authentication authentication) {
-        return ResponseEntity.ok(ResultResponse.of(GET_Statistics_SUCCESS, statisticsService.getStatisticsList(userId, authentication)));
+    @GetMapping("/")
+    public ResponseEntity<ResultResponse> getStatisticsList(Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_Statistics_SUCCESS, statisticsService.getStatisticsList(authentication)));
     }
 
     @Operation(summary = "오늘의 복습문제 갯수 조회")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/today/reviews/cnt/{userId}")
-    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable("userId") Long userId, Authentication authentication) {
-        return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviewCnt(userId, authentication)));
+    @GetMapping("/today/reviews/cnt")
+    public ResponseEntity<ResultResponse> getReviewsCnt(Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviewCnt(authentication)));
     }
 
     @Operation(summary = "오늘의 복습문제 조회")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/today/reviews/{userId}")
-    public ResponseEntity<ResultResponse> getReviews(@PathVariable("userId") Long userId, Authentication authentication) {
-        return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.getReviews(userId, authentication)));
+    @GetMapping("/today/reviews")
+    public ResponseEntity<ResultResponse> getReviews(Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.getReviews(authentication)));
     }
 
 }

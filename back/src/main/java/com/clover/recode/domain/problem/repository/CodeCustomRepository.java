@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface CodeCustomRepository {
 
-    List<Code> findByReviewStatusFalseAndReviewTimeBefore(LocalDate today);
+    List<Code> findByReviewStatusFalseAndReviewTimeBefore();
 //    List<Problem> findProblemsByUserId(Long userId);
 
     Page<Problem> findProblemsByUserId(Long userId, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword);

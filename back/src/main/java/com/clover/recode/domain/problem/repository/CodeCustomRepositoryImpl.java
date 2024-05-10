@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,16 +19,16 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Code> findByReviewStatusFalseAndReviewTimeBefore(LocalDate today) {
+    public List<Code> findByReviewStatusFalseAndReviewTimeBefore() {
 
-        QCode code= QCode.code;
+        LocalDate today= LocalDate.now();
         QRecode recode= QRecode.recode;
+        QCode code= QCode.code;
 
         return jpaQueryFactory.selectFrom(code)
-                .join(code.recode, recode)
                 .where(code.deleted.eq(false),
                     code.reviewStatus.eq(true),
-                    recode.reviewTime.before(today.atStartOfDay().plusDays(1)))
+                        recode.reviewTime.before(today.atStartOfDay().plusDays(1)))
                 .fetch();
 
     }

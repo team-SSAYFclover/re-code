@@ -6,11 +6,17 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springdoc.core.models.GroupedOpenApi;
+import io.swagger.v3.oas.models.servers.Server;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
+import java.util.List;
+
+@Slf4j
 @Configuration
 public class SwaggerConfig {
 
@@ -35,7 +41,18 @@ public class SwaggerConfig {
         Components components = new Components()
                 .addSecuritySchemes("Authorization", bearer);
 
+        Server server = new Server();
+        Server server2 = new Server();
+        if (System.getenv("HOSTNAME") == null) {
+            server.setUrl("http://localhost:8080/api");
+            server2.setUrl("https://www.recode-d210.com/api");
+        } else {
+            server.setUrl("https://www.recode-d210.com/api");
+            server2.setUrl("http://localhost:8080/api");
+        }
+
         return new OpenAPI()
+                .servers(List.of(server, server2))
                 .components(components)
                 .addSecurityItem(addSecurityItem)
                 .info(info);
