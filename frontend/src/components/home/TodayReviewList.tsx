@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface TodayReviewListProps {
+  codeId: number;
   problemNo: number;
   problemTitle: string;
   count: number;
@@ -9,6 +10,7 @@ interface TodayReviewListProps {
 }
 
 const TodayReviewList: React.FC<TodayReviewListProps> = ({
+  codeId,
   problemNo,
   problemTitle,
   count,
@@ -27,7 +29,7 @@ const TodayReviewList: React.FC<TodayReviewListProps> = ({
     </div>
   ) : (
     <div
-      onClick={() => navigate(`/recode/${problemNo}`)}
+      onClick={() => navigate(`/recode/${codeId}`)}
       className="w-full h-fit m-1 p-2 rounded-lg flex-row bg-gray-50 cursor-pointer"
     >
       <div className="flex justify-between">
