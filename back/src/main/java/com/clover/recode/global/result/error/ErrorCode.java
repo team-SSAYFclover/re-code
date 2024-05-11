@@ -28,6 +28,7 @@ public enum ErrorCode {
 
     //Code
     Already_REGIST_CODE(409, "이미 등록한 코드입니다."),
+    CODE_NOT_EXISTS(404, "해당 코드를 찾을 수 없습니다."),
 
 
     //통계

@@ -24,16 +24,20 @@ public class StatisticsController {
 
     @Operation(summary = "메인화면의 모든 통계들 정보 조회")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<ResultResponse> getStatisticsList(Authentication authentication) {
         return ResponseEntity.ok(ResultResponse.of(GET_Statistics_SUCCESS, statisticsService.getStatisticsList(authentication)));
     }
 
     @Operation(summary = "오늘의 복습문제 갯수 조회")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/today/reviews/cnt")
-    public ResponseEntity<ResultResponse> getReviewsCnt(Authentication authentication) {
-        return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, statisticsService.getReviewCnt(authentication)));
+    @GetMapping("/{userId}/reviews/cnt")
+    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable Long userId) {
+        Integer count = statisticsService.getReviewCnt(userId);
+        if(count == null)
+            count = 0;
+
+        return ResponseEntity.ok(ResultResponse.of(GET_ReviewCnt_SUCCESS, count));
     }
 
     @Operation(summary = "오늘의 복습문제 조회")
@@ -42,5 +46,20 @@ public class StatisticsController {
     public ResponseEntity<ResultResponse> getReviews(Authentication authentication) {
         return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.getReviews(authentication)));
     }
+
+    @Operation(summary = "랜덤문제 업데이트")
+    @ResponseStatus(HttpStatus.CREATED)
+    @GetMapping("/problem/random")
+    public ResponseEntity<ResultResponse> updateRandom(Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.updateRandom(authentication)));
+    }
+
+    @Operation(summary = "보충문제 업데이트")
+    @ResponseStatus(HttpStatus.CREATED)
+    @GetMapping("/problem/supplement")
+    public ResponseEntity<ResultResponse> updateSupplement(Authentication authentication) {
+        return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.updateSupplement(authentication)));
+    }
+
 
 }

@@ -37,7 +37,7 @@ const Header = () => {
             <img
               src={avatarUrl === '' ? defaultProfile : avatarUrl}
               alt="profile"
-              className="w-8 mx-4 cursor-pointer z-10"
+              className="w-8 mx-4 cursor-pointer z-10 rounded-full"
               onClick={() => handleOpen('setting')}
             />
           </>

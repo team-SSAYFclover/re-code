@@ -28,6 +28,7 @@ const userStore = create(
           avatarUrl: '',
         });
         localStorage.setItem('RECODE_ACCESS_TOKEN', '');
+        localStorage.setItem('RECODE_USER_STORE', '');
       },
     }),
     {

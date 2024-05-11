@@ -4,7 +4,7 @@ let bojData = null;
  * 백준 페이지에 디렉토리 선택 Modal을 추가하는 함수
  */
 function addModal() {
-  let body = document.querySelector("body");
+  let body = document.querySelector('body');
 
   body.innerHTML =
     body.innerHTML +
@@ -16,7 +16,7 @@ function addModal() {
 			<div id="recodebackdrop" class="" style="position : absolute;"></div>
 			<p class="recodeheader">RE:CODE</p>
 			<div class="recodediv">
-				<div id="BaekjoonHub_progress_elem" class="" style="position : absolute;"></div>
+				<div id="Recode_progress_elem" class="" style="position : absolute;"></div>
 				<div style="width : 100%; display : flex;">
 				<div>코드 제목 입력<span style="font-size:10px"> (최대 20자)</span></div>
 				</div>
@@ -33,59 +33,61 @@ function addModal() {
         
     </div>`;
 
-  let selectBtn = document.querySelector("#upload");
-  selectBtn.addEventListener("click", function () {
+  let selectBtn = document.querySelector('#upload');
+  selectBtn.addEventListener('click', function () {
     if (!bojData) {
-      alert("오류가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+      alert('오류가 발생하였습니다. 새로고침 후 다시 시도해주세요.');
       return;
     }
 
     // 로딩 CSS 표시
-    const elem = document.getElementById("BaekjoonHub_progress_elem");
-    elem.className = "BaekjoonHub_progress";
-    const backdrop = document.getElementById("recodebackdrop");
-    backdrop.className = "recodebackdrop";
+    const elem = document.getElementById('Recode_progress_elem');
+    elem.className = 'Recode_progress';
+    const backdrop = document.getElementById('recodebackdrop');
+    backdrop.className = 'recodebackdrop';
 
-    bojData.code.name = document.getElementById("nameinput").value || "빈 제목 입니다.";
+    const nameInput = document.getElementById('nameinput');
+    bojData.code.name = nameInput.value || '빈 제목 입니다.';
 
-    fetch("https://www.recode-d210.com/api/problems", {
-      method: "POST",
+    fetch('https://www.recode-d210.com/api/problems', {
+      method: 'POST',
       body: JSON.stringify(bojData),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
       .then((res) => {
         if (res.status == 409) {
-          alert("이미 동일한 코드를 등록한 적이 있어요!");
+          alert('이미 동일한 코드를 등록한 적이 있어요!');
         }
       })
       .finally(() => {
         popClose();
-        elem.className = "";
-        backdrop.className = "";
+        elem.className = '';
+        backdrop.className = '';
+        nameInput.value = '';
       });
   });
 
-  let modalclose = document.querySelector(".modal-close");
-  modalclose.addEventListener("click", popClose);
+  let modalclose = document.querySelector('.modal-close');
+  modalclose.addEventListener('click', popClose);
 }
 
 async function popOpen(data) {
   bojData = data;
-  const elem = document.getElementById("BaekjoonHub_progress_elem");
-  elem.className = ""; // 기존 완료 아이콘 CSS 없애기
+  const elem = document.getElementById('Recode_progress_elem');
+  elem.className = ''; // 기존 완료 아이콘 CSS 없애기
 
-  let modalPop = document.querySelector(".modal-wrap"); // $('.modal-wrap');
-  let modalBg = document.querySelector(".modal-bg"); // $('.modal-bg');
+  let modalPop = document.querySelector('.modal-wrap'); // $('.modal-wrap');
+  let modalBg = document.querySelector('.modal-bg'); // $('.modal-bg');
 
-  modalBg.style = "display: block";
-  modalPop.style = "display: block";
+  modalBg.style = 'display: block';
+  modalPop.style = 'display: block';
 }
 
 function popClose() {
-  let modalPop = document.querySelector(".modal-wrap"); // $('.modal-wrap');
-  let modalBg = document.querySelector(".modal-bg"); // $('.modal-bg');
-  modalBg.style = "display: none";
-  modalPop.style = "display: none";
+  let modalPop = document.querySelector('.modal-wrap'); // $('.modal-wrap');
+  let modalBg = document.querySelector('.modal-bg'); // $('.modal-bg');
+  modalBg.style = 'display: none';
+  modalPop.style = 'display: none';
 }

@@ -1,14 +1,16 @@
 package com.clover.recode.domain.problem.repository;
 
+import com.clover.recode.domain.problem.dto.CodeResList;
 import com.clover.recode.domain.problem.entity.Code;
-import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
-@Repository
+
 public interface CodeCustomRepository {
 
     List<Code> findByReviewStatusFalseAndReviewTimeBefore();
 
+    //Page<Problem> findProblemsByUserId(Long userId, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword);
+
+    public List<CodeResList> findCodesByProblemNoAndUserId(Integer problemNo, Long userId);
 }

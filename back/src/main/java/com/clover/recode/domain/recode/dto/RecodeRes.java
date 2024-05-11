@@ -1,7 +1,5 @@
 package com.clover.recode.domain.recode.dto;
 
-import com.clover.recode.domain.problem.dto.ProblemDto;
-import com.clover.recode.domain.problem.entity.Problem;
 import lombok.*;
 
 import java.util.List;

@@ -23,6 +23,7 @@ import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.jwt.JWTUtil;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.time.LocalDate;
@@ -72,7 +73,22 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public void refreshToken(String token, String refresh, HttpServletResponse response) {
+  public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
+
+    // 리프레시 토큰 획득
+    String token = request.getHeader("Authorization");
+    String refresh = null;
+    Cookie[] cookies = request.getCookies();
+    if(cookies == null) {
+      throw new BusinessException(HTTP_HEADER_INVALID);
+    }
+
+    for(Cookie cookie : cookies) {
+      if(cookie.getName().equals("refresh_token")) {
+        refresh = cookie.getValue();
+        break;
+      }
+    }
 
     // 리프레시 토큰이 없거나, 만료되었다면 예외 발생
     if (token == null || !token.startsWith("Bearer ")) {
@@ -94,7 +110,7 @@ public class UserServiceImpl implements UserService {
       }
     }
 
-    String newAccess = jwtUtil.createJwt(id, 10800000L);
+    String newAccess = jwtUtil.createJwt(id, 1800000L);
     String updatedRefreshToken = UUID.randomUUID().toString();
     jwtUtil.addRefreshEntity(id, updatedRefreshToken);
     response.setHeader("access_token", newAccess);
@@ -130,8 +146,7 @@ public class UserServiceImpl implements UserService {
   private Cookie createCookie(String key, String value) {
     Cookie cookie = new Cookie(key, value);
     cookie.setMaxAge(259200);
-    // TODO : 개발 끝나면 쿠키 Secure 주석풀기
-    //cookie.setSecure(true);
+    cookie.setSecure(true);
     cookie.setPath("/");
     cookie.setHttpOnly(true);
 
@@ -187,6 +202,12 @@ public class UserServiceImpl implements UserService {
 
     Statistics statistics= Statistics.builder()
             .user(user)
+            .ranking(100)
+            .supplementaryNo(1806)
+            .randomNo(2178)
+            .supplementaryTitle("부분합")
+            .randomTitle("미로 탐색")
+            .sequence(0)
             .build();
 
     statisticsRepository.save(statistics);
