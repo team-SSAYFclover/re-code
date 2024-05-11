@@ -37,3 +37,36 @@ export interface IRecodeProblemInfo {
   tags: string[];
   content: string;
 }
+
+// 메인화면 조회 모든 정보
+export interface IMainInfo {
+  sequence: number;
+  ranking: number;
+  weekReviews: IWeekReviews;
+  todayProblems: IProblemInfo[];
+  supplementaryQuestion: number;
+  randomQuestion: number;
+  algoReview: IAlgoReview;
+}
+
+interface IWeekReviews {
+  mon: number;
+  tue: number;
+  wed: number;
+  thu: number;
+  fri: number;
+  sat: number;
+  sun: number;
+}
+
+interface IAlgoReview {
+  [key: string]: number;
+  math: number;
+  implementation: number;
+  greedy: number;
+  string: number;
+  data_structures: number;
+  graphs: number;
+  dp: number;
+  geometry: number;
+}
