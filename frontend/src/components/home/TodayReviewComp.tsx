@@ -3,7 +3,13 @@ import TodayReviewList from './TodayReviewList';
 import { useNavigate } from 'react-router-dom';
 
 interface TodayReviewCompProps {
-  TodayReviewData: { problemNo: number; problemTitle: string; count: number; solvedYn: boolean }[];
+  TodayReviewData: {
+    codeId: number;
+    problemNo: number;
+    problemTitle: string;
+    count: number;
+    solvedYn: boolean;
+  }[];
 }
 
 const TodayReviewComp: React.FC<TodayReviewCompProps> = ({ TodayReviewData }) => {
@@ -23,7 +29,8 @@ const TodayReviewComp: React.FC<TodayReviewCompProps> = ({ TodayReviewData }) =>
       <div className="overflow-scroll overflow-x-hidden h-4/5 pe-2 mt-2">
         {TodayReviewData.map((item) => (
           <TodayReviewList
-            key={item.problemNo}
+            key={item.codeId}
+            codeId={item.codeId}
             problemNo={item.problemNo}
             problemTitle={item.problemTitle}
             count={item.count}
