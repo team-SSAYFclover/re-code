@@ -17,7 +17,7 @@ const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
     <Modal width="w-1/2" height="h-2/3" onClose={onClose}>
       <div className="w-full h-full mx-auto">
         <div className="h-20 flex items-center">
-          <div className="w-[50px] px-2">
+          <div className="w-[56px] px-2">
             <img src={clover} alt="clover" />
           </div>
           <div className="flex-1">

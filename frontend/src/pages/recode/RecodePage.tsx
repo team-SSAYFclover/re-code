@@ -36,7 +36,7 @@ const RecodePage = () => {
     <div className="w-full h-full flex justify-center items-center bg-gray-100/50 relative">
       <div className="w-2/3 h-2/3 min-w-[700px] mx-auto">
         <div className="h-20 flex items-center">
-          <div className="w-[50px] px-2">
+          <div className="w-[56px] px-2">
             <img src={clover} alt="clover" />
           </div>
           <div className="flex-1">
