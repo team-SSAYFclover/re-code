@@ -27,7 +27,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     Long id = customUserDetails.getId();
 
-    String access = jwtUtil.createJwt(id, 10800000L);
+    String access = jwtUtil.createJwt(id, 1800000L);
     String refresh = UUID.randomUUID().toString();
     jwtUtil.addRefreshEntity(id, refresh);
 
@@ -49,8 +49,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
   private Cookie createCookie(String key, String value) {
     Cookie cookie = new Cookie(key, value);
     cookie.setMaxAge(259200);
-    // TODO : 개발 끝나면 쿠키 Secure 주석풀기
-    //cookie.setSecure(true);
+    cookie.setSecure(true);
     cookie.setPath("/");
     cookie.setHttpOnly(true);
 

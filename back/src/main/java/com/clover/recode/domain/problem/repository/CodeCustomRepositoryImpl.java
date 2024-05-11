@@ -1,22 +1,22 @@
 package com.clover.recode.domain.problem.repository;
-import com.clover.recode.domain.problem.entity.Code;
-import com.clover.recode.domain.problem.entity.QCode;
+import com.clover.recode.domain.problem.dto.CodeResList;
+import com.clover.recode.domain.problem.entity.*;
 import com.clover.recode.domain.recode.entity.QRecode;
-import com.clover.recode.domain.user.entity.QUser;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
-@Repository
+
 @RequiredArgsConstructor
 public class CodeCustomRepositoryImpl implements CodeCustomRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
+
 
     @Override
     public List<Code> findByReviewStatusFalseAndReviewTimeBefore() {
@@ -31,5 +31,38 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
                         recode.reviewTime.before(today.atStartOfDay().plusDays(1)))
                 .fetch();
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<Code> findCodeByProblemNo(Integer problemNo) {
+        QCode qCode = QCode.code;
+        QProblem qProblem = QProblem.problem;
+
+        // 조인과 필터 조건을 사용한 쿼리 구성
+        List<Code> codes = jpaQueryFactory
+                .selectFrom(qCode)
+                .join(qCode.problem, qProblem)
+                .where(qProblem.problemNo.eq(problemNo))
+                .fetch();
+        return codes;
+    }
+
+
+
+    @Transactional(readOnly = true)
+    public List<CodeResList> findCodesByProblemNoAndUserId(Integer problemNo, Long userId) {
+        QCode qCode = QCode.code;
+        QProblem qProblem = QProblem.problem;
+
+
+        return jpaQueryFactory
+                .select(Projections.constructor(CodeResList.class,
+                        qCode.id, qCode.name, qCode.content, qCode.createdTime))
+                .from(qCode)
+                .join(qCode.problem, qProblem)
+                .where(qProblem.problemNo.eq(problemNo)
+                        .and(qCode.user.id.eq(userId)))
+                .orderBy(qCode.createdTime.desc())
+                .fetch();
     }
 }

@@ -4,6 +4,7 @@ import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
 import com.clover.recode.domain.statistics.dto.TodayProblemDto;
 import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -25,6 +26,10 @@ public class StatisticsListRes {
     private int supplementaryQuestion;
 
     private int randomQuestion;
+
+    private String supplementaryTitle;
+
+    private String randomTitle;
 
     private AlgoReviewDto algoReview;
 

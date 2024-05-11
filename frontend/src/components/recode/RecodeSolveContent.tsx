@@ -128,7 +128,7 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
             <MarkdownParser markdown={recode.problemDto.content} />
           </div>
         </Resizable>
-        <div className="flex-1 p-4 ml-[15px] overflow-y-scroll">
+        <div className="flex-1 p-4 ml-[15px] overflow-y-scroll bg-gray-100/80">
           <RecodeSolveBox
             inputs={inputs}
             codeParts={codeParts}

@@ -16,10 +16,12 @@ public enum ResultCode {
 
     //Problem
     REGIST_CODE_SUCCESS(201, "코드 등록에 성공하였습니다."),
+    PATCH_CODE_SUCCESS(201, "코드 정보 수정에 성공하였습니다."),
+    DELETE_CODE_SUCCESS(200, "코드 삭제에 성공하였습니다."),
 
     //Statistics
     GET_Statistics_SUCCESS(200, "메인화면 통계를 가져오는 것에 성공했습니다."),
-    GET_ReviewCnt_SUCCESS(200, "오늘의 복습 갯수 조회에 성공하였습니다"),
+    GET_ReviewCnt_SUCCESS(200, "오늘의 복습 개수 조회에 성공하였습니다"),
     GET_Reviews_SUCCESS(200, "오늘의 복습문제 조회에 성공하였습니다"),
 
 
@@ -32,7 +34,9 @@ public enum ResultCode {
     REGIST_FCM_TOKEN_SUCCESS(201, "FCM 토큰 등록에 성공했습니다."),
 
     //사용자 문제 조회
-    USER_PROBLEM_SUCCESS(200, "사용자별 문제 조회에 성공했습니다.");
+    USER_PROBLEM_SUCCESS(200, "사용자별 문제 조회에 성공했습니다."),
+
+    PROBLEM_DETAIL_SUCCESS(200, "문제 상세 조회에 성공했습니다.");
 
 
 

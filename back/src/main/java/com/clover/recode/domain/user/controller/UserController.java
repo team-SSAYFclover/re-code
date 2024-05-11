@@ -44,19 +44,7 @@ public class UserController {
   @PostMapping("/reissue")
   public ResponseEntity<ResultResponse> refreshToken(HttpServletRequest request,
       HttpServletResponse response) {
-
-    // 리프레시 토큰 획득
-    String token = request.getHeader("Authorization");
-    String refresh = null;
-    Cookie[] cookies = request.getCookies();
-    for(Cookie cookie : cookies) {
-      if(cookie.getName().equals("refresh_token")) {
-        refresh = cookie.getValue();
-        break;
-      }
-    }
-
-    userService.refreshToken(token, refresh, response);
+    userService.refreshToken(request, response);
     return ResponseEntity.ok(ResultResponse.of(TOKEN_REISSUE_SUCCESS));
   }
 
