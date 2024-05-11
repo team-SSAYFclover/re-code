@@ -1,3 +1,4 @@
+import logo from '@/assets/logo.png';
 import userStore from '@/stores/userStore';
 import { GoHome } from 'react-icons/go';
 import { LuLogOut } from 'react-icons/lu';
@@ -13,7 +14,7 @@ interface INavInfo {
 const Navbar = () => {
   const navigate = useNavigate();
   const currentPath = window.location.href.replace('//', '').split('/');
-  const { logout } = userStore();
+  const { logout, isLogin } = userStore();
 
   const navInfo: INavInfo[] = [
     {
@@ -38,13 +39,16 @@ const Navbar = () => {
     },
   ];
 
-  const isRecode = currentPath.includes('recode');
+  const isRecode = currentPath.includes('recode') && currentPath.length > 2;
 
   return (
     <nav
-      className={` ${isRecode ? 'w-16  min-w-[64px]' : 'w-60 min-w-[200px]'} h-full shadow-lg relative`}
+      className={` ${isRecode ? 'w-16  min-w-[64px]' : 'w-60 min-w-[200px]'} shadow-lg relative`}
+      style={{ height: `${window.innerHeight}px` }}
     >
-      <div className="flex justify-center items-center h-20">{isRecode ? '' : 'recode'}</div>
+      <div className="flex justify-center items-center h-auto">
+        {isRecode ? '' : <img alt="logo" src={logo} className="w-28 pt-4" />}
+      </div>
       <div className="py-4">
         {navInfo.map((nav, idx) => {
           return (
@@ -59,15 +63,17 @@ const Navbar = () => {
           );
         })}
 
-        <button
-          className="flex justify-center items-center absolute bottom-0 left-0 right-0 h-12 m-3 transition ease-in-out text-BLACK font-bold hover:bg-black/5 rounded-md outline-none"
-          onClick={() => logout()}
-        >
-          <div className="text-lg">
-            <LuLogOut />
-          </div>
-          {!isRecode && <span className="text-sm ml-3">로그아웃</span>}
-        </button>
+        {!isRecode && isLogin && (
+          <button
+            className="flex justify-center items-center absolute bottom-0 left-0 right-0 h-12 m-3 transition ease-in-out text-BLACK font-bold hover:bg-black/5 rounded-md outline-none"
+            onClick={() => logout()}
+          >
+            <div className="text-lg">
+              <LuLogOut />
+            </div>
+            <span className="text-sm ml-3">로그아웃</span>
+          </button>
+        )}
       </div>
     </nav>
   );
