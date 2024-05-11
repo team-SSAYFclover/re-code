@@ -11,6 +11,8 @@ import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
 import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
+import com.clover.recode.domain.user.entity.User;
+import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final WeekReviewRepository weekReviewRepository;
     private final AlgoReviewRepository algoReviewRepository;
     private final TodayProblemRepository todayProblemRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -123,6 +126,40 @@ public class StatisticsServiceImpl implements StatisticsService {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         return todayProblemRepository.findByUserId(customUserDetails.getId());
+
+    }
+
+    @Override
+    public Integer updateRandom(Authentication authentication) {
+
+        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+
+        Integer randomNo= statisticsRepository.updateRandom(customUserDetails.getId());
+
+        User user= userRepository.findById(customUserDetails.getId()).orElseThrow();
+
+        user.getStatistics().setRandomNo(randomNo);
+
+        userRepository.save(user);
+
+        return randomNo;
+
+    }
+
+    @Override
+    public Integer updateSupplement(Authentication authentication) {
+
+        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+
+        Statistics st= statisticsRepository.findByUserId(customUserDetails.getId());
+
+        Integer supplementary_question= statisticsRepository.updateSupplement(customUserDetails.getId(), st);
+
+        st.setSupplementaryNo(supplementary_question);
+
+        statisticsRepository.save(st);
+
+        return supplementary_question;
 
     }
 }
