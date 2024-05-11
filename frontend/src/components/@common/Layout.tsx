@@ -8,7 +8,7 @@ const Layout = () => {
       <Navbar />
       <div className="w-full h-full">
         <Header />
-        <main className="h-[calc(100vh-64px)] ps-20 pe-20">
+        <main className="h-[calc(100vh-64px)]">
           <Outlet />
         </main>
       </div>
