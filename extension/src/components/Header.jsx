@@ -1,11 +1,13 @@
+import logo from '../assets/Logo.png';
+
 const Header = () => {
-	return (
-		<>
-			<div className="flex w-full h-[60px] bg-MAIN1 justify-center items-center">
-				<p className="text-center text-white text-[24px] font-bold">RE:CODE</p>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className="flex w-full bg-MAIN2 h-[60px] justify-center items-center px-[30%]">
+        <img src={logo} alt="" className="w-full" />
+      </div>
+    </>
+  );
 };
 
 export default Header;
