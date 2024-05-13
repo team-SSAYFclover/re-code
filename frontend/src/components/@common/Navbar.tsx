@@ -52,7 +52,7 @@ const Navbar = () => {
     >
       <div className="flex justify-center items-center h-auto">
         {isRecode ? (
-          ''
+          <div className="w-full h-20">&nbsp;</div>
         ) : (
           <img
             alt="logo"
