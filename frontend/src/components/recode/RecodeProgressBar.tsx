@@ -10,7 +10,7 @@ const RecodeProgressBar = ({ total, cnt }: { total: number; cnt: number }) => {
         <div style={{ width: `${percentage}%` }} className="transition-all duration-500 ease-out" />
         <img src={clover} alt="clover" width={24} className="relative left-[-16px]" />
       </div>
-      <Progressbar percentage={percentage} roundWidth="w-2" height="h-2" />
+      <Progressbar percentage={total === 0 ? 0 : percentage} roundWidth="w-2" height="h-2" />
       <span className="text-md text-gray-700">
         오늘 복습 문제 <span className="text-MAIN1">{total}</span>문제 중{' '}
         <span className="text-MAIN1">{cnt}</span>문제 완료
