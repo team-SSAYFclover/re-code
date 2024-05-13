@@ -83,11 +83,8 @@ public class RecodeServiceImpl implements RecodeService {
     public RecodeRes getRecode(Authentication authentication, Long codeId) {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        Code code = codeRepository.findById(codeId)
+        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
                 .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
-
-        if(!Objects.equals(customUserDetails.getId(), code.getUser().getId()))
-            throw new BusinessException(RECODE_NOT_ALLOWED);
 
         Recode recode = code.getRecode();
 
@@ -99,6 +96,10 @@ public class RecodeServiceImpl implements RecodeService {
 
         // 난이도에 따른 레코드 생성하기
         int userDifficulty = code.getUser().getSetting().getDifficulty();
+
+        // TODO: 빈칸 개수 줄이기
+        // TODO: 통으로 비우지 말고 부분부분 비우기
+        // TODO: 양옆에 빈칸 없애기
 
         String content = recode.getContent();
         StringBuilder sb = new StringBuilder();
