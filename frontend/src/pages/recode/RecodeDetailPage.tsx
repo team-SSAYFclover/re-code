@@ -30,7 +30,7 @@ const RecodeDetailPage = () => {
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full pl-16">
       <RecodeHeader recode={recode} />
       <RecodeSolveContent recode={recode} />
     </div>
