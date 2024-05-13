@@ -1,4 +1,4 @@
-import { getProbList } from '@/services/problem';
+import { getProbList, getProbDetail } from '@/services/problem';
 import { useQuery } from '@tanstack/react-query';
 import { IGetProbListParams } from '@/types/problem';
 
@@ -14,4 +14,16 @@ export const useProbList = () => {
   };
 
   return { useGetProbList };
+};
+
+export const useProbDetail = () => {
+  const useGetProbDetail = (problemNo: number) => {
+    return useQuery({
+      queryKey: ['probDetail', problemNo],
+      queryFn: () => getProbDetail(problemNo),
+      staleTime: Infinity,
+      select: (data) => data.data,
+    });
+  };
+  return { useGetProbDetail };
 };
