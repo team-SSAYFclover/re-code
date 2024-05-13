@@ -1,19 +1,24 @@
 import { ReactComponent as Tear } from '@/assets/tear.svg';
 import { IGetRecodeRes } from '@/types/recode';
 import { useEffect, useRef, useState } from 'react';
+import { FaCode } from 'react-icons/fa6';
 import { PiNoteDuotone } from 'react-icons/pi';
 import { useLocation } from 'react-router-dom';
-import RecodeListModal from './RecodeListModal';
+import RecodeCodeModal from './Modal/RecodeCodeModal';
+import RecodeListModal from './Modal/RecodeListModal';
 
 const RecodeHeader = ({ recode }: { recode: IGetRecodeRes }) => {
-  const [isShowModal, setIsShowModal] = useState<boolean>(false);
+  const [isShowListModal, setIsShowListModal] = useState<boolean>(false);
+  const [isShowCodeModal, setIsShowCodeModal] = useState<boolean>(false);
 
   const location = useLocation();
   const prevLocation = useRef(location);
 
   useEffect(() => {
     if (prevLocation.current.pathname !== location.pathname) {
-      setIsShowModal(false);
+      setIsShowListModal(false);
+      setIsShowCodeModal(false);
+
       prevLocation.current = location;
     }
   }, [location]);
@@ -42,16 +47,26 @@ const RecodeHeader = ({ recode }: { recode: IGetRecodeRes }) => {
         </div>
         <div className="text-lg pl-2 font-semibold">{recode.problemDto.title}</div>
       </div>
-      <div>
+      <div className="flex">
+        <button
+          className="w-32 h-10 mr-2 flex justify-center items-center font-semibold bg-gray-100/50 text-gray-400 text-sm rounded-md shadow-md hover:bg-gray-100/90 hover:text-gray-600"
+          onClick={() => setIsShowCodeModal(true)}
+        >
+          <FaCode size={20} />
+          &nbsp;기존 코드
+        </button>
         <button
           className="w-32 h-10 flex justify-center items-center font-semibold bg-MAIN2 text-MAIN1 text-sm rounded-md shadow-md hover:bg-[#D2FFF3] hover:text-[#30CFA8]"
-          onClick={() => setIsShowModal(true)}
+          onClick={() => setIsShowListModal(true)}
         >
           <PiNoteDuotone size={20} />
           &nbsp;문제 리스트
         </button>
       </div>
-      {isShowModal && <RecodeListModal onClose={() => setIsShowModal(false)} />}
+      {isShowListModal && <RecodeListModal onClose={() => setIsShowListModal(false)} />}
+      {isShowCodeModal && (
+        <RecodeCodeModal code={recode.recode} onClose={() => setIsShowCodeModal(false)} />
+      )}
     </div>
   );
 };

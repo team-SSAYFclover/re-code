@@ -1,11 +1,13 @@
+import defaultProfile from '@/assets/default_profile.png';
+import userStore from '@/stores/userStore';
 import React from 'react';
 import {
+  PolarAngleAxis,
+  PolarGrid,
   Radar,
   RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  Tooltip,
   ResponsiveContainer,
+  Tooltip,
 } from 'recharts';
 
 interface IOctagonGraphProps {
@@ -13,8 +15,16 @@ interface IOctagonGraphProps {
 }
 
 const OctagonGraphComp: React.FC<IOctagonGraphProps> = ({ OctagonData }) => {
+  const { avatarUrl } = userStore();
   return (
-    <div className="shadow-lg p-1 w-[calc(40vh)] h-full flex-row bg-white rounded-lg">
+    <div className="shadow-lg p-2 w-1/2 h-full flex-row bg-white rounded-lg mr-4 relative">
+      <div className="absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center">
+        <img
+          src={avatarUrl || defaultProfile}
+          alt="profile"
+          className="w-8 z-10 rounded-full border border-gray-200"
+        />
+      </div>
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={OctagonData}>
           <PolarGrid />

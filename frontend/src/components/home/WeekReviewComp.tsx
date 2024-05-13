@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  LineChart,
-  BarChart,
-  Line,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from 'recharts';
 
 interface WeekRepeatCompProps {
@@ -20,11 +20,11 @@ const WeekRepeatComp: React.FC<WeekRepeatCompProps> = ({ weekRepeatData, percent
   const percentData = [{ name: 'Percent', value: percentage }];
 
   return (
-    <div className="shadow-xl w-full h-fit p-5 flex-row bg-white rounded-lg">
-      <div className="w-full flex justify-between">
+    <div className="shadow-xl w-full h-[40%] my-[10px] p-5 flex-row bg-white rounded-lg">
+      <div className="w-full flex justify-between h-[80px]">
         <div>
-          <div className="text-sm font-semibold">주간 복습량</div>
-          <div className="text-xs text-gray-500">지난 일주일 간의 복습 횟수입니다</div>
+          <div className="font-semibold">주간 복습량</div>
+          <div className="text-sm text-gray-500">지난 일주일 간의 복습 횟수입니다</div>
         </div>
         <div className="w-full flex flex-1 flex-col content-end text-end ms-5">
           <div className="text-xs text-MAIN1 font-semibold me-2">현재 상위 {percentage}%</div>
@@ -40,8 +40,8 @@ const WeekRepeatComp: React.FC<WeekRepeatCompProps> = ({ weekRepeatData, percent
           </div>
         </div>
       </div>
-      <div className="w-full h-fit">
-        <ResponsiveContainer width="100%" height={150}>
+      <div className="w-full h-[calc(100%-80px)]">
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={weekRepeatData}>
             <CartesianGrid strokeDasharray="0 0" stroke="#ECFFFA" />
             <XAxis
