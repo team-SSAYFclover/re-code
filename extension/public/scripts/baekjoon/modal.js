@@ -9,8 +9,8 @@ function addModal() {
   body.innerHTML =
     body.innerHTML +
     `
-    <div class="modal-bg"></div>
-    <div class="modal-wrap">
+    <div class="recode-modal-bg"></div>
+    <div class="recode-modal-wrap">
 
 			<div style="display: flex; flex-direction: column; width : 100%; height : 100%; position:relative;">
 			<div id="recodebackdrop" class="" style="position : absolute;"></div>
@@ -49,7 +49,7 @@ function addModal() {
     const nameInput = document.getElementById('nameinput');
     bojData.code.name = nameInput.value || '빈 제목 입니다.';
 
-    fetch('https://www.recode-d210.com/api/problems', {
+    fetch('https://www.recode-d210.com/api/problems/regist', {
       method: 'POST',
       body: JSON.stringify(bojData),
       headers: {
@@ -78,16 +78,16 @@ async function popOpen(data) {
   const elem = document.getElementById('Recode_progress_elem');
   elem.className = ''; // 기존 완료 아이콘 CSS 없애기
 
-  let modalPop = document.querySelector('.modal-wrap'); // $('.modal-wrap');
-  let modalBg = document.querySelector('.modal-bg'); // $('.modal-bg');
+  let modalPop = document.querySelector('.recode-modal-wrap'); // $('.modal-wrap');
+  let modalBg = document.querySelector('.recode-modal-bg'); // $('.modal-bg');
 
   modalBg.style = 'display: block';
   modalPop.style = 'display: block';
 }
 
 function popClose() {
-  let modalPop = document.querySelector('.modal-wrap'); // $('.modal-wrap');
-  let modalBg = document.querySelector('.modal-bg'); // $('.modal-bg');
+  let modalPop = document.querySelector('.recode-modal-wrap'); // $('.modal-wrap');
+  let modalBg = document.querySelector('.recode-modal-bg'); // $('.modal-bg');
   modalBg.style = 'display: none';
   modalPop.style = 'display: none';
 }
