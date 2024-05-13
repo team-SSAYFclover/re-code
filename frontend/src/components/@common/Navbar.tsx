@@ -2,7 +2,7 @@ import logo from '@/assets/logo.png';
 import userStore from '@/stores/userStore';
 import { GoHome } from 'react-icons/go';
 import { LuLogOut } from 'react-icons/lu';
-import { PiHandWaving, PiNotePencilLight, PiNotepad } from 'react-icons/pi';
+import { PiArrowSquareOutLight, PiHandWaving, PiNotePencilLight, PiNotepad } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 
 interface INavInfo {
@@ -37,17 +37,30 @@ const Navbar = () => {
       label: '시작 가이드',
       url: 'guide',
     },
+    {
+      icon: <PiArrowSquareOutLight />,
+      label: '익스텐션',
+      url: 'https://chromewebstore.google.com/detail/recode-uploader/jbdflmjhhemnomkgojjjkdeklcjihfpp',
+    },
   ];
 
   const isRecode = currentPath.includes('recode') && currentPath.length > 2;
 
   return (
     <nav
-      className={` ${isRecode ? 'w-16  min-w-[64px]' : 'w-60 min-w-[200px]'} shadow-lg relative`}
-      style={{ height: `${window.innerHeight}px` }}
+      className={` ${isRecode ? 'w-16 min-w-[64px]' : 'w-60 min-w-[200px]'} h-screen shadow-lg fixed top-0 left-0 bottom-0 z-10 bg-white`}
     >
       <div className="flex justify-center items-center h-auto">
-        {isRecode ? '' : <img alt="logo" src={logo} className="w-28 pt-4" />}
+        {isRecode ? (
+          ''
+        ) : (
+          <img
+            alt="logo"
+            src={logo}
+            className="w-28 pt-4 cursor-pointer"
+            onClick={() => navigate('/')}
+          />
+        )}
       </div>
       <div className="py-4">
         {navInfo.map((nav, idx) => {
@@ -55,7 +68,13 @@ const Navbar = () => {
             <div
               key={idx}
               className={`flex justify-center items-center h-12 m-2 text-BLACK font-bold cursor-pointer rounded-md hover:text-MAIN1 hover:bg-MAIN2 transition ease-in-out ${currentPath.includes(nav.url) && 'text-MAIN1 bg-MAIN2'}`}
-              onClick={() => navigate(`/${nav.url}`)}
+              onClick={() => {
+                if (nav.label === '익스텐션') {
+                  window.open(nav.url, '_blank');
+                } else {
+                  navigate(`/${nav.url}`);
+                }
+              }}
             >
               <div className={` ${isRecode ? 'text-[22px]' : 'text-lg'}`}>{nav.icon}</div>
               {!isRecode && <span className="text-sm ml-3">{nav.label}</span>}
