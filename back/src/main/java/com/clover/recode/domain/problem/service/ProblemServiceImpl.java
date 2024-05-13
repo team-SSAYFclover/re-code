@@ -9,7 +9,7 @@ import com.clover.recode.domain.problem.entity.*;
 import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.problem.repository.ProblemRepository;
 import com.clover.recode.domain.problem.repository.TagRepository;
-import com.clover.recode.domain.recode.entity.QRecode;
+import com.clover.recode.domain.recode.entity.*;
 import com.clover.recode.domain.recode.service.RecodeService;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.global.result.error.exception.BusinessException;
