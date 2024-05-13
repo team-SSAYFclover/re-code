@@ -1,6 +1,7 @@
 package com.clover.recode.domain.problem.service;
 
 import static com.clover.recode.global.result.error.ErrorCode.Already_REGIST_CODE;
+import static com.clover.recode.global.result.error.ErrorCode.CODE_NOT_EXISTS;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.problem.dto.*;
@@ -67,6 +68,8 @@ public class ProblemServiceImpl implements ProblemService {
                 tags.add(tag);
             }
             problem.setTags(tags);
+
+            problem = problemRepository.save(problem);
         }
 
         Code code = Code.builder()
@@ -141,6 +144,30 @@ public class ProblemServiceImpl implements ProblemService {
         return problemDetailResult;
     }
 
+
+    @Override
+    @Transactional
+    public void patchCode(Long codeId, CodePatchReq codePatchReq, Authentication authentication) {
+
+        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+
+        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
+            .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
+
+        code.updateCode(codePatchReq);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCode(Long codeId, Authentication authentication) {
+
+        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+
+        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
+            .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
+
+        codeRepository.delete(code);
+    }
 
 
 }

@@ -5,26 +5,8 @@ import TodayReviewComp from './TodayReviewComp';
 import OctagonGraphComp from './OctagonGraphComp';
 import CloverComp from './CloverComp';
 import RecommendComp from './RecommendComp';
+import { useHome } from '@/hooks/home/useHome';
 
-const data1 = [
-  { date: '월', num: 4 },
-  { date: '화', num: 3 },
-  { date: '수', num: 0 },
-  { date: '목', num: 0 },
-  { date: '금', num: 1 },
-  { date: '토', num: 6 },
-  { date: '일', num: 2 },
-];
-const data2 = 60;
-const TodayReviewData = [
-  { problemNo: 3302, problemTitle: 'Job Scheduling', count: 2, solvedYn: true },
-  { problemNo: 11779, problemTitle: '최소비용 구하기 2', count: 1, solvedYn: false },
-  { problemNo: 1486, problemTitle: '등산', count: 1, solvedYn: true },
-  { problemNo: 1261, problemTitle: '알고스팟', count: 2, solvedYn: false },
-  { problemNo: 11559, problemTitle: 'Puyo Puyo', count: 2, solvedYn: false },
-  { problemNo: 1197, problemTitle: '최소 스패닝 트리', count: 3, solvedYn: false },
-  { problemNo: 17471, problemTitle: '게리맨더링', count: 1, solvedYn: false },
-];
 const suppleProb = {
   problemNo: 3302,
   problemTitle: 'Job Scheduling',
@@ -35,6 +17,47 @@ const randProb = {
 };
 
 const HomeContent: React.FC = () => {
+  const { useGetMainInfo } = useHome();
+  const { data, isLoading } = useGetMainInfo();
+  console.log('가져온 데이터 : ', data);
+  console.log('isLoading : ', isLoading);
+  // API에서 받은 weekReviews 객체를 배열로 변환
+  const weekRepeatData = data
+    ? [
+        { date: '월', num: data.weekReviews.mon },
+        { date: '화', num: data.weekReviews.tue },
+        { date: '수', num: data.weekReviews.wed },
+        { date: '목', num: data.weekReviews.thu },
+        { date: '금', num: data.weekReviews.fri },
+        { date: '토', num: data.weekReviews.sat },
+        { date: '일', num: data.weekReviews.sun },
+      ]
+    : [];
+
+  const OctagonData = data
+    ? Object.keys(data.algoReview).map((key) => ({
+        name: key,
+        num: data.algoReview[key],
+      }))
+    : [];
+
+  const TodayReviewData = data
+    ? data.todayProblems.map((problem) => ({
+        codeId: problem.codeId,
+        problemNo: problem.problemNo,
+        problemTitle: problem.title,
+        count: problem.reviewCnt,
+        solvedYn: problem.completed,
+      }))
+    : [];
+
+  const solvedCount = TodayReviewData.filter((problem) => problem.solvedYn).length;
+  const totalProblems = TodayReviewData.length;
+  const leaf = totalProblems > 0 ? Math.floor((solvedCount / totalProblems) * 4) : 0;
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!data) return <div>No data available</div>;
+
   return (
     <div className="w-full h-full">
       {/* 상단 인사부분 */}
@@ -43,7 +66,7 @@ const HomeContent: React.FC = () => {
           <span className="font-semibold">김싸피</span>님 복습{' '}
           <span className="font-semibold">
             {' '}
-            연속 <span className="text-MAIN1">1</span>일째
+            연속 <span className="text-MAIN1">{data.sequence}</span>일째
           </span>
           예요!
         </div>
@@ -54,17 +77,17 @@ const HomeContent: React.FC = () => {
       <div className="w-full h-full flex flex-row justify-between">
         {/* 좌측 */}
         <div className="w-3/5 h-full flex flex-col justify-between">
-          <AttendCheckComp />
-          <WeekReviewComp weekRepeatData={data1} percentage={data2} />
+          <AttendCheckComp weekRepeatData={weekRepeatData} />
+          <WeekReviewComp weekRepeatData={weekRepeatData} percentage={data.ranking} />
           {/* 좌측 하단 */}
           <div className="flex justify-between h-1/3">
-            <OctagonGraphComp />
+            <OctagonGraphComp OctagonData={OctagonData} />
             <RecommendComp suppleProb={suppleProb} randProb={randProb} />
           </div>
         </div>
         {/* 우측 */}
         <div className="w-1/3 h-full flex flex-col justify-between">
-          <CloverComp leafNum={4} />
+          <CloverComp leafNum={leaf} />
           <TodayReviewComp TodayReviewData={TodayReviewData} />
         </div>
       </div>

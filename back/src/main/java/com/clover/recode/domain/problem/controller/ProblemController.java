@@ -1,7 +1,7 @@
 package com.clover.recode.domain.problem.controller;
 
 
-import com.clover.recode.domain.auth.dto.CustomOAuth2User;
+import com.clover.recode.domain.problem.dto.CodePatchReq;
 import com.clover.recode.domain.problem.dto.ProblemCodeRegistReq;
 import com.clover.recode.domain.problem.dto.ProblemDetailRes;
 import com.clover.recode.domain.problem.service.ProblemService;
@@ -59,6 +59,19 @@ public class ProblemController {
     public ResponseEntity<ResultResponse> getProblemDetails(Authentication authentication, @PathVariable Integer problemNo) {
         return ResponseEntity.ok(ResultResponse.of(PROBLEM_DETAIL_SUCCESS,
                 problemService.getProblemDetails(authentication, problemNo)));
+    }
+
+    @PatchMapping("/code/{codeId}")
+    public ResponseEntity<ResultResponse> patchCode(@PathVariable Long codeId, @RequestBody
+    CodePatchReq codePatchReq, Authentication authentication) {
+        problemService.patchCode(codeId, codePatchReq, authentication);
+        return ResponseEntity.ok(ResultResponse.of(PATCH_CODE_SUCCESS));
+    }
+
+    @DeleteMapping("/code/{codeId}")
+    public ResponseEntity<ResultResponse> deleteCode(@PathVariable Long codeId, Authentication authentication) {
+        problemService.deleteCode(codeId, authentication);
+        return ResponseEntity.ok(ResultResponse.of(DELETE_CODE_SUCCESS));
     }
 
 }

@@ -59,6 +59,16 @@ dependencies {
 
     //Firebase Admin 자바 SDK
     implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+    //prometheus
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus' // 마이크로미터 프로메테우스 구현체
+    implementation 'org.springframework.boot:spring-boot-starter-actuator' // 엑츄에이터
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 

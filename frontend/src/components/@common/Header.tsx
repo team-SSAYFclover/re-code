@@ -2,11 +2,10 @@ import defaultProfile from '@/assets/default_profile.png';
 import MySettingModal from '@/components/my/MySettingModal';
 import userStore from '@/stores/userStore';
 import { useState } from 'react';
-import { FiBell } from 'react-icons/fi';
 import AlarmModal from '../alarm/AlarmModal';
 
 const Header = () => {
-  const { isLogin, avatarUrl } = userStore();
+  const { isLogin, avatarUrl, name } = userStore();
   const [isShowSetting, setIsShowSetting] = useState<boolean>(false);
   const [isShowAlarm, setIsShowAlarm] = useState<boolean>(false);
 
@@ -28,19 +27,23 @@ const Header = () => {
 
   return (
     <>
-      <div className="w-full h-16 flex justify-end items-center">
+      <div className="w-full h-16 flex justify-end items-center pr-10">
         {isLogin && (
-          <>
-            <span className="cursor-pointer z-10" onClick={() => handleOpen('alarm')}>
+          <button
+            onClick={() => handleOpen('setting')}
+            className="flex justify-center items-center"
+          >
+            {/* <span className="cursor-pointer z-10" onClick={() => handleOpen('alarm')}>
               <FiBell size="25" color="#484848" />
-            </span>
+            </span> */}
             <img
               src={avatarUrl === '' ? defaultProfile : avatarUrl}
               alt="profile"
-              className="w-8 mx-4 cursor-pointer z-10"
-              onClick={() => handleOpen('setting')}
+              className="w-8 z-10 rounded-full"
             />
-          </>
+            <span className="text-gray-200 px-2">|</span>
+            <div className="text-sm text-BLACK">@ {name}</div>
+          </button>
         )}
       </div>
       {isShowSetting && <MySettingModal onClose={() => setIsShowSetting(false)} />}

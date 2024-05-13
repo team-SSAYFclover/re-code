@@ -3,12 +3,14 @@ import Navbar from '@/components/@common/Navbar';
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
+  const currentPath = window.location.href.replace('//', '').split('/');
+  const isRecode = currentPath.includes('recode') && currentPath.length > 2;
   return (
     <div className="w-screen h-screen flex">
       <Navbar />
-      <div className="w-full h-full">
+      <div className={`w-full h-full ${isRecode ? 'pl-16' : 'pl-60'}`}>
         <Header />
-        <main className="h-[calc(100vh-64px)] ps-20 pe-20">
+        <main className="h-[calc(100vh-64px)]">
           <Outlet />
         </main>
       </div>

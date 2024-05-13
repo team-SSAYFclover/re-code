@@ -1,5 +1,6 @@
 package com.clover.recode.domain.recode.service;
 
+import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.problem.entity.Tag;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -26,8 +28,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_EXISTS;
+import static com.clover.recode.global.result.error.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -77,12 +80,19 @@ public class RecodeServiceImpl implements RecodeService {
     }
 
     @Override
-    public RecodeRes getRecode(Long codeId) {
+    public RecodeRes getRecode(Authentication authentication, Long codeId) {
+        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         Code code = codeRepository.findById(codeId)
-                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+                .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
+
+        if(!Objects.equals(customUserDetails.getId(), code.getUser().getId()))
+            throw new BusinessException(RECODE_NOT_ALLOWED);
 
         Recode recode = code.getRecode();
+
+        if (recode == null)
+            throw new BusinessException(RECODE_NOT_EXISTS);
 
         // 문제 정보 가져오기
         Problem problem = code.getProblem();
@@ -164,9 +174,12 @@ public class RecodeServiceImpl implements RecodeService {
     @Transactional
     public void recodeSubmit(Long codeId) {
         Code code = codeRepository.findById(codeId)
-                .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
+                .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
 
         Recode recode = code.getRecode();
+
+        if (recode == null)
+            throw new BusinessException(RECODE_NOT_EXISTS);
 
         LocalDateTime submitTime = LocalDateTime.now();
 
