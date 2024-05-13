@@ -68,6 +68,8 @@ public class ProblemServiceImpl implements ProblemService {
                 tags.add(tag);
             }
             problem.setTags(tags);
+
+            problem = problemRepository.save(problem);
         }
 
         Code code = Code.builder()
