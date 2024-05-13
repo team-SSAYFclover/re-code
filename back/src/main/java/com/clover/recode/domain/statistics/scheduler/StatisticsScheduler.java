@@ -86,6 +86,7 @@ public class StatisticsScheduler {
                     .fetchOne();
 
             if(st_sum == null) st_sum= 0;
+            if(total == null) total= 1;
             Integer ranking= (int) (100- (double) st_sum/total * 100);
 
             st.setRanking(ranking);
