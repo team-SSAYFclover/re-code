@@ -1,12 +1,12 @@
-import React from 'react';
 import clover0 from '@/assets/clover/0.png';
 import clover1 from '@/assets/clover/1.png';
 import clover2 from '@/assets/clover/2.png';
 import clover3 from '@/assets/clover/3.png';
 import clover4 from '@/assets/clover/4.png';
-import NightSky from './cloverbgComp/NightSky';
 import style1 from '@/assets/clover/DaySky.module.css';
 import style2 from '@/assets/clover/TwilightSky.module.css';
+import React from 'react';
+import NightSky from './cloverbgComp/NightSky';
 
 interface CloverCompProps {
   leafNum: number;
@@ -31,7 +31,7 @@ const CloverComp: React.FC<CloverCompProps> = ({ leafNum }) => {
   const cloverImage = cloverImages[leafNum];
 
   return (
-    <div className="shadow-lg h-1/3 flex justify-center relative bg-white rounded-lg overflow-hidden">
+    <div className="shadow-lg h-[40%] flex justify-center relative bg-white rounded-lg overflow-hidden mb-[10px]">
       {/* 시간에 따라 다른 배경 컴포넌트 렌더링 */}
       {hour >= 21 || hour < 4 ? (
         <div className="h-full w-full absolute">
