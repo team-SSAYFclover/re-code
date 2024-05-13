@@ -1,11 +1,12 @@
+import { useHome } from '@/hooks/home/useHome';
+import userStore from '@/stores/userStore';
 import React from 'react';
 import AttendCheckComp from './AttendCheckComp';
-import WeekReviewComp from './WeekReviewComp';
-import TodayReviewComp from './TodayReviewComp';
-import OctagonGraphComp from './OctagonGraphComp';
 import CloverComp from './CloverComp';
+import OctagonGraphComp from './OctagonGraphComp';
 import RecommendComp from './RecommendComp';
-import { useHome } from '@/hooks/home/useHome';
+import TodayReviewComp from './TodayReviewComp';
+import WeekReviewComp from './WeekReviewComp';
 
 const suppleProb = {
   problemNo: 3302,
@@ -17,6 +18,7 @@ const randProb = {
 };
 
 const HomeContent: React.FC = () => {
+  const { name } = userStore();
   const { useGetMainInfo } = useHome();
   const { data, isLoading } = useGetMainInfo();
   console.log('가져온 데이터 : ', data);
@@ -59,11 +61,11 @@ const HomeContent: React.FC = () => {
   if (!data) return <div>No data available</div>;
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full pb-8">
       {/* 상단 인사부분 */}
-      <div>
+      <div className="h-[60px]">
         <div className="text-lg">
-          <span className="font-semibold">김싸피</span>님 복습{' '}
+          <span className="font-semibold">{name}</span>님 복습{' '}
           <span className="font-semibold">
             {' '}
             연속 <span className="text-MAIN1">{data.sequence}</span>일째
@@ -71,22 +73,22 @@ const HomeContent: React.FC = () => {
           예요!
         </div>
         <div className="text-gray-400 text-sm">
-          <span className="text-MAIN1 font-semibold">Re:code</span>에서 함께 알고리즘 복습 해볼까요?
+          <span className="text-MAIN1 font-semibold">re:code</span>에서 함께 알고리즘 복습 해볼까요?
         </div>
       </div>
-      <div className="w-full h-full flex flex-row justify-between">
+      <div className="w-full h-[calc(100%-60px)] flex flex-row justify-between">
         {/* 좌측 */}
-        <div className="w-3/5 h-full flex flex-col justify-between">
+        <div className="w-3/5 mr-6 h-full flex flex-col justify-between">
           <AttendCheckComp weekRepeatData={weekRepeatData} />
           <WeekReviewComp weekRepeatData={weekRepeatData} percentage={data.ranking} />
           {/* 좌측 하단 */}
-          <div className="flex justify-between h-1/3">
+          <div className="h-[35%] flex justify-between">
             <OctagonGraphComp OctagonData={OctagonData} />
             <RecommendComp suppleProb={suppleProb} randProb={randProb} />
           </div>
         </div>
         {/* 우측 */}
-        <div className="w-1/3 h-full flex flex-col justify-between">
+        <div className="w-2/5 h-full flex flex-col justify-between">
           <CloverComp leafNum={leaf} />
           <TodayReviewComp TodayReviewData={TodayReviewData} />
         </div>

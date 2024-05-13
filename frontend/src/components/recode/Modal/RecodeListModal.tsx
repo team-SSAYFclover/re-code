@@ -1,8 +1,8 @@
 import clover from '@/assets/clover.png';
 import RecodeList from '@/components/recode/RecodeList';
 import recodeListStore from '@/stores/recodeListStore';
-import Modal from '../@common/Modal';
-import Progressbar from '../@common/Progressbar';
+import Modal from '../../@common/Modal';
+import Progressbar from '../../@common/Progressbar';
 
 const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
   const { todayRecodes } = recodeListStore();
