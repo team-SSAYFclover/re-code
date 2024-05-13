@@ -29,6 +29,7 @@ const userStore = create(
         });
         localStorage.setItem('RECODE_ACCESS_TOKEN', '');
         localStorage.setItem('RECODE_USER_STORE', '');
+        window.location.href = '/';
       },
     }),
     {

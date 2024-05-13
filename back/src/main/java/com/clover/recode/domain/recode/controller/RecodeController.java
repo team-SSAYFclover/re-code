@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -25,8 +26,8 @@ public class RecodeController {
     @Operation(summary = "요청한 코드의 레코드를 가져옵니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{codeId}")
-    public ResponseEntity<ResultResponse> getRecode(@PathVariable("codeId") Long codeId) {
-        RecodeRes res = recodeService.getRecode(codeId);
+    public ResponseEntity<ResultResponse> getRecode(Authentication authentication, @PathVariable("codeId") Long codeId) {
+        RecodeRes res = recodeService.getRecode(authentication, codeId);
         log.info("GetRecode : {}", res);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_Recode_SUCCESS, res));
     }
