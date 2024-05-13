@@ -27,7 +27,7 @@ public class StatisticsScheduler {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-    @Scheduled(cron = "0 0 15 * * *")
+    @Scheduled(cron = "0 3 17 * * *")
     @Transactional
     public void updateTodayProblem() {
 
@@ -51,7 +51,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 0 15 * * *")
+    @Scheduled(cron = "0 3 17 * * *")
     @Transactional
     public void updateRanking() {
 
@@ -85,6 +85,7 @@ public class StatisticsScheduler {
                             .and(weekReview.date.between(mon, today)))
                     .fetchOne();
 
+            if(st_sum == null) st_sum= 0;
             Integer ranking= (int) (100- (double) st_sum/total * 100);
 
             st.setRanking(ranking);
