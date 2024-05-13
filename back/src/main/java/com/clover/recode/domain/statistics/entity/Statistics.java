@@ -26,19 +26,16 @@ public class Statistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @ColumnDefault("100")
     private Integer ranking;
 
-    @NotNull
-    @ColumnDefault("1806")
     private Integer supplementaryNo;
 
-    @ColumnDefault("2178")
     private Integer randomNo;
 
-    @NotNull
-    @ColumnDefault("0")
+    private String supplementaryTitle;
+
+    private String randomTitle;
+
     private Integer sequence;
 
     @OneToOne(fetch = FetchType.LAZY)

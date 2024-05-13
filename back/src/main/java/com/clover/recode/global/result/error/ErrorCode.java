@@ -28,7 +28,11 @@ public enum ErrorCode {
 
     //Code
     Already_REGIST_CODE(409, "이미 등록한 코드입니다."),
+    CODE_NOT_EXISTS(404, "해당 코드를 찾을 수 없습니다."),
 
+    //Recode
+    RECODE_NOT_ALLOWED(401, "허가되지 않은 사용자 입니다."),
+    RECODE_NOT_EXISTS(404, "레코드를 찾을 수 없습니다."),
 
     //통계
     USER_NOT_FOUND(404, "유저를 찾을 수 없습니다.");

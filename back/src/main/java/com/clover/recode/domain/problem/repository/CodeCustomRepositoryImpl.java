@@ -19,7 +19,7 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
 
 
     @Override
-    public List<Code> findByReviewStatusFalseAndReviewTimeBefore() {
+    public List<Code> findByReviewStatusTrueAndReviewTimeBefore() {
 
         LocalDate today= LocalDate.now();
         QRecode recode= QRecode.recode;

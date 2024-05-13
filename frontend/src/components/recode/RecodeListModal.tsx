@@ -17,7 +17,7 @@ const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
     <Modal width="w-1/2" height="h-2/3" onClose={onClose}>
       <div className="w-full h-full mx-auto">
         <div className="h-20 flex items-center">
-          <div className="w-[50px] px-2">
+          <div className="w-[56px] px-2">
             <img src={clover} alt="clover" />
           </div>
           <div className="flex-1">
@@ -30,13 +30,25 @@ const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
               <span className="text-MAIN1">{solvedCnt()}</span>문제 복습 완료
             </div>
             <div className="flex justify-center items-center">
-              <Progressbar percentage={percentage} height="h-2" roundWidth="w-2" />
-              <span className="text-sm text-[#51A1FF]">&nbsp;{Math.floor(percentage)}%&nbsp;</span>
+              <Progressbar
+                percentage={todayRecodes.length === 0 ? 0 : percentage}
+                height="h-2"
+                roundWidth="w-2"
+              />
+              <span className="text-sm text-[#51A1FF]">
+                &nbsp;{todayRecodes.length === 0 ? 0 : Math.floor(percentage)}%&nbsp;
+              </span>
             </div>
           </div>
         </div>
         <div className="h-[calc(100%-108px)]">
-          <RecodeList review={todayRecodes} />
+          {todayRecodes.length === 0 ? (
+            <div className="w-full h-full flex justify-center items-center">
+              오늘의 복습 리스트가 없습니다.
+            </div>
+          ) : (
+            <RecodeList review={todayRecodes} />
+          )}
         </div>
       </div>
     </Modal>
