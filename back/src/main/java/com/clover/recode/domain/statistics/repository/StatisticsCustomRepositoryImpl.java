@@ -8,15 +8,13 @@ import com.clover.recode.domain.statistics.entity.QAlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.domain.user.repository.UserRepository;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -66,40 +64,41 @@ public class StatisticsCustomRepositoryImpl implements StatisticsCustomRepositor
                 .where(qAlgoReview.statisticsId.eq(st.getId()))
                 .fetchOne();
 
-        Map<String, Integer> map= new HashMap<>();
-        map.put("math", algoReview.getMathCnt());
-        map.put("implementation", algoReview.getImplementationCnt());
-        map.put("greedy", algoReview.getGreedyCnt());
-        map.put("string", algoReview.getStringCnt());
-        map.put("data_structures", algoReview.getData_structuresCnt());
-        map.put("graphs", algoReview.getGraphsCnt());
-        map.put("dp", algoReview.getDpCnt());
-        map.put("geometry", algoReview.getGeometryCnt());
+        TreeMap<int[], String> map= new TreeMap<>((a, b) -> {
+            if(a[1] == b[1])
+                return a[0] - b[0];
+            return a[1] - b[1];
+        });
 
-        String leastAlgoCategory= algoReview.getMinFieldName(map);
+        map.put(new int[] {0, algoReview.getMathCnt()}, "수학");
+        map.put(new int[] {1, algoReview.getStringCnt()}, "문자열");
+        map.put(new int[] {2, algoReview.getImplementationCnt()}, "구현");
+        map.put(new int[] {3, algoReview.getData_structuresCnt()}, "자료 구조");
+        map.put(new int[] {4, algoReview.getGraphsCnt()}, "그래프 이론");
+        map.put(new int[] {5, algoReview.getDpCnt()}, "다이나믹 프로그래밍");
+        map.put(new int[] {6, algoReview.getGreedyCnt()}, "그리디 알고리즘");
+        map.put(new int[] {7, algoReview.getGeometryCnt()}, "기하학");
 
-        log.info("제일 작은 값: "+ algoReview.getMinFieldName(map));
+        Integer unsolvedAlgoProblem = null;
 
-        List<Integer> unsolvedAlgoProblem = jpaQueryFactory
-                .select(qproblem.problemNo)
-                .from(qproblem)
-                .join(qproblem.tags, qtag)
-                .where(qtag.name.eq(leastAlgoCategory)
-                        .and(qproblem.problemNo.notIn(
-                                JPAExpressions.select(qcode.problem.problemNo)
-                                        .from(qcode)
-                                        .where(qcode.user.id.eq(userId))
-                        )))
-                .fetch();
-
-        Integer supplementary_question = -1;
-
-
-        if (!unsolvedAlgoProblem.isEmpty()) {
-            Collections.shuffle(unsolvedAlgoProblem);
-            supplementary_question = unsolvedAlgoProblem.getFirst();
+        while(!map.isEmpty() && unsolvedAlgoProblem == null) {
+            unsolvedAlgoProblem = jpaQueryFactory
+                    .select(qproblem.problemNo)
+                    .from(qproblem)
+                    .join(qproblem.tags, qtag)
+                    .where(qtag.name.eq(map.pollFirstEntry().getValue())
+                            .and(qproblem.problemNo.notIn(
+                                    JPAExpressions.select(qcode.problem.problemNo)
+                                            .from(qcode)
+                                            .where(qcode.user.id.eq(userId))
+                            )))
+                    .orderBy(Expressions.numberTemplate(Double.class, "RAND()").asc())
+                    .fetchOne();
         }
-        return supplementary_question;
+
+        return unsolvedAlgoProblem;
 
     }
+
+
 }
