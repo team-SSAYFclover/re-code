@@ -1,63 +1,75 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import ProblemOptionComp from './ProblemOptionComp';
 import ProblemComp from './ProblemComp';
 import { PiFunnelBold } from 'react-icons/pi';
 import { IoSearchSharp } from 'react-icons/io5';
+import { useProbList } from '@/hooks/problem/useProblem';
+import { IGetProbListParams } from '@/types/problem';
 
 export interface IOptionInfo {
-  category: { TF: boolean; tagId: number; name: string }[];
+  category: { name: string; TF: boolean }[];
   levelStart: number;
   levelEnd: number;
 }
-export interface IProblemData {
-  problemNo: number;
-  title: string;
-  level: number;
-  tagName: string[];
-  repeatNum: number;
-}
-
-const problemData: IProblemData[] = [
-  {
-    problemNo: 1261,
-    title: '알고스팟',
-    level: 14,
-    tagName: ['다익스트라', '최단경로'],
-    repeatNum: 2,
-  },
-  {
-    problemNo: 10164,
-    title: '격자상의 경로',
-    level: 9,
-    tagName: ['수학', '다이나믹 프로그래밍', '조합론'],
-    repeatNum: 1,
-  },
-];
-
 const ProblemContent: React.FC = () => {
   const [showOption, setShowOption] = useState<boolean>(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [optionInfo, setOptionInfo] = useState<IOptionInfo>({
     category: [
-      { name: '수학', tagId: 1, TF: false },
-      { name: '구현', tagId: 2, TF: false },
-      { name: 'greedy', tagId: 3, TF: false },
-      { name: 'string', tagId: 4, TF: false },
-      { name: '자료 구조', tagId: 5, TF: false },
-      { name: '그래프', tagId: 6, TF: false },
-      { name: 'dp', tagId: 7, TF: false },
-      { name: 'geometry', tagId: 8, TF: false },
+      { name: '수학', TF: false },
+      { name: '구현', TF: false },
+      { name: 'greedy', TF: false },
+      { name: 'string', TF: false },
+      { name: '자료 구조', TF: false },
+      { name: '그래프', TF: false },
+      { name: 'dp', TF: false },
+      { name: 'geometry', TF: false },
     ],
     levelStart: 1,
     levelEnd: 30,
     // 브론즈, 실버, 골드, 플래티넘, 다이아몬드, 루비 각 5-4-3-2-1 순
   });
   const handleOptionBtn = () => {
-    if (showOption) {
-      setShowOption(false);
-    } else {
-      setShowOption(true);
-    }
+    setShowOption(!showOption);
   };
+  const queryParams = useMemo(() => {
+    const tags = optionInfo.category.filter((c) => c.TF).map((c) => c.name);
+    return {
+      page: 0,
+      size: 10,
+      start: optionInfo.levelStart,
+      end: optionInfo.levelEnd,
+      tag: tags,
+      keyword: searchKeyword,
+    };
+  }, [optionInfo, searchKeyword]);
+
+  const queryParamsTosend: IGetProbListParams = {
+    page: 0,
+    size: 10,
+    start: 1,
+    end: 30,
+    tag: [],
+    keyword: '',
+  };
+
+  const { useGetProbList } = useProbList();
+  const { data, refetch } = useGetProbList(queryParamsTosend, false);
+  const problemData = data ? data.content : [];
+
+  const handleSearchClick = () => {
+    queryParamsTosend.page = queryParams.page;
+    queryParamsTosend.size = queryParams.size;
+    queryParamsTosend.start = queryParams.start;
+    queryParamsTosend.end = queryParams.end;
+    queryParamsTosend.tag = [...queryParams.tag];
+    queryParamsTosend.keyword = queryParams.keyword;
+    refetch();
+  };
+
+  useEffect(() => {
+    handleSearchClick();
+  }, []);
 
   return (
     <div className="w-full h-full pt-10 pe-10 overflow-auto">
@@ -82,14 +94,27 @@ const ProblemContent: React.FC = () => {
               id="probSearch"
               className="block w-full p-4 ps-10 bg-gray-50 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-MAIN1"
               placeholder="원하는 검색어를 입력하세요"
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
               required
             />
+            <button
+              type="button"
+              className="absolute inset-y-0 end-0 mt-auto mb-auto me-3 ps-3 pe-3 text-gray-400"
+              onClick={handleSearchClick}
+            >
+              search
+            </button>
           </div>
         </form>
       </div>
       {/* 옵션 컴포넌트 */}
       {showOption ? (
-        <ProblemOptionComp optionInfo={optionInfo} setOptionInfo={setOptionInfo} />
+        <ProblemOptionComp
+          optionInfo={optionInfo}
+          setOptionInfo={setOptionInfo}
+          handleSearchClick={handleSearchClick}
+        />
       ) : null}
       {/* 문제 컴포넌트 리스트 */}
       {showOption ? (
@@ -100,8 +125,8 @@ const ProblemContent: React.FC = () => {
               problemNo={item.problemNo}
               title={item.title}
               level={item.level}
-              tagName={item.tagName}
-              repeatNum={item.repeatNum}
+              tags={item.tags}
+              repeatCount={item.reviewCount}
             />
           ))}
         </div>
@@ -113,8 +138,8 @@ const ProblemContent: React.FC = () => {
               problemNo={item.problemNo}
               title={item.title}
               level={item.level}
-              tagName={item.tagName}
-              repeatNum={item.repeatNum}
+              tags={item.tags}
+              repeatCount={item.reviewCount}
             />
           ))}
         </div>

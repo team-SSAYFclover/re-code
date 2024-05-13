@@ -5,6 +5,7 @@ import { IOptionInfo } from './ProblemContent';
 interface ProblemOptionCompProps {
   optionInfo: IOptionInfo;
   setOptionInfo: React.Dispatch<React.SetStateAction<IOptionInfo>>;
+  handleSearchClick: () => void;
 }
 interface LevelNames {
   [key: number]: string;
@@ -51,7 +52,11 @@ const barColorForValue = (value: number): string => {
   return '#ff0062'; // 26 이상
 };
 
-const ProblemOptionComp: React.FC<ProblemOptionCompProps> = ({ optionInfo, setOptionInfo }) => {
+const ProblemOptionComp: React.FC<ProblemOptionCompProps> = ({
+  optionInfo,
+  setOptionInfo,
+  handleSearchClick,
+}) => {
   const toggleCategory = (index: number) => {
     const newCategories = [...optionInfo.category];
     newCategories[index].TF = !newCategories[index].TF;
@@ -59,23 +64,23 @@ const ProblemOptionComp: React.FC<ProblemOptionCompProps> = ({ optionInfo, setOp
   };
 
   return (
-    <div className="h-fit w-full z-10 mt-1 p-10 shadow-md flex flex-col bg-white rounded-lg overflow-scroll scrollbar-hide">
+    <div className="h-fit w-full z-10 mt-1 p-10 pb-3 shadow-md flex flex-col bg-white rounded-lg overflow-scroll scrollbar-hide">
+      {/* 알고리즘 분류 */}
       <div className="flex flex-col">
         <div>알고리즘 분류</div>
         <div className="flex flex-row overflow-x-auto">
-          {optionInfo.category.map(
-            (item: { TF: boolean; tagId: number; name: string }, index: number) => (
-              <button
-                key={index}
-                onClick={() => toggleCategory(index)}
-                className={`min-w-24 rounded-xl w-fit p-1 ps-2 pe-2 ${item.TF ? 'bg-MAIN1 text-MAIN2' : 'bg-gray-100 text-gray-400'} m-1`}
-              >
-                {item.name}
-              </button>
-            )
-          )}
+          {optionInfo.category.map((item: { TF: boolean; name: string }, index: number) => (
+            <button
+              key={index}
+              onClick={() => toggleCategory(index)}
+              className={`min-w-24 rounded-xl w-fit p-1 ps-2 pe-2 ${item.TF ? 'bg-MAIN1 text-MAIN2' : 'bg-gray-100 text-gray-400'} m-1`}
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
       </div>
+      {/* 문제 난이도 */}
       <div className="flex flex-col mt-5">
         <div>문제 난이도</div>
         <label htmlFor="levelRange" className="mt-2">
@@ -158,6 +163,15 @@ const ProblemOptionComp: React.FC<ProblemOptionCompProps> = ({ optionInfo, setOp
             </div>
           )}
         ></Range>
+      </div>
+      {/* 적용 버튼 */}
+      <div className="w-full flex justify-end">
+        <button
+          onClick={() => handleSearchClick()}
+          className="min-w-24 rounded-xl w-fit p-1 ps-2 pe-2 text-lg font-semibold tracking-wider bg-MAIN1 text-MAIN2 m-1"
+        >
+          적용하기
+        </button>
       </div>
     </div>
   );

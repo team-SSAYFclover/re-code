@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { IProblemData } from './ProblemContent';
 import { useNavigate } from 'react-router-dom';
 
-const ProblemComp: React.FC<IProblemData> = ({ problemNo, title, level, tagName, repeatNum }) => {
+interface IProblemData {
+  problemNo: number;
+  title: string;
+  level: number;
+  tags: string[];
+  repeatCount: number;
+}
+
+const ProblemComp: React.FC<IProblemData> = ({ problemNo, title, level, tags, repeatCount }) => {
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState<string>('');
 
@@ -32,7 +39,7 @@ const ProblemComp: React.FC<IProblemData> = ({ problemNo, title, level, tagName,
         </div>
         <div>
           <div className="inline rounded-md text-xs w-fit p-1 ps-3 pe-3 bg-MAIN1 text-MAIN2">
-            복습 {repeatNum}회
+            복습 {repeatCount}회
           </div>
         </div>
       </div>
@@ -43,7 +50,7 @@ const ProblemComp: React.FC<IProblemData> = ({ problemNo, title, level, tagName,
       </div>
       {/* 하단부 */}
       <div className="w-full flex flex-row text-xs overflow-hidden">
-        {tagName.map((item) => (
+        {tags.map((item) => (
           <div key={item} className="rounded-md me-2 p-1 ps-2 pe-2 bg-gray-100 text-gray-400">
             {item}
           </div>
