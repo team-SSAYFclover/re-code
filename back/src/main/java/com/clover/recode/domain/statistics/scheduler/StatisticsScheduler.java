@@ -27,13 +27,13 @@ public class StatisticsScheduler {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-    @Scheduled(cron = "0 0 4 * * *")
+    @Scheduled(cron = "0 0 15 * * *")
     @Transactional
     public void updateTodayProblem() {
 
             LocalDate today = LocalDate.now();
 
-            List<Code> codesToReview = codeRepository.findByReviewStatusFalseAndReviewTimeBefore();
+            List<Code> codesToReview = codeRepository.findByReviewStatusTrueAndReviewTimeBefore();
 
             for(Code code: codesToReview) {
                     TodayProblem todayProblem = TodayProblem.builder()
@@ -51,7 +51,7 @@ public class StatisticsScheduler {
 
     }
 
-    @Scheduled(cron = "0 0 4 * * *")
+    @Scheduled(cron = "0 0 15 * * *")
     @Transactional
     public void updateRanking() {
 
