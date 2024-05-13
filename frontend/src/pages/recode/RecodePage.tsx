@@ -53,7 +53,11 @@ const RecodePage = () => {
                   <span className="text-MAIN1">{solvedCnt()}</span>문제 복습 완료
                 </div>
                 <div className="flex justify-center items-center">
-                  <Progressbar percentage={percentage} height="h-2" roundWidth="w-2" />
+                  <Progressbar
+                    percentage={data.length === 0 ? 0 : percentage}
+                    height="h-2"
+                    roundWidth="w-2"
+                  />
                   <span className="text-sm text-[#51A1FF]">
                     &nbsp;{Math.floor(percentage)}%&nbsp;
                   </span>

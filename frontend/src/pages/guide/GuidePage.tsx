@@ -93,7 +93,7 @@ const GuidePage = () => {
   };
 
   return (
-    <div className="w-full h-auto bg-gradient-to-b from-[#e7fff9] from-0% via-[#F7FFFD] via-70% to-[#BBFFEE] to-100%">
+    <div className="w-full h-auto bg-gradient-to-b from-[#F7FFFD] from-0% to-[#BBFFEE] to-100%">
       <div className="w-[60%] mx-auto">
         <motion.section
           variants={varient}
@@ -116,6 +116,7 @@ const GuidePage = () => {
           <div className="w-full bg-white rounded-xl border border-MAIN1 p-10">
             {guide.map((text, idx) => (
               <motion.div
+                key={idx}
                 className="flex flex-col items-center"
                 variants={varient}
                 initial="hidden"
