@@ -7,7 +7,7 @@ const HomePage = () => {
 
   return (
     <div
-      className={`h-full px-20 ${!isLogin && 'bg-gradient-to-b from-[#ffffff] from-0% to-[#e3fff8] to-100%'}`}
+      className={`h-full px-12 ${!isLogin && 'bg-gradient-to-b from-[#ffffff] from-0% to-[#e3fff8] to-100%'}`}
     >
       {isLogin ? <HomeContent /> : <LoginContent />}
     </div>
