@@ -8,12 +8,18 @@ import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +27,8 @@ import java.util.List;
 @Slf4j
 public class StatisticsScheduler {
 
+    private final JdbcTemplate jdbcTemplate;
     private final CodeRepository codeRepository;
-    private final TodayProblemRepository todayProblemRepository;
     private final StatisticsRepository statisticsRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -33,8 +39,9 @@ public class StatisticsScheduler {
 
             LocalDate today = LocalDate.now();
 
-            List<Code> codesToReview = codeRepository.findByReviewStatusFalseAndReviewTimeBefore();
+            List<Code> codesToReview = codeRepository.findByReviewStatusTrueAndReviewTimeBefore();
 
+            List<TodayProblem> todayProblemList = new ArrayList<>();
             for(Code code: codesToReview) {
                     TodayProblem todayProblem = TodayProblem.builder()
                             .isCompleted(false)
@@ -46,8 +53,34 @@ public class StatisticsScheduler {
                             .user(code.getUser())
                             .build();
 
-                todayProblemRepository.save(todayProblem);
+                    todayProblemList.add(todayProblem);
             }
+
+        String sql = "INSERT INTO today_problem " +
+                "(date, is_completed, problem_no, review_cnt, title, code_id, user_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                TodayProblem todayProblem = todayProblemList.get(i);
+                ps.setDate(1, java.sql.Date.valueOf(today));
+                ps.setBoolean(2, todayProblem.isCompleted());
+                ps.setInt(3, todayProblem.getProblemNo());
+                ps.setInt(4, todayProblem.getReviewCnt());
+                ps.setString(5, todayProblem.getTitle());
+                ps.setLong(6, todayProblem.getCode().getId());
+                ps.setLong(7, todayProblem.getUser().getId());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return todayProblemList.size();
+            }
+        });
+
+
 
     }
 
@@ -85,6 +118,8 @@ public class StatisticsScheduler {
                             .and(weekReview.date.between(mon, today)))
                     .fetchOne();
 
+            if(st_sum == null) st_sum= 0;
+            if(total == null) total= 1;
             Integer ranking= (int) (100- (double) st_sum/total * 100);
 
             st.setRanking(ranking);

@@ -64,7 +64,7 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests((auth) -> auth
             // Swagger
-            .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
+            .requestMatchers("/swagger-ui/**", "/api-docs/**", "/actuator/prometheus").permitAll()
             .requestMatchers("/users/reissue", "/users/code", "/problems/regist", "/statistics/{userId}/reviews/cnt").permitAll()
            .anyRequest().authenticated());
 

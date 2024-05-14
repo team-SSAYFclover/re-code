@@ -19,13 +19,18 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
 
 
     @Override
-    public List<Code> findByReviewStatusFalseAndReviewTimeBefore() {
+    public List<Code> findByReviewStatusTrueAndReviewTimeBefore() {
 
         LocalDate today= LocalDate.now();
         QRecode recode= QRecode.recode;
         QCode code= QCode.code;
+        QProblem problem = QProblem.problem;
 
         return jpaQueryFactory.selectFrom(code)
+                .innerJoin(code.recode, recode)
+                .fetchJoin()
+                .innerJoin(code.problem, problem)
+                .fetchJoin()
                 .where(code.deleted.eq(false),
                     code.reviewStatus.eq(true),
                         recode.reviewTime.before(today.atStartOfDay().plusDays(1)))
@@ -41,6 +46,7 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
         // 조인과 필터 조건을 사용한 쿼리 구성
         List<Code> codes = jpaQueryFactory
                 .selectFrom(qCode)
+                .fetchJoin()
                 .join(qCode.problem, qProblem)
                 .where(qProblem.problemNo.eq(problemNo))
                 .fetch();
@@ -57,7 +63,7 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
 
         return jpaQueryFactory
                 .select(Projections.constructor(CodeResList.class,
-                        qCode.id, qCode.name, qCode.content, qCode.createdTime))
+                        qCode.id, qCode.name, qCode.content, qCode.createdTime, qCode.reviewStatus))
                 .from(qCode)
                 .join(qCode.problem, qProblem)
                 .where(qProblem.problemNo.eq(problemNo)
