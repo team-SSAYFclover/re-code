@@ -2,6 +2,7 @@ package com.clover.recode.domain.problem.repository;
 
 import com.clover.recode.domain.problem.dto.CodeResList;
 import com.clover.recode.domain.problem.entity.Code;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.List;
 

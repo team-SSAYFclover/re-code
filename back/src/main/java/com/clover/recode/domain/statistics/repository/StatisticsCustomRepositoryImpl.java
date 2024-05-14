@@ -3,20 +3,18 @@ package com.clover.recode.domain.statistics.repository;
 import com.clover.recode.domain.problem.entity.QCode;
 import com.clover.recode.domain.problem.entity.QProblem;
 import com.clover.recode.domain.problem.entity.QTag;
+import com.clover.recode.domain.statistics.dto.StatisticProblemDTO;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
 import com.clover.recode.domain.statistics.entity.QAlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
-import com.clover.recode.domain.user.entity.User;
-import com.clover.recode.domain.user.repository.UserRepository;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -25,34 +23,30 @@ public class StatisticsCustomRepositoryImpl implements StatisticsCustomRepositor
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Integer updateRandom(Long userId) {
+    public StatisticProblemDTO updateRandom(Long userId) {
         //내가 풀지 않은 문제 중에서 랜덤문제를 가져온다
 
         QProblem qproblem= QProblem.problem;
         QCode qcode= QCode.code;
 
-        List<Integer> unsolvedProblemNos = jpaQueryFactory
-                .select(qproblem.problemNo)
+        StatisticProblemDTO unsolvedProblemNos = jpaQueryFactory
+                .select(Projections.constructor(StatisticProblemDTO.class,
+                        qproblem.problemNo, qproblem.title))
                 .from(qproblem)
                 .where(qproblem.problemNo.notIn(
                         JPAExpressions.select(qcode.problem.problemNo)
                                 .from(qcode)
                                 .where(qcode.user.id.eq(userId))
                 ))
-                .fetch();
+                .orderBy(Expressions.numberTemplate(Double.class, "RAND()").asc())
+                .limit(1)
+                .fetchOne();
 
-        Integer randomNo = -1;
-
-        if (!unsolvedProblemNos.isEmpty()) {
-            Collections.shuffle(unsolvedProblemNos);
-            randomNo = unsolvedProblemNos.getFirst();
-        }
-
-        return randomNo;
+        return unsolvedProblemNos;
     }
 
     @Override
-    public Integer updateSupplement(Long userId, Statistics st) {
+    public StatisticProblemDTO updateSupplement(Long userId, Statistics st) {
 
         QTag qtag= QTag.tag;
         QAlgoReview qAlgoReview= QAlgoReview.algoReview;
@@ -66,40 +60,49 @@ public class StatisticsCustomRepositoryImpl implements StatisticsCustomRepositor
                 .where(qAlgoReview.statisticsId.eq(st.getId()))
                 .fetchOne();
 
-        Map<String, Integer> map= new HashMap<>();
-        map.put("math", algoReview.getMathCnt());
-        map.put("implementation", algoReview.getImplementationCnt());
-        map.put("greedy", algoReview.getGreedyCnt());
-        map.put("string", algoReview.getStringCnt());
-        map.put("data_structures", algoReview.getData_structuresCnt());
-        map.put("graphs", algoReview.getGraphsCnt());
-        map.put("dp", algoReview.getDpCnt());
-        map.put("geometry", algoReview.getGeometryCnt());
+        TreeMap<int[], String> map= new TreeMap<>((a, b) -> {
+            if(a[1] == b[1])
+                return a[0] - b[0];
+            return a[1] - b[1];
+        });
 
-        String leastAlgoCategory= algoReview.getMinFieldName(map);
+        List<Integer> random= new ArrayList<>();
+        for(int i=0; i<8; i++)
+            random.add(i);
 
-        log.info("제일 작은 값: "+ algoReview.getMinFieldName(map));
+        Collections.shuffle(random);
 
-        List<Integer> unsolvedAlgoProblem = jpaQueryFactory
-                .select(qproblem.problemNo)
-                .from(qproblem)
-                .join(qproblem.tags, qtag)
-                .where(qtag.name.eq(leastAlgoCategory)
-                        .and(qproblem.problemNo.notIn(
-                                JPAExpressions.select(qcode.problem.problemNo)
-                                        .from(qcode)
-                                        .where(qcode.user.id.eq(userId))
-                        )))
-                .fetch();
+        map.put(new int[] {random.get(0), algoReview.getMathCnt()}, "수학");
+        map.put(new int[] {random.get(1), algoReview.getStringCnt()}, "문자열");
+        map.put(new int[] {random.get(2), algoReview.getImplementationCnt()}, "구현");
+        map.put(new int[] {random.get(3), algoReview.getData_structuresCnt()}, "자료 구조");
+        map.put(new int[] {random.get(4), algoReview.getGraphsCnt()}, "그래프 이론");
+        map.put(new int[] {random.get(5), algoReview.getDpCnt()}, "다이나믹 프로그래밍");
+        map.put(new int[] {random.get(6), algoReview.getGreedyCnt()}, "그리디 알고리즘");
+        map.put(new int[] {random.get(7), algoReview.getGeometryCnt()}, "기하학");
 
-        Integer supplementary_question = -1;
+        StatisticProblemDTO unsolvedAlgoProblem = null;
 
-
-        if (!unsolvedAlgoProblem.isEmpty()) {
-            Collections.shuffle(unsolvedAlgoProblem);
-            supplementary_question = unsolvedAlgoProblem.getFirst();
+        while(!map.isEmpty() && unsolvedAlgoProblem == null) {
+            unsolvedAlgoProblem = jpaQueryFactory
+                    .select(Projections.constructor(StatisticProblemDTO.class,
+                            qproblem.problemNo, qproblem.title))
+                    .from(qproblem)
+                    .join(qproblem.tags, qtag)
+                    .where(qtag.name.eq(map.pollFirstEntry().getValue())
+                            .and(qproblem.problemNo.notIn(
+                                    JPAExpressions.select(qcode.problem.problemNo)
+                                            .from(qcode)
+                                            .where(qcode.user.id.eq(userId))
+                            )))
+                    .orderBy(Expressions.numberTemplate(Double.class, "RAND()").asc())
+                    .limit(1)
+                    .fetchOne();
         }
-        return supplementary_question;
+
+        return unsolvedAlgoProblem;
 
     }
+
+
 }
