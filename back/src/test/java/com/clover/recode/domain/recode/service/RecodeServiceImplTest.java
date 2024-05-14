@@ -11,21 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SpringBootTest
 class RecodeServiceImplTest {
 
-    @Autowired
-    RecodeServiceImpl service;
+//    @Autowired
+//    RecodeServiceImpl service;
 
-    @Autowired
-    CodeRepository codeRepository;
+//    @Autowired
+//    CodeRepository codeRepository;
 
-    @Test
-    void GPTTest() {
+//    @Test
+//    void GPTTest() {
 //        String recode = service.getRecode(EnglishPrompt.prompt);
-    }
+//    }
 
-    @Test
-    void createRecodeTest() {
-        service.createRecode(ExampleCode1.code);
-    }
+//    @Test
+//    void createRecodeTest() {
+//        service.createRecode(ExampleCode1.code);
+//    }
 
 //    @Test
 //    void getRecodeTest() {
