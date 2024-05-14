@@ -8,15 +8,6 @@ import RecommendComp from './RecommendComp';
 import TodayReviewComp from './TodayReviewComp';
 import WeekReviewComp from './WeekReviewComp';
 
-const suppleProb = {
-  problemNo: 3302,
-  problemTitle: 'Job Scheduling',
-};
-const randProb = {
-  problemNo: 11779,
-  problemTitle: '최소비용 구하기 2',
-};
-
 const HomeContent: React.FC = () => {
   const { name } = userStore();
   const { useGetMainInfo } = useHome();
@@ -56,6 +47,13 @@ const HomeContent: React.FC = () => {
   const solvedCount = TodayReviewData.filter((problem) => problem.solvedYn).length;
   const totalProblems = TodayReviewData.length;
   const leaf = totalProblems > 0 ? Math.floor((solvedCount / totalProblems) * 4) : 0;
+
+  const suppleProb = data
+    ? { problemNo: data.supplementaryQuestion, problemTitle: data.supplementaryTitle }
+    : { problemNo: 3302, problemTitle: 'Jop Scheduling' };
+  const randProb = data
+    ? { problemNo: data.randomQuestion, problemTitle: data.randomTitle }
+    : { problemNo: 11779, problemTitle: '최소비용 구하기 2' };
 
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data available</div>;
