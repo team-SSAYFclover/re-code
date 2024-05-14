@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { marked } from 'marked';
+import { useNavigate } from 'react-router-dom';
 import ProblemDetailCodeComp from './ProblemDetailCodeComp';
 import { IProbDetailInfo, ICodeResList } from '@/types/problem';
-import { useProbDetail } from '@/hooks/problem/useProblem';
+import { useProbDetail, useDeleteCode } from '@/hooks/problem/useProblem';
 
 const ProblemDetailContent: React.FC = () => {
   const { useGetProbDetail } = useProbDetail();
+  const { mutate: deleteCodeMutate } = useDeleteCode();
   const params = useParams();
+  const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState<string>('');
   const [problemData, setProblemData] = useState<IProbDetailInfo>({
     id: -1,
@@ -34,10 +37,21 @@ const ProblemDetailContent: React.FC = () => {
   };
 
   const deleteCode = (id: number) => {
-    setProblemData((prevData) => ({
-      ...prevData,
-      codeResLists: prevData.codeResLists.filter((codeResLists) => codeResLists.id !== id),
-    }));
+    deleteCodeMutate(id, {
+      onSuccess: () => {
+        setProblemData((prevData) => ({
+          ...prevData,
+          codeResLists: prevData.codeResLists.filter((codeResLists) => codeResLists.id !== id),
+        }));
+      },
+      onError: (error) => {
+        console.error('코드 삭제 에러', error);
+      },
+    });
+
+    if (problemData.codeResLists.length == 0) {
+      navigate('/problem');
+    }
   };
 
   const { data } = useGetProbDetail(problemData.problemNo);

@@ -34,3 +34,13 @@ export const getProbDetail = async (problemNo: number): Promise<APIResponse<IPro
     throw error;
   }
 };
+
+export const deleteCode = async (codeId: number): Promise<void> => {
+  try {
+    await axiosCommonInstance.delete(`/problems/code/${codeId}`);
+    console.log('code deleted : ', codeId);
+  } catch (error) {
+    console.error('코드 삭제 에러!', error);
+    throw error;
+  }
+};
