@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { marked } from 'marked';
 import { useNavigate } from 'react-router-dom';
 import ProblemDetailCodeComp from './ProblemDetailCodeComp';
 import { IProbDetailInfo, ICodeResList } from '@/types/problem';
 import { useProbDetail, useDeleteCode, usePatchCode } from '@/hooks/problem/useProblem';
+import MarkdownParser from './MarkdownParser';
 
 const ProblemDetailContent: React.FC = () => {
   const { useGetProbDetail } = useProbDetail();
@@ -91,11 +91,6 @@ const ProblemDetailContent: React.FC = () => {
     loadTierImage();
   }, [data, problemData.level]);
 
-  const renderMarkdown = (markdownText: string) => {
-    const rawMarkup = marked.parse(markdownText);
-    return { __html: rawMarkup };
-  };
-
   return (
     <div className="w-full h-full pt-5 pe-20 flex flex-col overflow-auto">
       {/* 상단부 : 문제 정보 */}
@@ -128,10 +123,9 @@ const ProblemDetailContent: React.FC = () => {
         </div>
       </div>
       {/* 중단부 : 문제 내용 */}
-      <div
-        className="mt-10 mb-10 whitespace-pre-wrap"
-        dangerouslySetInnerHTML={renderMarkdown(problemData.content)}
-      ></div>
+      <div className="mt-10 mb-10">
+        <MarkdownParser markdown={problemData.content} />
+      </div>
       {/* 하단부 : 코드 내역 */}
       <div className="w-full h-fit">
         <div className="w-full h-0.5 mb-3 bg-gray-100"></div>
