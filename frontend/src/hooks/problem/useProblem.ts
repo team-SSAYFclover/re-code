@@ -1,6 +1,6 @@
-import { getProbList, getProbDetail, deleteCode } from '@/services/problem';
+import { getProbList, getProbDetail, deleteCode, patchCode } from '@/services/problem';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { IGetProbListParams } from '@/types/problem';
+import { IGetProbListParams, ICodePatchParams } from '@/types/problem';
 
 export const useProbList = () => {
   const useGetProbList = (params: IGetProbListParams, isEnabled = false) => {
@@ -31,5 +31,12 @@ export const useProbDetail = () => {
 export const useDeleteCode = () => {
   return useMutation({
     mutationFn: (codeId: number) => deleteCode(codeId),
+  });
+};
+
+export const usePatchCode = () => {
+  return useMutation({
+    mutationFn: (variables: { codeId: number; params: ICodePatchParams }) =>
+      patchCode(variables.codeId, variables.params),
   });
 };
