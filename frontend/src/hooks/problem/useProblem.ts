@@ -1,15 +1,18 @@
 import { getProbList, getProbDetail, deleteCode, patchCode } from '@/services/problem';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { IGetProbListParams, ICodePatchParams } from '@/types/problem';
+import { APIResponse, IProblemRes } from '@/types/model';
 
 export const useProbList = () => {
   const useGetProbList = (params: IGetProbListParams, isEnabled = false) => {
-    return useQuery({
+    return useInfiniteQuery<APIResponse<IProblemRes>>({
       queryKey: ['probList', params],
-      queryFn: () => getProbList(params),
+      queryFn: ({ pageParam = 0 }) => getProbList({ ...params, page: pageParam as number }),
+      getNextPageParam: (lastPage) =>
+        lastPage.data.last ? undefined : lastPage.data.content.length,
       enabled: isEnabled,
       staleTime: Infinity,
-      select: (data) => data.data,
+      initialPageParam: 0,
     });
   };
 
