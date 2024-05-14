@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RecodeRes {
     private ProblemDto problemDto;
+    private String code;
     private String recode;
     private List<String> answers;
 }
