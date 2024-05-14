@@ -59,7 +59,7 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
     public List<CodeResList> findCodesByProblemNoAndUserId(Integer problemNo, Long userId) {
         QCode qCode = QCode.code;
         QProblem qProblem = QProblem.problem;
-
+        QRecode qRecode = QRecode.recode;
 
         return jpaQueryFactory
                 .select(Projections.constructor(CodeResList.class,
