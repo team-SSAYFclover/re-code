@@ -367,15 +367,16 @@ public class RecodeServiceImpl implements RecodeService {
         for(Tag tag: tags){
 
             log.info("tag..getId(): "+ tag.getId());
-            switch (tag.getId()){
-                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
-                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
-                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
-                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
-                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
-                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
-                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
-                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
+            switch (tag.getName()){
+                case "수학": algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
+                case "구현": algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
+                case "그리디 알고리즘": algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
+                case "문자열": algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
+                case "자료 구조": algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
+                case "그래프": algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
+                case "그래프 탐색": algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
+                case "다이나믹 프로그래밍": algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
+                case "기하학": algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
 
             }
 
