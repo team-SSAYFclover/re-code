@@ -1,10 +1,10 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import ProblemOptionComp from './ProblemOptionComp';
-import ProblemComp from './ProblemComp';
-import { PiFunnelBold } from 'react-icons/pi';
-import { IoSearchSharp } from 'react-icons/io5';
 import { useProbList } from '@/hooks/problem/useProblem';
 import { IGetProbListParams } from '@/types/problem';
+import React, { useEffect, useMemo, useState } from 'react';
+import { IoSearchSharp } from 'react-icons/io5';
+import { PiFunnelBold } from 'react-icons/pi';
+import ProblemComp from './ProblemComp';
+import ProblemOptionComp from './ProblemOptionComp';
 
 export interface IOptionInfo {
   category: { name: string; TF: boolean }[];
@@ -79,17 +79,17 @@ const ProblemContent: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-full pt-10 pe-10 overflow-auto">
+    <div className="w-full h-full pt-10">
       {/* 상단 옵션버튼, 검색창 */}
       <div className="w-full flex justify-between">
         <button
-          className={`rounded-md font-bold ps-7 pe-7 tracking-wider ${showOption ? 'bg-MAIN1 text-MAIN2' : 'bg-MAIN2 text-MAIN1'} flex justify-center`}
+          className={`rounded-md font-bold px-3 tracking-wider ${showOption ? 'bg-MAIN1 text-MAIN2' : 'bg-MAIN2 text-MAIN1'} flex justify-center`}
           onClick={() => handleOptionBtn()}
         >
           <PiFunnelBold className="me-1 mt-auto mb-auto" size={20} />
           <div className="inline-block mt-auto mb-auto">Filter</div>
         </button>
-        <form className="w-11/12 ms-5">
+        <form className="w-full ms-5">
           <div className="relative">
             <IoSearchSharp
               className="absolute inset-y-0 start-0 mt-auto mb-auto ms-3"
@@ -126,7 +126,7 @@ const ProblemContent: React.FC = () => {
       ) : null}
       {/* 문제 컴포넌트 리스트 */}
       {showOption ? (
-        <div className="w-full h-1/2 pt-10 pb-4 pe-3 flex flex-row flex-wrap overflow-x-auto">
+        <div className="w-full pt-10 pb-4 flex flex-row flex-wrap overflow-x-auto">
           {problemData.map((item) => (
             <ProblemComp
               key={item.problemNo}
@@ -139,7 +139,7 @@ const ProblemContent: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="w-full h-[calc(74vh)] pt-10 pb-4 pe-3 flex flex-row flex-wrap overflow-x-auto">
+        <div className="w-full pt-10 pb-4 pe-3 flex flex-row flex-wrap overflow-x-auto">
           {problemData.map((item) => (
             <ProblemComp
               key={item.problemNo}
