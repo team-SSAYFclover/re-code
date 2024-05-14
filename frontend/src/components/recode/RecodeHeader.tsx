@@ -49,14 +49,14 @@ const RecodeHeader = ({ recode }: { recode: IGetRecodeRes }) => {
       </div>
       <div className="flex">
         <button
-          className="w-32 h-10 mr-2 flex justify-center items-center font-semibold bg-gray-100/50 text-gray-400 text-sm rounded-md shadow-md hover:bg-gray-100/90 hover:text-gray-600"
+          className="w-32 h-10 mr-2 flex justify-center items-center font-semibold bg-gray-100/50 text-gray-400 text-sm rounded-md shadow-md hover:bg-gray-100/90 hover:text-gray-600 outline-none"
           onClick={() => setIsShowCodeModal(true)}
         >
           <FaCode size={20} />
           &nbsp;기존 코드
         </button>
         <button
-          className="w-32 h-10 flex justify-center items-center font-semibold bg-MAIN2 text-MAIN1 text-sm rounded-md shadow-md hover:bg-[#D2FFF3] hover:text-[#30CFA8]"
+          className="w-32 h-10 flex justify-center items-center font-semibold bg-MAIN2 text-MAIN1 text-sm rounded-md shadow-md hover:bg-[#D2FFF3] hover:text-[#30CFA8] outline-none"
           onClick={() => setIsShowListModal(true)}
         >
           <PiNoteDuotone size={20} />
