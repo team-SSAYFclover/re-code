@@ -57,6 +57,8 @@ const RecodeSolveBox = ({
       }
     }
 
+    console.log(value, answer[idx], isSame);
+
     if (value !== '' && isSame) {
       if (isAllCorrect) {
         setIsCorrect(isCorrect.map((correct, i) => (idx === i ? true : correct)));
@@ -70,7 +72,7 @@ const RecodeSolveBox = ({
       return;
     }
 
-    if (answer[idx].length > value.length) {
+    if (answer[idx].length > value.length || !isSame) {
       setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'fail' : show)));
 
       setTimeout(() => {
@@ -91,8 +93,7 @@ const RecodeSolveBox = ({
     }
   };
 
-  const inCorrectInputClass =
-    'bg-red-100 text-red-400 border-red-400 outline-red-300 animate-shake';
+  const inCorrectInputClass = 'bg-red-100 text-red-400 border-red-400 animate-shake';
   const correctInputClass = 'outline-blue-700 text-blue-700 bg-blue-200';
 
   return (
@@ -114,28 +115,32 @@ const RecodeSolveBox = ({
               >
                 {setTooltip(idx)}
               </Tooltip>
-              <input
-                type="text"
-                value={inputs[idx]}
-                onChange={(e) => handleInputChange(idx, e.target.value)}
-                className={`bg-MAIN1/20 inline-block my-1 p-1 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && isShowToolTip[idx] === 'fail' && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
-                style={{ width: `${answer[idx].length * 16}px` }}
-                disabled={isCorrect[idx]}
-                data-tooltip-id={`tooltip-${idx}`}
-              />
+              <div
+                className={`bg-MAIN1/20 inline-block my-1 p-1 pl-2 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && isShowToolTip[idx] === 'fail' && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
+              >
+                <input
+                  type="text"
+                  value={inputs[idx]}
+                  className={` bg-white/0 outline-none`}
+                  onChange={(e) => handleInputChange(idx, e.target.value)}
+                  style={{ width: `${answer[idx].length * 16}px` }}
+                  disabled={isCorrect[idx]}
+                  data-tooltip-id={`tooltip-${idx}`}
+                />
 
-              {isCorrect[idx] ? (
-                <span className="text-blue-700 text-xs px-[2px]">
-                  <Check
-                    width={'26px'}
-                    height={'26px'}
-                    fill="red"
-                    style={{ display: 'inline-block' }}
-                  />
-                </span>
-              ) : (
-                <span className="text-gray-400 text-xs px-[1px]">({answer[idx].length})</span>
-              )}
+                {isCorrect[idx] ? (
+                  <span className="text-blue-700 text-xs px-[1px]">
+                    <Check
+                      width={'26px'}
+                      height={'26px'}
+                      fill="red"
+                      style={{ display: 'inline-block' }}
+                    />
+                  </span>
+                ) : (
+                  <span className="text-gray-400 text-xs px-[1px]">({answer[idx].length})</span>
+                )}
+              </div>
             </>
           )}
         </span>
