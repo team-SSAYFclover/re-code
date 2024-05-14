@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.service;
 
+import com.clover.recode.domain.statistics.dto.StatisticProblemDTO;
 import com.clover.recode.domain.statistics.dto.TodayProblemDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,7 @@ public interface StatisticsService {
 
      List<TodayProblemDto> getReviews(Authentication authentication);
 
-    Integer updateRandom(Authentication authentication);
+    StatisticProblemDTO updateRandom(Authentication authentication);
 
-    Integer updateSupplement(Authentication authentication);
+    StatisticProblemDTO updateSupplement(Authentication authentication);
 }

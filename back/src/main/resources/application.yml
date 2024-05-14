@@ -14,10 +14,14 @@ spring:
       hibernate:
         default_batch_fetch_size: 1000
         format_sql: true
+        rewriteBatchedStatements: true
         jdbc:
           time_zone: Asia/Seoul
+        order_updates: true
+        order_inserts: true
     show-sql: true
     defer-datasource-initialization: true
+
     open-in-view: false
   security:
     oauth2:
