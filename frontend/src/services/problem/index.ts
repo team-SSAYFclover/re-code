@@ -6,14 +6,20 @@ export const getProbList = async (
   params: IGetProbListParams
 ): Promise<APIResponse<IProblemRes>> => {
   try {
-    const queryString = new URLSearchParams({
+    let queryString = new URLSearchParams({
       page: params.page.toString(),
       size: params.size.toString(),
       ...(params.start && { start: params.start.toString() }),
       ...(params.end && { end: params.end.toString() }),
       ...(params.keyword && { keyword: params.keyword }),
-      ...Object.fromEntries(params.tag?.map((tag, index) => [`tag[${index}]`, tag]) || []),
     }).toString();
+
+    params.tag?.forEach((item) => {
+      queryString += `&tag=${item}`;
+    });
+
+    // ...Object.fromEntries(params.tag?.map((tag, index) => [`tag`, tag]) || []),
+    console.log(queryString);
 
     const res = await axiosCommonInstance.get(`/problems?${queryString}`);
     console.log('service gotten : ', res);

@@ -5,6 +5,7 @@ import { PiFunnelBold } from 'react-icons/pi';
 import ProblemComp from './ProblemComp';
 import ProblemOptionComp from './ProblemOptionComp';
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
+import { IGetProbListParams } from '@/types/problem';
 
 export interface IOptionInfo {
   category: { name: string; TF: boolean }[];
@@ -35,7 +36,7 @@ const ProblemContent: React.FC = () => {
   const queryParams = useMemo(() => {
     return {
       page: 0,
-      size: 10,
+      size: 6,
       start: optionInfo.levelStart,
       end: optionInfo.levelEnd,
       tag: optionInfo.category.filter((c) => c.TF).map((c) => c.name),
@@ -43,12 +44,21 @@ const ProblemContent: React.FC = () => {
     };
   }, [optionInfo, searchKeyword]);
 
+  const [queryParamsToSend, setQueryParamsToSend] = useState<IGetProbListParams>({
+    page: 0,
+    size: 6,
+    start: 1,
+    end: 30,
+    tag: [],
+    keyword: '',
+  });
+
   const { useGetProbList } = useProbList();
-  const { data, refetch, fetchNextPage, hasNextPage } = useGetProbList(queryParams, true);
+  const { data, fetchNextPage, hasNextPage } = useGetProbList(queryParamsToSend, true);
   const problemData = data?.pages.flatMap((page) => page.data.content) || [];
 
   const handleSearchClick = () => {
-    refetch();
+    setQueryParamsToSend(queryParams);
   };
 
   const { setTarget } = useIntersectionObserver({
@@ -126,7 +136,8 @@ const ProblemContent: React.FC = () => {
           />
         ))}
       </div>
-      <div ref={setTarget} className="h-[1rem]"></div>
+
+      <div ref={setTarget} className="h-[1rem]" key={data?.pageParams.length}></div>
     </div>
   );
 };

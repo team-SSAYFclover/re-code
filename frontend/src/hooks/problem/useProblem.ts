@@ -8,8 +8,9 @@ export const useProbList = () => {
     return useInfiniteQuery<APIResponse<IProblemRes>>({
       queryKey: ['probList', params],
       queryFn: ({ pageParam = 0 }) => getProbList({ ...params, page: pageParam as number }),
-      getNextPageParam: (lastPage) =>
-        lastPage.data.last ? undefined : lastPage.data.content.length,
+      getNextPageParam: (lastPage) => {
+        return lastPage.data.last ? undefined : lastPage.data.number + 1;
+      },
       enabled: isEnabled,
       staleTime: Infinity,
       initialPageParam: 0,
