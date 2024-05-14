@@ -98,7 +98,7 @@ public class ProblemServiceImpl implements ProblemService {
         // Page<Problem>을 Page<ProblemRes>로 변환
         return problemsPage.map(problem -> {
             List<String> tagNames = tagRepository.getTagNames(problem.getId()); // 태그 리스트
-            int reviewCount = problemRepository.getReviewCount(problem.getId());   // 복습량
+            int reviewCount = problemRepository.getReviewCount(problem.getId(), customUserDetails.getId());   // 복습량
 
             // 문제 정보를 ProblemRes DTO로 매핑
             return ProblemResList.builder()
@@ -121,7 +121,7 @@ public class ProblemServiceImpl implements ProblemService {
         // 문제 정보 조회해서 DTO(ProblemRes)에 담기
         Problem problem = problemRepository.findProblemByProblemNo(problemNo);
         List<String> tagNames = tagRepository.getTagNames(problem.getId()); //태그 리스트
-        int reviewCount = problemRepository.getReviewCount(problem.getId());    // 복습량
+        int reviewCount = problemRepository.getReviewCount(problem.getId(), customUserDetails.getId());    // 복습량
 
         ProblemResList problemResList = ProblemResList.builder()
 
