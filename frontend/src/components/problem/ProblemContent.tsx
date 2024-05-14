@@ -1,10 +1,10 @@
-import { useProbList } from '@/hooks/problem/useProblem';
-import { IGetProbListParams } from '@/types/problem';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useProbList } from '@/hooks/problem/useProblem';
 import { IoSearchSharp } from 'react-icons/io5';
 import { PiFunnelBold } from 'react-icons/pi';
 import ProblemComp from './ProblemComp';
 import ProblemOptionComp from './ProblemOptionComp';
+import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 
 export interface IOptionInfo {
   category: { name: string; TF: boolean }[];
@@ -33,39 +33,28 @@ const ProblemContent: React.FC = () => {
     setShowOption(!showOption);
   };
   const queryParams = useMemo(() => {
-    const tags = optionInfo.category.filter((c) => c.TF).map((c) => c.name);
     return {
       page: 0,
       size: 10,
       start: optionInfo.levelStart,
       end: optionInfo.levelEnd,
-      tag: tags,
+      tag: optionInfo.category.filter((c) => c.TF).map((c) => c.name),
       keyword: searchKeyword,
     };
   }, [optionInfo, searchKeyword]);
 
-  const queryParamsTosend: IGetProbListParams = {
-    page: 0,
-    size: 10,
-    start: 1,
-    end: 30,
-    tag: [],
-    keyword: '',
-  };
-
   const { useGetProbList } = useProbList();
-  const { data, refetch } = useGetProbList(queryParamsTosend, false);
-  const problemData = data ? data.content : [];
+  const { data, refetch, fetchNextPage, hasNextPage } = useGetProbList(queryParams, true);
+  const problemData = data?.pages.flatMap((page) => page.data.content) || [];
 
   const handleSearchClick = () => {
-    queryParamsTosend.page = queryParams.page;
-    queryParamsTosend.size = queryParams.size;
-    queryParamsTosend.start = queryParams.start;
-    queryParamsTosend.end = queryParams.end;
-    queryParamsTosend.tag = [...queryParams.tag];
-    queryParamsTosend.keyword = queryParams.keyword;
     refetch();
   };
+
+  const { setTarget } = useIntersectionObserver({
+    hasNextPage,
+    fetchNextPage,
+  });
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -125,33 +114,19 @@ const ProblemContent: React.FC = () => {
         />
       ) : null}
       {/* 문제 컴포넌트 리스트 */}
-      {showOption ? (
-        <div className="w-full pt-10 pb-4 flex flex-row flex-wrap overflow-x-auto">
-          {problemData.map((item) => (
-            <ProblemComp
-              key={item.problemNo}
-              problemNo={item.problemNo}
-              title={item.title}
-              level={item.level}
-              tags={item.tags}
-              repeatCount={item.reviewCount}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="w-full pt-10 pb-4 pe-3 flex flex-row flex-wrap overflow-x-auto">
-          {problemData.map((item) => (
-            <ProblemComp
-              key={item.problemNo}
-              problemNo={item.problemNo}
-              title={item.title}
-              level={item.level}
-              tags={item.tags}
-              repeatCount={item.reviewCount}
-            />
-          ))}
-        </div>
-      )}
+      <div className="w-full pt-10 pb-4 flex flex-row flex-wrap overflow-x-auto">
+        {problemData.map((item) => (
+          <ProblemComp
+            key={item.problemNo}
+            problemNo={item.problemNo}
+            title={item.title}
+            level={item.level}
+            tags={item.tags}
+            repeatCount={item.reviewCount}
+          />
+        ))}
+      </div>
+      <div ref={setTarget} className="h-[1rem]"></div>
     </div>
   );
 };
