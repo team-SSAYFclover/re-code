@@ -12,7 +12,7 @@ public interface ProblemRepository extends JpaRepository<Problem, Long>, Problem
 
   Problem findFirstByProblemNo(Integer problemNo);
 
-  Problem findProblemByProblemNo(Integer problemNo);
+  Optional<Problem> findProblemByProblemNo(Integer problemNo);
 
 
 }

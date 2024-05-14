@@ -173,6 +173,8 @@ public class UserServiceImpl implements UserService {
 
     CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
+    if(fcmTokenRepository.existsByToken(fcmReq.getToken()))
+      return;
     User user = userRepository.findById(customUserDetails.getId())
         .orElseThrow(() -> new BusinessException(USER_NOT_EXISTS));
 
