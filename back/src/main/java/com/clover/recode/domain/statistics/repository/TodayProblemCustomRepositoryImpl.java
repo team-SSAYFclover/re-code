@@ -20,10 +20,9 @@ public class TodayProblemCustomRepositoryImpl implements TodayProblemCustomRepos
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<TodayProblemDto> findByUserId(Long userId) {
+    public List<TodayProblemDto> findByUserId(Long userId, LocalDate day) {
 
         QTodayProblem todayProblem= QTodayProblem.todayProblem;
-        LocalDate today= LocalDate.now();
 
         return jpaQueryFactory.select(
                 Projections.constructor(
@@ -36,7 +35,7 @@ public class TodayProblemCustomRepositoryImpl implements TodayProblemCustomRepos
                 )
                 )
                 .from(todayProblem)
-                .where(todayProblem.date.eq(today)
+                .where(todayProblem.date.eq(day)
                         .and((todayProblem.user.id.eq(userId))))
                 .fetch();
 

@@ -11,7 +11,5 @@ public interface WeekReviewCustomRepository {
 
     List<Integer> findReviewsBetweenDates(LocalDate startOfWeek, LocalDate endOfWeek, Long statisticsId);
 
-    Integer countByTodayReview(Long statisticsId);
-
-    Optional<WeekReview> findByIdAndDateToday(Long statisticsId);
+    Optional<WeekReview> findByIdAndDateToday(Long statisticsId, LocalDate day);
 }

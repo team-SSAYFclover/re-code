@@ -50,27 +50,13 @@ public class WeekReviewCustomRepositoryImpl implements WeekReviewCustomRepositor
     }
 
     @Override
-    public Integer countByTodayReview(Long statisticsId) {
-        QWeekReview weekReview= QWeekReview.weekReview;
-        LocalDate today = LocalDate.now();
-
-        return jpaQueryFactory
-                .select(weekReview.count)
-                .from(weekReview)
-                .where(weekReview.date.eq(today)
-                        .and(weekReview.statistics.id.eq(statisticsId)))
-                .fetchOne();
-    }
-
-    @Override
-    public Optional<WeekReview> findByIdAndDateToday(Long statisticsId) {
+    public Optional<WeekReview> findByIdAndDateToday(Long statisticsId, LocalDate day) {
 
         QWeekReview qWeekReview= QWeekReview.weekReview;
-        LocalDate today= LocalDate.now();
 
         return Optional.ofNullable(jpaQueryFactory
                 .selectFrom(qWeekReview)
-                .where(qWeekReview.date.eq(today)
+                .where(qWeekReview.date.eq(day)
                         .and(qWeekReview.statistics.id.eq(statisticsId)))
                 .fetchOne());
 

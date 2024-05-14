@@ -346,7 +346,7 @@ public class RecodeServiceImpl implements RecodeService {
 
         //매주 복습량 테이블 오늘 날짜 복습량 +1 변경
         Long statisticsId= code.getUser().getStatistics().getId();
-        weekReviewRepository.findByIdAndDateToday(statisticsId).ifPresentOrElse(weekReview -> {
+        weekReviewRepository.findByIdAndDateToday(statisticsId, day).ifPresentOrElse(weekReview -> {
 
             int count= weekReview.getCount();
             count++;
@@ -356,7 +356,7 @@ public class RecodeServiceImpl implements RecodeService {
 
         WeekReview weekReview= WeekReview.builder()
                 .statistics(code.getUser().getStatistics())
-                .date(LocalDate.now())
+                .date(day)
                 .count(1)
                 .build();
 
