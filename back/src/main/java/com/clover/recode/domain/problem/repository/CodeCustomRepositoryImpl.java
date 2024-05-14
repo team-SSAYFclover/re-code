@@ -63,10 +63,9 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
 
         return jpaQueryFactory
                 .select(Projections.constructor(CodeResList.class,
-                        qCode.id, qRecode.id, qCode.name, qCode.content, qCode.createdTime, qCode.reviewStatus))
+                        qCode.id, qCode.name, qCode.content, qCode.createdTime, qCode.reviewStatus))
                 .from(qCode)
                 .join(qCode.problem, qProblem)
-                .join(qCode.recode, qRecode)
                 .where(qProblem.problemNo.eq(problemNo)
                         .and(qCode.user.id.eq(userId)))
                 .orderBy(qCode.createdTime.desc())

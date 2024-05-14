@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FcmTokenRepository extends JpaRepository<FcmToken, Long> {
 
   void deleteFcmTokenByToken(String token);
+  boolean existsByToken(String token);
 }
