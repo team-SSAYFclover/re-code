@@ -1,5 +1,5 @@
 import { ReactComponent as Tear } from '@/assets/tear.svg';
-import { IGetRecodeRes } from '@/types/recode';
+import { IGetRecodeRes, IGetTodayRecodeListRes } from '@/types/recode';
 import { useEffect, useRef, useState } from 'react';
 import { FaCode } from 'react-icons/fa6';
 import { PiNoteDuotone } from 'react-icons/pi';
@@ -7,7 +7,13 @@ import { useLocation } from 'react-router-dom';
 import RecodeCodeModal from './Modal/RecodeCodeModal';
 import RecodeListModal from './Modal/RecodeListModal';
 
-const RecodeHeader = ({ recode }: { recode: IGetRecodeRes }) => {
+const RecodeHeader = ({
+  recode,
+  todayRecodeList,
+}: {
+  recode: IGetRecodeRes;
+  todayRecodeList: IGetTodayRecodeListRes;
+}) => {
   const [isShowListModal, setIsShowListModal] = useState<boolean>(false);
   const [isShowCodeModal, setIsShowCodeModal] = useState<boolean>(false);
 
@@ -63,9 +69,14 @@ const RecodeHeader = ({ recode }: { recode: IGetRecodeRes }) => {
           &nbsp;문제 리스트
         </button>
       </div>
-      {isShowListModal && <RecodeListModal onClose={() => setIsShowListModal(false)} />}
+      {isShowListModal && (
+        <RecodeListModal
+          todayRecodeList={todayRecodeList}
+          onClose={() => setIsShowListModal(false)}
+        />
+      )}
       {isShowCodeModal && (
-        <RecodeCodeModal code={recode.recode} onClose={() => setIsShowCodeModal(false)} />
+        <RecodeCodeModal code={recode.code} onClose={() => setIsShowCodeModal(false)} />
       )}
     </div>
   );

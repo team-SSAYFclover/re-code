@@ -80,6 +80,7 @@ export const getRecode: APIResponse<IGetRecodeRes> = {
       'L <= diff && diff <= R',
       'c',
     ],
+    code: '',
   },
 };
 

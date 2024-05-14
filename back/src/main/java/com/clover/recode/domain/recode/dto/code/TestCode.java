@@ -1,4 +1,4 @@
-package com.clover.recode.domain.recode.dto;
+package com.clover.recode.domain.recode.dto.code;
 
 public class TestCode {
     public static String code = """

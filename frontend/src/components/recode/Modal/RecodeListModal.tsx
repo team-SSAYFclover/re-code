@@ -1,17 +1,21 @@
 import clover from '@/assets/clover.png';
 import RecodeList from '@/components/recode/RecodeList';
-import recodeListStore from '@/stores/recodeListStore';
+import { IGetTodayRecodeListRes } from '@/types/recode';
 import Modal from '../../@common/Modal';
 import Progressbar from '../../@common/Progressbar';
 
-const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
-  const { todayRecodes } = recodeListStore();
-
+const RecodeListModal = ({
+  todayRecodeList,
+  onClose,
+}: {
+  todayRecodeList: IGetTodayRecodeListRes;
+  onClose: () => void;
+}) => {
   const solvedCnt = () => {
-    return todayRecodes.filter((x) => x.completed).length;
+    return todayRecodeList.filter((x) => x.completed).length;
   };
 
-  const percentage: number = (solvedCnt() / todayRecodes.length) * 100;
+  const percentage: number = (solvedCnt() / todayRecodeList.length) * 100;
 
   return (
     <Modal width="w-1/2" height="h-2/3" onClose={onClose}>
@@ -26,28 +30,28 @@ const RecodeListModal = ({ onClose }: { onClose: () => void }) => {
           </div>
           <div className="w-[180px] text-right">
             <div className=" pr-1 text-md text-right text-gray-500">
-              <span className="text-MAIN1">{todayRecodes.length}</span>문제 중&nbsp;
+              <span className="text-MAIN1">{todayRecodeList.length}</span>문제 중&nbsp;
               <span className="text-MAIN1">{solvedCnt()}</span>문제 복습 완료
             </div>
             <div className="flex justify-center items-center">
               <Progressbar
-                percentage={todayRecodes.length === 0 ? 0 : percentage}
+                percentage={todayRecodeList.length === 0 ? 0 : percentage}
                 height="h-2"
                 roundWidth="w-2"
               />
               <span className="text-sm text-[#51A1FF]">
-                &nbsp;{todayRecodes.length === 0 ? 0 : Math.floor(percentage)}%&nbsp;
+                &nbsp;{todayRecodeList.length === 0 ? 0 : Math.floor(percentage)}%&nbsp;
               </span>
             </div>
           </div>
         </div>
         <div className="h-[calc(100%-108px)]">
-          {todayRecodes.length === 0 ? (
+          {todayRecodeList.length === 0 ? (
             <div className="w-full h-full flex justify-center items-center">
               오늘의 복습 리스트가 없습니다.
             </div>
           ) : (
-            <RecodeList review={todayRecodes} />
+            <RecodeList review={todayRecodeList} />
           )}
         </div>
       </div>

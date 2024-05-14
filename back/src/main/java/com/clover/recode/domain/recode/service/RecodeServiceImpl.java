@@ -6,6 +6,11 @@ import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.problem.entity.Tag;
 import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.dto.*;
+import com.clover.recode.domain.recode.dto.gpt.GptRequestDto;
+import com.clover.recode.domain.recode.dto.gpt.GptResponseDto;
+import com.clover.recode.domain.recode.dto.gpt.Message;
+import com.clover.recode.domain.recode.dto.prompt.Prompt;
+import com.clover.recode.domain.recode.dto.prompt.PromptSub;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
@@ -65,13 +70,14 @@ public class RecodeServiceImpl implements RecodeService {
     public String createRecode(String code) {
 
         List<Message> prompts = new ArrayList<>();
-        prompts.add(new Message("system", EnglishPrompt.systemPrompt));
-        prompts.add(new Message("user", EnglishPrompt.answerPrompt + code + "\n```"));
+        prompts.add(new Message("system", PromptSub.systemPrompt));
+        prompts.add(new Message("user", PromptSub.answerPrompt + code + "\n```"));
 
         // 시간 측정
         // long startTime = System.currentTimeMillis();
 
-        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
+//        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
+        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -96,9 +102,7 @@ public class RecodeServiceImpl implements RecodeService {
     public RecodeRes getRecode(Authentication authentication, Long codeId) {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-//        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
-//                .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
-        Code code = codeRepository.findById(codeId)
+        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
                 .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
 
         return getRecodeFromCode(code);
@@ -244,19 +248,19 @@ public class RecodeServiceImpl implements RecodeService {
                 }
 
                 // 빈 칸이 너무 길면 나누기
-                if (answer.length() > 10) {
-                    int div = answer.length() / 10 + 1;
-                    for (int j = 0; j < div; j++) {
-                        int step = answer.length() / div;
-                        int start2 = j * step;
-                        int end2 = (j + 1) * step;
-                        if (j < div - 1) {
-                            realAnswers.add(answer.substring(start2, end2 - 2));
-                            sb.append(answer, end2 - 2, end2).append('‽').append('▢');
-                        } else
-                            realAnswers.add(answer.substring(start2));
-                    }
-                } else
+//                if (answer.length() > 10) {
+//                    int div = answer.length() / 10 + 1;
+//                    for (int j = 0; j < div; j++) {
+//                        int step = answer.length() / div;
+//                        int start2 = j * step;
+//                        int end2 = (j + 1) * step;
+//                        if (j < div - 1) {
+//                            realAnswers.add(answer.substring(start2, end2 - 2));
+//                            sb.append(answer, end2 - 2, end2).append('‽').append('▢');
+//                        } else
+//                            realAnswers.add(answer.substring(start2));
+//                    }
+//                } else
                     realAnswers.add(answer);
             } else
                 sb.append(answers.get(i));
@@ -299,7 +303,7 @@ public class RecodeServiceImpl implements RecodeService {
         int submitCount = recode.getSubmitCount() + 1;
         recode.setSubmitCount(submitCount);
 
-        int addDays;
+        int addDays = 0;
         switch (submitCount) {
             case 1:
                 addDays = 3;
@@ -312,7 +316,7 @@ public class RecodeServiceImpl implements RecodeService {
                 break;
             default:
                 code.setReviewStatus(false);
-                return;
+                break;
         }
 
         recode.setReviewTime(submitTime.plusDays(addDays));
@@ -323,7 +327,16 @@ public class RecodeServiceImpl implements RecodeService {
         //문제를 풀고 난 후, 통계 업데이트 해주기
 
         //오늘의 복습문제 is_complete true로 변경
-       todayProblemRepository.findByCodeId(codeId).ifPresent(todayProblem -> {
+        //새벽4시 이전이면 이전날
+        //새벽4시 이후면 Today
+        //code_id는 unique가 아니기 때문에, findByCodeId를 하면 값이
+        //여러개가 리턴될 수 있음
+        //code_id + 날짜로 가져오기로 변경
+
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+       todayProblemRepository.findByCodeIdAndDate(codeId, day).ifPresent(todayProblem -> {
 
            todayProblem.setCompleted(true);
 
@@ -366,16 +379,15 @@ public class RecodeServiceImpl implements RecodeService {
 
         for(Tag tag: tags){
 
-            log.info("tag..getId(): "+ tag.getId());
-            switch (tag.getId()){
-                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
-                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
-                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
-                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
-                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
-                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
-                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
-                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
+            switch (tag.getName()){
+                case "수학": algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
+                case "구현": algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
+                case "그리디 알고리즘": algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
+                case "문자열": algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
+                case "자료 구조": algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
+                case "그래프 이론": algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
+                case "다이나믹 프로그래밍": algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
+                case "기하학": algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
 
             }
 

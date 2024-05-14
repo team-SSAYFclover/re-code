@@ -37,6 +37,7 @@ public class StatisticsScheduler {
     @Transactional
     public void updateTodayProblem() {
 
+            //오늘의 문제를 업데이트한다
             LocalDate today = LocalDate.now();
 
             List<Code> codesToReview = codeRepository.findByReviewStatusTrueAndReviewTimeBefore();
@@ -56,6 +57,9 @@ public class StatisticsScheduler {
                     todayProblemList.add(todayProblem);
             }
 
+            //JPA에선 Id가 자동인 경우 배치를 쓸 수없다
+        //따라서 jdbcTemplate를 이용함
+
         String sql = "INSERT INTO today_problem " +
                 "(date, is_completed, problem_no, review_cnt, title, code_id, user_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -68,7 +72,7 @@ public class StatisticsScheduler {
                 ps.setDate(1, java.sql.Date.valueOf(today));
                 ps.setBoolean(2, todayProblem.isCompleted());
                 ps.setInt(3, todayProblem.getProblemNo());
-                ps.setInt(4, todayProblem.getReviewCnt());
+                ps.setInt(4, todayProblem.getReviewCnt()+1);
                 ps.setString(5, todayProblem.getTitle());
                 ps.setLong(6, todayProblem.getCode().getId());
                 ps.setLong(7, todayProblem.getUser().getId());
@@ -79,9 +83,6 @@ public class StatisticsScheduler {
                 return todayProblemList.size();
             }
         });
-
-
-
     }
 
     @Scheduled(cron = "0 0 4 * * *")
