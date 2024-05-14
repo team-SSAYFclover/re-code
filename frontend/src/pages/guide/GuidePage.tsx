@@ -1,7 +1,14 @@
+import guide1 from '@/assets/guide/guide1.webp';
+import guide2 from '@/assets/guide/guide2.webp';
+import guide3 from '@/assets/guide/guide3.webp';
+import guide4 from '@/assets/guide/guide4.webp';
+import guide5 from '@/assets/guide/guide5.webp';
+import main from '@/assets/guide/main.webp';
 import logo from '@/assets/logo.png';
 import logo2 from '@/assets/logo2.png';
 import { motion } from 'framer-motion';
 import { FaRegArrowAltCircleDown } from 'react-icons/fa';
+
 interface IGuideDetail {
   title: JSX.Element;
   desc: JSX.Element;
@@ -26,7 +33,7 @@ const GuidePage = () => {
         </div>
       ),
       desc: <>re:code 사이트에 들어가 github 버튼을 눌러 로그인을 진행해 주세요</>,
-      image: '이미지1',
+      image: guide1,
     },
     {
       title: (
@@ -40,7 +47,7 @@ const GuidePage = () => {
           chrome 웹스토어에서 re:code를 검색 후 다운로드 합니다.
         </div>
       ),
-      image: '이미지2',
+      image: guide2,
     },
     {
       title: (
@@ -53,7 +60,7 @@ const GuidePage = () => {
           re:code사이트의 내 정보에서 연동 코드를 복사 후 extension에 입력하여 연동합니다.
         </div>
       ),
-      image: '이미지3',
+      image: guide3,
     },
     {
       title: (
@@ -67,7 +74,7 @@ const GuidePage = () => {
           chrome 웹스토어에서 re:code를 검색 후 다운로드 합니다.
         </div>
       ),
-      image: '이미지4',
+      image: guide4,
     },
     {
       title: (
@@ -81,7 +88,7 @@ const GuidePage = () => {
           빈칸을 모두 채우면 복습 완료를 눌러 복습을 마무리합니다.
         </div>
       ),
-      image: '이미지5',
+      image: guide5,
     },
   ];
 
@@ -94,7 +101,7 @@ const GuidePage = () => {
 
   return (
     <div className="w-full h-auto bg-gradient-to-b from-[#F7FFFD] from-0% to-[#BBFFEE] to-100%">
-      <div className="w-[60%] mx-auto">
+      <div className="w-[70%] mx-auto">
         <motion.section
           variants={varient}
           initial="hidden"
@@ -106,7 +113,11 @@ const GuidePage = () => {
             <img alt="logo" src={logo} className="w-32" />가 처음이라면?
           </div>
           <span>시작 가이드를 통해 re:code를 하나씩 알아가보아요</span>
-          <img className="w-full h-[50vh] bg-gray-100 mt-10 rounded-xl shadow-lg" alt="site" />
+          <img
+            className="w-full h-full bg-gray-100 mt-10 rounded-md shadow-lg"
+            alt="site"
+            src={main}
+          />
         </motion.section>
         <motion.section variants={varient} initial="hidden" whileInView="visible" className="my-16">
           <div className={titleCommonClass}>
@@ -154,7 +165,7 @@ const GuidePage = () => {
                 <img
                   src={info.image}
                   alt="guide"
-                  className="w-full h-[50vh] bg-gray-100 mt-10 rounded-xl shadow-lg"
+                  className="w-full h-full bg-gray-100 mt-10 rounded-md shadow-lg"
                 />
               </motion.article>
             );

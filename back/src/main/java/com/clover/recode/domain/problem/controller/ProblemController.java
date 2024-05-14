@@ -28,7 +28,7 @@ public class ProblemController {
 
     private final ProblemService problemService;
 
-    @PostMapping()
+    @PostMapping("/regist")
     public ResponseEntity<ResultResponse> saveProblemAndCode(@RequestBody ProblemCodeRegistReq problemCodeRegistReq) {
         log.info("ProblemCode : {}", problemCodeRegistReq);
         problemService.saveProblemAndCode(problemCodeRegistReq);
@@ -62,6 +62,7 @@ public class ProblemController {
     }
 
     @PatchMapping("/code/{codeId}")
+    @Operation(summary = "코드 정보(제목, 복습 여부) 수정")
     public ResponseEntity<ResultResponse> patchCode(@PathVariable Long codeId, @RequestBody
     CodePatchReq codePatchReq, Authentication authentication) {
         problemService.patchCode(codeId, codePatchReq, authentication);
@@ -69,6 +70,7 @@ public class ProblemController {
     }
 
     @DeleteMapping("/code/{codeId}")
+    @Operation(summary = "등록 코드 삭제")
     public ResponseEntity<ResultResponse> deleteCode(@PathVariable Long codeId, Authentication authentication) {
         problemService.deleteCode(codeId, authentication);
         return ResponseEntity.ok(ResultResponse.of(DELETE_CODE_SUCCESS));
