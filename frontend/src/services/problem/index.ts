@@ -1,6 +1,6 @@
 import { axiosCommonInstance } from '@/apis/axiosInstance';
 import { APIResponse, IProblemRes } from '@/types/model';
-import { IGetProbListParams } from '@/types/problem';
+import { IGetProbListParams, IProbDetailInfo } from '@/types/problem';
 
 export const getProbList = async (
   params: IGetProbListParams
@@ -16,6 +16,17 @@ export const getProbList = async (
     }).toString();
 
     const res = await axiosCommonInstance.get(`/problems?${queryString}`);
+    console.log('service gotten : ', res);
+    return res.data;
+  } catch (error) {
+    console.error('서비스 에러!', error);
+    throw error;
+  }
+};
+
+export const getProbDetail = async (problemNo: number): Promise<APIResponse<IProbDetailInfo>> => {
+  try {
+    const res = await axiosCommonInstance.get(`/problems/${problemNo}`);
     console.log('service gotten : ', res);
     return res.data;
   } catch (error) {
