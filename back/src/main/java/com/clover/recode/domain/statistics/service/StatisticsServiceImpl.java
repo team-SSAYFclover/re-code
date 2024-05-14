@@ -2,6 +2,7 @@ package com.clover.recode.domain.statistics.service;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
+import com.clover.recode.domain.statistics.dto.StatisticProblemDTO;
 import com.clover.recode.domain.statistics.dto.TodayProblemDto;
 import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
@@ -31,6 +32,7 @@ import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Slf4j
 public class StatisticsServiceImpl implements StatisticsService {
 
@@ -42,7 +44,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 
     @Override
-    @Transactional
     public StatisticsListRes getStatisticsList(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
@@ -130,32 +131,36 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Integer updateRandom(Authentication authentication) {
+    @Transactional
+    public StatisticProblemDTO updateRandom(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        Integer randomNo= statisticsRepository.updateRandom(customUserDetails.getId());
+        StatisticProblemDTO random= statisticsRepository.updateRandom(customUserDetails.getId());
 
-        User user= userRepository.findById(customUserDetails.getId()).orElseThrow();
+        Statistics statistics= statisticsRepository.findByUserId(customUserDetails.getId());
 
-        user.getStatistics().setRandomNo(randomNo);
+        statistics.setRandomNo(random.getNo());
+        statistics.setRandomTitle(random.getTitle());
 
-        userRepository.save(user);
+        statisticsRepository.save(statistics);
 
-        return randomNo;
+        return random;
 
     }
 
     @Override
-    public Integer updateSupplement(Authentication authentication) {
+    @Transactional
+    public StatisticProblemDTO updateSupplement(Authentication authentication) {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         Statistics st= statisticsRepository.findByUserId(customUserDetails.getId());
 
-        Integer supplementary_question= statisticsRepository.updateSupplement(customUserDetails.getId(), st);
+        StatisticProblemDTO supplementary_question= statisticsRepository.updateSupplement(customUserDetails.getId(), st);
 
-        st.setSupplementaryNo(supplementary_question);
+        st.setSupplementaryNo(supplementary_question.getNo());
+        st.setSupplementaryTitle(supplementary_question.getTitle());
 
         statisticsRepository.save(st);
 

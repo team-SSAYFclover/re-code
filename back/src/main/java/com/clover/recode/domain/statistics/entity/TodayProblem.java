@@ -16,7 +16,8 @@ import java.time.LocalDate;
 public class TodayProblem {
 
     @Id
-    private Long codeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private boolean isCompleted;
 
@@ -29,7 +30,6 @@ public class TodayProblem {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "code_id")
     private Code code;
 
