@@ -123,10 +123,7 @@ const ProblemDetailContent: React.FC = () => {
         </div>
       </div>
       {/* 중단부 : 문제 내용 */}
-      <div
-        className="mt-10 mb-10 whitespace-pre-wrap"
-        // dangerouslySetInnerHTML={renderMarkdown(problemData.content)}
-      >
+      <div className="mt-10 mb-10">
         <MarkdownParser markdown={problemData.content} />
       </div>
       {/* 하단부 : 코드 내역 */}
