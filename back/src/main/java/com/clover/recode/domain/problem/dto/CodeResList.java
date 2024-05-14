@@ -10,6 +10,7 @@
     @AllArgsConstructor
     public class CodeResList {
         private Long id;
+        private Long recodeId;
         private String name;    // 코드 제목
         private String content; // 코드 내용
         private LocalDateTime submitTime; // 생성 시간

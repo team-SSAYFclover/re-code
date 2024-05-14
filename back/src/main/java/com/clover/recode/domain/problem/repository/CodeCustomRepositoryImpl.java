@@ -59,13 +59,14 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
     public List<CodeResList> findCodesByProblemNoAndUserId(Integer problemNo, Long userId) {
         QCode qCode = QCode.code;
         QProblem qProblem = QProblem.problem;
-
+        QRecode qRecode = QRecode.recode;
 
         return jpaQueryFactory
                 .select(Projections.constructor(CodeResList.class,
-                        qCode.id, qCode.name, qCode.content, qCode.createdTime, qCode.reviewStatus))
+                        qCode.id, qRecode.id, qCode.name, qCode.content, qCode.createdTime, qCode.reviewStatus))
                 .from(qCode)
                 .join(qCode.problem, qProblem)
+                .join(qCode.recode, qRecode)
                 .where(qProblem.problemNo.eq(problemNo)
                         .and(qCode.user.id.eq(userId)))
                 .orderBy(qCode.createdTime.desc())

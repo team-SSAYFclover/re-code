@@ -18,7 +18,7 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     // 복습량 - 레코드 제출 횟수 (정답인 경우)
-    public Integer getReviewCount(Long problemId) {
+    public Integer getReviewCount(Long problemId, Long userId) {
         QCode qCode = QCode.code;
         QRecode qRecode = QRecode.recode;
 
@@ -26,7 +26,10 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository{
                 .select(qRecode.submitCount.sum())
                 .from(qRecode)
                 .join(qRecode.code, qCode)
-                .where(qCode.problem.id.eq(problemId))
+                .where(
+                    qCode.problem.id.eq(problemId),
+                    qCode.user.id.eq(userId)
+                    )
                 .fetchOne();
 
         return totalSubmitCount != null ? totalSubmitCount : 0;
@@ -69,7 +72,6 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository{
                 .select(qProblem)
                 .from(qCode)
                 .join(qCode.problem, qProblem)
-                .leftJoin(qProblem.tags, qTag) // 태그 조인
                 .where(whereClause)
                 .orderBy(qCode.createdTime.desc()) // 가장 최근에 생성된 문제부터 정렬
                 .offset(pageable.getOffset())
@@ -77,13 +79,14 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository{
                 .fetch();
 
         // 총 개수 조회 (표시할 데이터의 총 페이지 수를 계산하기 위해 전체 데이터의 수를 알아야 함)
-        long count = jpaQueryFactory
+        Long count = jpaQueryFactory
                 .select(qProblem.count())
                 .from(qCode)
-                .join(qCode.problem, qProblem)
-                .leftJoin(qProblem.tags, qTag) // 태그 조인
+                .join(qCode.problem, qProblem) // 태그 조인
                 .where(whereClause)
                 .fetchOne();
+        if(count == null)
+            count = 0L;
         return new PageImpl<>(problems, pageable, count);
     }
 
