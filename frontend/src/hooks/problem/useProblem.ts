@@ -1,5 +1,5 @@
-import { getProbList, getProbDetail } from '@/services/problem';
-import { useQuery } from '@tanstack/react-query';
+import { getProbList, getProbDetail, deleteCode } from '@/services/problem';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { IGetProbListParams } from '@/types/problem';
 
 export const useProbList = () => {
@@ -26,4 +26,10 @@ export const useProbDetail = () => {
     });
   };
   return { useGetProbDetail };
+};
+
+export const useDeleteCode = () => {
+  return useMutation({
+    mutationFn: (codeId: number) => deleteCode(codeId),
+  });
 };
