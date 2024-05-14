@@ -6,6 +6,11 @@ import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.problem.entity.Tag;
 import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.dto.*;
+import com.clover.recode.domain.recode.dto.gpt.GptRequestDto;
+import com.clover.recode.domain.recode.dto.gpt.GptResponseDto;
+import com.clover.recode.domain.recode.dto.gpt.Message;
+import com.clover.recode.domain.recode.dto.prompt.Prompt;
+import com.clover.recode.domain.recode.dto.prompt.PromptSub;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
@@ -65,13 +70,14 @@ public class RecodeServiceImpl implements RecodeService {
     public String createRecode(String code) {
 
         List<Message> prompts = new ArrayList<>();
-        prompts.add(new Message("system", EnglishPrompt.systemPrompt));
-        prompts.add(new Message("user", EnglishPrompt.answerPrompt + code + "\n```"));
+        prompts.add(new Message("system", PromptSub.systemPrompt));
+        prompts.add(new Message("user", PromptSub.answerPrompt + code + "\n```"));
 
         // 시간 측정
         // long startTime = System.currentTimeMillis();
 
-        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
+//        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
+        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -96,9 +102,7 @@ public class RecodeServiceImpl implements RecodeService {
     public RecodeRes getRecode(Authentication authentication, Long codeId) {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-//        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
-//                .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
-        Code code = codeRepository.findById(codeId)
+        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
                 .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
 
         return getRecodeFromCode(code);
@@ -299,7 +303,7 @@ public class RecodeServiceImpl implements RecodeService {
         int submitCount = recode.getSubmitCount() + 1;
         recode.setSubmitCount(submitCount);
 
-        int addDays;
+        int addDays = 0;
         switch (submitCount) {
             case 1:
                 addDays = 3;
@@ -312,7 +316,7 @@ public class RecodeServiceImpl implements RecodeService {
                 break;
             default:
                 code.setReviewStatus(false);
-                return;
+                break;
         }
 
         recode.setReviewTime(submitTime.plusDays(addDays));
