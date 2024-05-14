@@ -37,7 +37,11 @@ const LoginPage = () => {
         </div>
         <div className="w-full">
           <p className="text-center text-[14px]">
-            <a href="https://www.recode-d210.com/guide" className="text-[#5A8AF2] hover:underline">
+            <a
+              href="https://www.recode-d210.com/guide"
+              target="_blank"
+              className="text-[#5A8AF2] hover:underline"
+            >
               시작 가이드{' '}
             </a>
             보러가기
