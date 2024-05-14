@@ -57,6 +57,20 @@ const ProblemDetailContent: React.FC = () => {
     }
   };
 
+  const updateCodeName = (id: number, newName: string) => {
+    setProblemData((prevData) => {
+      const updatedCodes = prevData.codeResLists.map((codeResLists) => {
+        if (codeResLists.id === id) {
+          const params = { name: newName, reviewStatus: codeResLists.reviewStatus };
+          patchCodeMutate({ codeId: id, params });
+          return { ...codeResLists, name: newName };
+        }
+        return codeResLists;
+      });
+      return { ...prevData, codeResLists: updatedCodes };
+    });
+  };
+
   const { data } = useGetProbDetail(problemData.problemNo);
   useEffect(() => {
     if (data) {
@@ -131,6 +145,7 @@ const ProblemDetailContent: React.FC = () => {
             date={item.submitTime}
             toggleReviewStatus={() => toggleReviewStatus(item.id)}
             deleteCode={() => deleteCode(item.id)}
+            onModifyName={updateCodeName}
           />
         ))}
       </div>

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BsTrash } from 'react-icons/bs';
 import { HiPencil } from 'react-icons/hi';
-import { FaChevronDown } from 'react-icons/fa';
-import { FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 export interface ICode {
   id: number;
@@ -15,6 +14,7 @@ export interface ICode {
 interface IProblemDetailCodeCompProps extends ICode {
   toggleReviewStatus: () => void;
   deleteCode: () => void;
+  onModifyName: (id: number, newName: string) => void;
 }
 
 const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
@@ -25,9 +25,12 @@ const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
   date,
   toggleReviewStatus,
   deleteCode,
+  onModifyName,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isChecked, setIsChecked] = useState(reviewStatus);
+  const [isModifying, setIsModifying] = useState(false);
+  const [modifiedName, setModifiedName] = useState(name);
 
   useEffect(() => {
     setIsChecked(reviewStatus);
@@ -39,9 +42,17 @@ const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
   const toggleReviewHandler = () => {
     toggleReviewStatus();
     setIsChecked(!isChecked);
-    console.log('isChecked : ' + isChecked);
-    console.log('reviewStatus : ' + reviewStatus);
   };
+  const modifyHandler = () => {
+    if (isModifying) {
+      onModifyName(id, modifiedName);
+    }
+    setIsModifying(!isModifying);
+  };
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setModifiedName(e.target.value);
+  };
+
   const lineLength: number = content.split('\n').length;
   const lineArray: number[] = Array.from({ length: lineLength }, (_, i) => i + 1);
 
@@ -50,10 +61,28 @@ const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
       <div className="ms-10 text-MAIN1">{date}일 제출</div>
       <div className="m-3 mt-2 mb-5 p-5 ps-10 pe-10 border border-gray-300 rounded-lg">
         <div className="w-full flex flex-row justify-between">
-          <div>
-            {id}. {name}
-            <HiPencil className="inline ms-2 text-gray-400 cursor-pointer" />
-          </div>
+          {isModifying ? (
+            <div>
+              <input
+                type="text"
+                value={modifiedName}
+                onChange={handleNameChange}
+                className="border border-gray-300 p-1 rounded inline-block"
+              />
+              <HiPencil
+                className="inline ms-2 text-gray-400 cursor-pointer"
+                onClick={modifyHandler}
+              />
+            </div>
+          ) : (
+            <div>
+              {name}
+              <HiPencil
+                className="inline ms-2 text-gray-400 cursor-pointer"
+                onClick={modifyHandler}
+              />
+            </div>
+          )}
           <div className="pt-1 text-MAIN1 cursor-pointer" onClick={clickShowHandler}>
             {isClicked ? <FaChevronUp /> : <FaChevronDown />}
           </div>
