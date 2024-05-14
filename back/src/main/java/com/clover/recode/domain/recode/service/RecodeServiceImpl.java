@@ -212,7 +212,7 @@ public class RecodeServiceImpl implements RecodeService {
         //문제를 풀고 난 후, 통계 업데이트 해주기
 
         //오늘의 복습문제 is_complete true로 변경
-       todayProblemRepository.findById(codeId).ifPresent(todayProblem -> {
+       todayProblemRepository.findByCodeId(codeId).ifPresent(todayProblem -> {
 
            todayProblem.setCompleted(true);
 
@@ -244,8 +244,6 @@ public class RecodeServiceImpl implements RecodeService {
         weekReviewRepository.save(weekReview);
 
         });
-
-
 
 
         //알고리즘 별 복습한 문제 +1 변경
