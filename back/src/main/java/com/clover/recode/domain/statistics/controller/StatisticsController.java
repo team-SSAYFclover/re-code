@@ -49,14 +49,14 @@ public class StatisticsController {
 
     @Operation(summary = "랜덤문제 업데이트")
     @ResponseStatus(HttpStatus.CREATED)
-    @GetMapping("/problem/random")
+    @PatchMapping("/problem/random")
     public ResponseEntity<ResultResponse> updateRandom(Authentication authentication) {
         return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.updateRandom(authentication)));
     }
 
     @Operation(summary = "보충문제 업데이트")
     @ResponseStatus(HttpStatus.CREATED)
-    @GetMapping("/problem/supplement")
+    @PatchMapping("/problem/supplement")
     public ResponseEntity<ResultResponse> updateSupplement(Authentication authentication) {
         return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.updateSupplement(authentication)));
     }

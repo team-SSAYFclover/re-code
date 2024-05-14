@@ -8,4 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TodayProblemRepository extends JpaRepository<TodayProblem, Long>, TodayProblemCustomRepository {
+    Optional<TodayProblem> findByCodeId(Long codeId);
 }
