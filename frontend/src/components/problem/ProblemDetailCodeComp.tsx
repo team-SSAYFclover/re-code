@@ -58,8 +58,8 @@ const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
 
   return (
     <div className="w-full h-fit flex flex-col">
-      <div className="ms-10 text-MAIN1">{date}일 제출</div>
-      <div className="m-3 mt-2 mb-5 p-5 ps-10 pe-10 border border-gray-300 rounded-lg">
+      <div className="ms-3 text-MAIN1">{date.substr(0, 10)} 제출</div>
+      <div className="m-3 mt-1 mb-5 p-5 ps-10 pe-10 border border-gray-300 rounded-lg">
         <div className="w-full flex flex-row justify-between">
           {isModifying ? (
             <div>
