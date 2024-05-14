@@ -40,7 +40,7 @@ const Navbar = () => {
     {
       icon: <PiArrowSquareOutLight />,
       label: '익스텐션',
-      url: 'https://chromewebstore.google.com/detail/recode-uploader/jbdflmjhhemnomkgojjjkdeklcjihfpp',
+      url: 'https://chromewebstore.google.com/detail/recode-uploader/ppbaladjjpmepkmaafeidledkhmjdill',
     },
   ];
 
