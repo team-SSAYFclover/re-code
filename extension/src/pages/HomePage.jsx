@@ -29,6 +29,7 @@ const HomePage = () => {
             입니다. <br />
             <a
               href="https://www.recode-d210.com"
+              target="_blank"
               className="text-[#53EDC7] underline underline-offset-4"
             >
               re:code로 이동하기
