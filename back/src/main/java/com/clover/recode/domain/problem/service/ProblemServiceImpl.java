@@ -2,6 +2,7 @@ package com.clover.recode.domain.problem.service;
 
 import static com.clover.recode.global.result.error.ErrorCode.Already_REGIST_CODE;
 import static com.clover.recode.global.result.error.ErrorCode.CODE_NOT_EXISTS;
+import static com.clover.recode.global.result.error.ErrorCode.PROBLEM_NOT_EXISTS;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.problem.dto.*;
@@ -119,13 +120,11 @@ public class ProblemServiceImpl implements ProblemService {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         // 문제 정보 조회해서 DTO(ProblemRes)에 담기
-        Problem problem = problemRepository.findProblemByProblemNo(problemNo);
+        Problem problem = problemRepository.findProblemByProblemNo(problemNo)
+            .orElseThrow(() -> new BusinessException(PROBLEM_NOT_EXISTS));
         List<String> tagNames = tagRepository.getTagNames(problem.getId()); //태그 리스트
         int reviewCount = problemRepository.getReviewCount(problem.getId(), customUserDetails.getId());    // 복습량
 
-        ProblemResList problemResList = ProblemResList.builder()
-
-                .build();
 
         // 코드 정보 조회해서 List로 반환
         List<CodeResList> codeResList = codeRepository.findCodesByProblemNoAndUserId(problemNo, customUserDetails.getId());
