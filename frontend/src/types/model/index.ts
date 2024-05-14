@@ -45,7 +45,9 @@ export interface IMainInfo {
   weekReviews: IWeekReviews;
   todayProblems: IProblemInfo[];
   supplementaryQuestion: number;
+  supplementaryTitle: string;
   randomQuestion: number;
+  randomTitle: string;
   algoReview: IAlgoReview;
 }
 

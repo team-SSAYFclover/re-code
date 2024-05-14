@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { marked } from 'marked';
+import { useNavigate } from 'react-router-dom';
 import ProblemDetailCodeComp from './ProblemDetailCodeComp';
 import { IProbDetailInfo, ICodeResList } from '@/types/problem';
-import { useProbDetail } from '@/hooks/problem/useProblem';
+import { useProbDetail, useDeleteCode, usePatchCode } from '@/hooks/problem/useProblem';
 
 const ProblemDetailContent: React.FC = () => {
   const { useGetProbDetail } = useProbDetail();
+  const { mutate: deleteCodeMutate } = useDeleteCode();
+  const { mutate: patchCodeMutate } = usePatchCode();
   const params = useParams();
+  const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState<string>('');
   const [problemData, setProblemData] = useState<IProbDetailInfo>({
     id: -1,
@@ -25,6 +29,8 @@ const ProblemDetailContent: React.FC = () => {
       const updatedCodes = prevData.codeResLists.map((codeResLists) => {
         if (codeResLists.id === id) {
           // 코드 토글 api 호출
+          const params = { name: codeResLists.name, reviewStatus: !codeResLists.reviewStatus };
+          patchCodeMutate({ codeId: id, params });
           return { ...codeResLists, reviewStatus: !codeResLists.reviewStatus };
         }
         return codeResLists;
@@ -34,10 +40,35 @@ const ProblemDetailContent: React.FC = () => {
   };
 
   const deleteCode = (id: number) => {
-    setProblemData((prevData) => ({
-      ...prevData,
-      codeResLists: prevData.codeResLists.filter((codeResLists) => codeResLists.id !== id),
-    }));
+    deleteCodeMutate(id, {
+      onSuccess: () => {
+        setProblemData((prevData) => ({
+          ...prevData,
+          codeResLists: prevData.codeResLists.filter((codeResLists) => codeResLists.id !== id),
+        }));
+      },
+      onError: (error) => {
+        console.error('코드 삭제 에러', error);
+      },
+    });
+
+    if (problemData.codeResLists.length == 0) {
+      navigate('/problem');
+    }
+  };
+
+  const updateCodeName = (id: number, newName: string) => {
+    setProblemData((prevData) => {
+      const updatedCodes = prevData.codeResLists.map((codeResLists) => {
+        if (codeResLists.id === id) {
+          const params = { name: newName, reviewStatus: codeResLists.reviewStatus };
+          patchCodeMutate({ codeId: id, params });
+          return { ...codeResLists, name: newName };
+        }
+        return codeResLists;
+      });
+      return { ...prevData, codeResLists: updatedCodes };
+    });
   };
 
   const { data } = useGetProbDetail(problemData.problemNo);
@@ -114,6 +145,7 @@ const ProblemDetailContent: React.FC = () => {
             date={item.submitTime}
             toggleReviewStatus={() => toggleReviewStatus(item.id)}
             deleteCode={() => deleteCode(item.id)}
+            onModifyName={updateCodeName}
           />
         ))}
       </div>

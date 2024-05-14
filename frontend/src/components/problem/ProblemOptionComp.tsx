@@ -64,7 +64,7 @@ const ProblemOptionComp: React.FC<ProblemOptionCompProps> = ({
   };
 
   return (
-    <div className="h-fit w-full z-10 mt-1 p-10 pb-3 shadow-md flex flex-col bg-white rounded-lg overflow-scroll scrollbar-hide">
+    <div className="h-fit w-full z-10 my-2 p-6 shadow-md flex flex-col bg-white rounded-lg overflow-scroll scrollbar-hide">
       {/* 알고리즘 분류 */}
       <div className="flex flex-col">
         <div>알고리즘 분류</div>
