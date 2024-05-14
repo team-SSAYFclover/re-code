@@ -1,18 +1,22 @@
 import Toast from '@/components/@common/Toast';
 import { useRecode } from '@/hooks/recode/useRecode';
-import recodeListStore from '@/stores/recodeListStore';
-import { IGetRecodeRes } from '@/types/recode';
+import { IGetRecodeRes, IGetTodayRecodeListRes } from '@/types/recode';
 import { Resizable } from 're-resizable';
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import MarkdownParser from './MarkdownParser';
 import RecodeProgressBar from './RecodeProgressBar';
 import RecodeSolveBox from './RecodeSolveBox';
 
-const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
+const RecodeSolveContent = ({
+  recode,
+  todayRecodeList,
+}: {
+  recode: IGetRecodeRes;
+  todayRecodeList: IGetTodayRecodeListRes;
+}) => {
   const params = useParams();
   const navigate = useNavigate();
-  const { todayRecodes } = recodeListStore();
   const { usePutRecode } = useRecode();
   const { mutate } = usePutRecode(params.codeId || '');
 
@@ -23,7 +27,19 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
     Array.from({ length: recode.answers.length }, () => false)
   );
 
-  const completedCnt = todayRecodes.filter((x) => x.completed).length;
+  const location = useLocation();
+  const prevLocation = useRef(location);
+
+  useEffect(() => {
+    if (prevLocation.current.pathname !== location.pathname) {
+      setIsCorrect(Array.from({ length: recode.answers.length }, () => false));
+      setInputs(Array(codeParts.length - 1).fill(''));
+
+      prevLocation.current = location;
+    }
+  }, [location, recode.answers, codeParts]);
+
+  const completedCnt = todayRecodeList.filter((x) => x.completed).length;
 
   const resetInput = () => {
     setInputs(
@@ -40,14 +56,14 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
 
   const getNextIdx = () => {
     let cnt = 0;
-    let idx = todayRecodes.findIndex((recode) => recode.codeId === Number(params.codeId)) + 1;
+    let idx = todayRecodeList.findIndex((recode) => recode.codeId === Number(params.codeId)) + 1;
 
-    while (cnt < todayRecodes.length) {
-      if (idx === todayRecodes.length) {
+    while (cnt < todayRecodeList.length) {
+      if (idx === todayRecodeList.length) {
         idx = 0;
       }
 
-      if (!todayRecodes[idx].completed) {
+      if (!todayRecodeList[idx].completed) {
         break;
       }
 
@@ -59,6 +75,7 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
   };
 
   const completeRepeat = () => {
+    console.log(isCorrect);
     for (const ele of isCorrect) {
       if (!ele) {
         Toast.error('빈칸을 모두 채워야 복습을 완료할 수 있습니다.');
@@ -68,13 +85,14 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
 
     mutate(undefined, {
       onSuccess: () => {
-        if (completedCnt + 1 === todayRecodes.length) {
+        if (completedCnt + 1 === todayRecodeList.length) {
           Toast.error('더이상 풀 문제가 없어요.');
-          navigate('/recode');
+          navigate('/recode', { replace: true });
           return;
         } else {
           const idx = getNextIdx();
-          navigate(`/recode/${todayRecodes[idx].codeId}`);
+          // setIsCorrect(Array.from({ length: recode.answers.length }, () => false));
+          navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
         }
       },
     });
@@ -85,13 +103,13 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
       return;
     }
 
-    if (completedCnt === todayRecodes.length) {
+    if (completedCnt === todayRecodeList.length) {
       Toast.error('더이상 풀 문제가 없어요.');
       return;
     }
 
     const idx = getNextIdx();
-    navigate(`/recode/${todayRecodes[idx].codeId}`);
+    navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
     Toast.success('다음 문제로 이동했습니다.');
   };
 
@@ -141,7 +159,7 @@ const RecodeSolveContent = ({ recode }: { recode: IGetRecodeRes }) => {
       </div>
       <div className="w-full h-16 flex items-center px-4">
         <div className="flex-1 pr-4">
-          <RecodeProgressBar total={todayRecodes.length} cnt={completedCnt} />
+          <RecodeProgressBar total={todayRecodeList.length} cnt={completedCnt} />
         </div>
         <div className="flex items-center gap-2 h-10">
           <button

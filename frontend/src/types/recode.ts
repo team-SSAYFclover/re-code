@@ -6,5 +6,6 @@ export type IGetTodayRecodeListRes = IProblemInfo[];
 export interface IGetRecodeRes {
   problemDto: IRecodeProblemInfo;
   recode: string;
+  code: string;
   answers: string[];
 }
