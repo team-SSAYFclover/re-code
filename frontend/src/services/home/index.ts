@@ -11,3 +11,17 @@ export const getMainInfo = async (): Promise<APIResponse<IMainInfo>> => {
     throw error;
   }
 };
+
+export const modifyRandomProblem = async (): Promise<
+  APIResponse<{ no: number; title: string }>
+> => {
+  const res = await axiosCommonInstance.patch('/statistics/problem/random');
+  return res.data;
+};
+
+export const modifySuppleProblem = async (): Promise<
+  APIResponse<{ no: number; title: string }>
+> => {
+  const res = await axiosCommonInstance.patch('/statistics/problem/supplement');
+  return res.data;
+};
