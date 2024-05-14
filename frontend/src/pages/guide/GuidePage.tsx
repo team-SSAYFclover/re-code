@@ -1,10 +1,18 @@
+import guide1 from '@/assets/guide/guide1.webp';
+import guide2 from '@/assets/guide/guide2.webp';
+import guide3 from '@/assets/guide/guide3.webp';
+import guide4 from '@/assets/guide/guide4.webp';
+import guide5 from '@/assets/guide/guide5.webp';
+import main from '@/assets/guide/main.webp';
 import logo from '@/assets/logo.png';
 import logo2 from '@/assets/logo2.png';
 import { motion } from 'framer-motion';
 import { FaRegArrowAltCircleDown } from 'react-icons/fa';
+
 interface IGuideDetail {
   title: JSX.Element;
   desc: JSX.Element;
+  image: string;
 }
 
 const GuidePage = () => {
@@ -25,6 +33,7 @@ const GuidePage = () => {
         </div>
       ),
       desc: <>re:code 사이트에 들어가 github 버튼을 눌러 로그인을 진행해 주세요</>,
+      image: guide1,
     },
     {
       title: (
@@ -38,6 +47,7 @@ const GuidePage = () => {
           chrome 웹스토어에서 re:code를 검색 후 다운로드 합니다.
         </div>
       ),
+      image: guide2,
     },
     {
       title: (
@@ -50,6 +60,7 @@ const GuidePage = () => {
           re:code사이트의 내 정보에서 연동 코드를 복사 후 extension에 입력하여 연동합니다.
         </div>
       ),
+      image: guide3,
     },
     {
       title: (
@@ -63,6 +74,7 @@ const GuidePage = () => {
           chrome 웹스토어에서 re:code를 검색 후 다운로드 합니다.
         </div>
       ),
+      image: guide4,
     },
     {
       title: (
@@ -76,6 +88,7 @@ const GuidePage = () => {
           빈칸을 모두 채우면 복습 완료를 눌러 복습을 마무리합니다.
         </div>
       ),
+      image: guide5,
     },
   ];
 
@@ -103,7 +116,7 @@ const GuidePage = () => {
           <img
             className="w-full h-full bg-gray-100 mt-10 rounded-md shadow-lg"
             alt="site"
-            src="src/assets/guide/main.webp"
+            src={main}
           />
         </motion.section>
         <motion.section variants={varient} initial="hidden" whileInView="visible" className="my-16">
@@ -150,7 +163,7 @@ const GuidePage = () => {
                 <div className="py-2 text-[30px] font-black">{info.title}</div>
                 <div>{info.desc}</div>
                 <img
-                  src={`src/assets/guide/guide${idx + 1}.webp`}
+                  src={info.image}
                   alt="guide"
                   className="w-full h-full bg-gray-100 mt-10 rounded-md shadow-lg"
                 />
