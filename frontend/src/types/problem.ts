@@ -25,3 +25,8 @@ export interface ICodeResList {
   submitTime: string;
   reviewStatus: boolean;
 }
+
+export interface ICodePatchParams {
+  name: string;
+  reviewStatus: boolean;
+}
