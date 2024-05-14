@@ -66,7 +66,6 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
                         qCode.id, qCode.name, qCode.content, qCode.createdTime, qCode.reviewStatus))
                 .from(qCode)
                 .join(qCode.problem, qProblem)
-                .fetchJoin()
                 .where(qProblem.problemNo.eq(problemNo)
                         .and(qCode.user.id.eq(userId)))
                 .orderBy(qCode.createdTime.desc())
