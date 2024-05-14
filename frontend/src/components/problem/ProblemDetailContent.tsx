@@ -4,11 +4,12 @@ import { marked } from 'marked';
 import { useNavigate } from 'react-router-dom';
 import ProblemDetailCodeComp from './ProblemDetailCodeComp';
 import { IProbDetailInfo, ICodeResList } from '@/types/problem';
-import { useProbDetail, useDeleteCode } from '@/hooks/problem/useProblem';
+import { useProbDetail, useDeleteCode, usePatchCode } from '@/hooks/problem/useProblem';
 
 const ProblemDetailContent: React.FC = () => {
   const { useGetProbDetail } = useProbDetail();
   const { mutate: deleteCodeMutate } = useDeleteCode();
+  const { mutate: patchCodeMutate } = usePatchCode();
   const params = useParams();
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState<string>('');
@@ -28,6 +29,8 @@ const ProblemDetailContent: React.FC = () => {
       const updatedCodes = prevData.codeResLists.map((codeResLists) => {
         if (codeResLists.id === id) {
           // 코드 토글 api 호출
+          const params = { name: codeResLists.name, reviewStatus: !codeResLists.reviewStatus };
+          patchCodeMutate({ codeId: id, params });
           return { ...codeResLists, reviewStatus: !codeResLists.reviewStatus };
         }
         return codeResLists;
