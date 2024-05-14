@@ -33,7 +33,7 @@ const RecodePage = () => {
   console.log('받아온 데이터', data);
 
   return (
-    <div className="w-full h-full flex justify-center items-center bg-gray-100/50 relative">
+    <div className="w-full h-full flex justify-center items-center bg-gray-100/50 relative pl-60">
       <div className="w-2/3 h-2/3 min-w-[700px] mx-auto">
         <div className="h-20 flex items-center">
           <div className="w-[56px] px-2">
@@ -53,7 +53,11 @@ const RecodePage = () => {
                   <span className="text-MAIN1">{solvedCnt()}</span>문제 복습 완료
                 </div>
                 <div className="flex justify-center items-center">
-                  <Progressbar percentage={percentage} height="h-2" roundWidth="w-2" />
+                  <Progressbar
+                    percentage={data.length === 0 ? 0 : percentage}
+                    height="h-2"
+                    roundWidth="w-2"
+                  />
                   <span className="text-sm text-[#51A1FF]">
                     &nbsp;{Math.floor(percentage)}%&nbsp;
                   </span>
@@ -83,13 +87,9 @@ const RecodePage = () => {
                     </div>
                     <button
                       className="border text-sm border-MAIN1 text-MAIN1 px-4 py-2 mt-2 rounded-md hover:text-white hover:bg-MAIN1"
-                      onClick={() =>
-                        window.open(
-                          `https://www.acmicpc.net/problem/${Math.floor(Math.random() * 10000 + 1000)}`
-                        )
-                      }
+                      onClick={() => window.open('https://www.acmicpc.net', '_blank')}
                     >
-                      오늘의 랜덤 문제 풀기
+                      문제 풀러 가기
                     </button>
                   </>
                 }

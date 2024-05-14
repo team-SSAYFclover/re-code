@@ -71,6 +71,7 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository{
                 .join(qCode.problem, qProblem)
                 .leftJoin(qProblem.tags, qTag) // 태그 조인
                 .where(whereClause)
+                .orderBy(qCode.createdTime.desc()) // 가장 최근에 생성된 문제부터 정렬
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

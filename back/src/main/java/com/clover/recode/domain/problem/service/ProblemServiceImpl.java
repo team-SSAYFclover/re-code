@@ -9,7 +9,7 @@ import com.clover.recode.domain.problem.entity.*;
 import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.problem.repository.ProblemRepository;
 import com.clover.recode.domain.problem.repository.TagRepository;
-import com.clover.recode.domain.recode.entity.QRecode;
+import com.clover.recode.domain.recode.entity.*;
 import com.clover.recode.domain.recode.service.RecodeService;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.global.result.error.exception.BusinessException;
@@ -124,11 +124,7 @@ public class ProblemServiceImpl implements ProblemService {
         int reviewCount = problemRepository.getReviewCount(problem.getId());    // 복습량
 
         ProblemResList problemResList = ProblemResList.builder()
-                .problemNo(problemNo)
-                .title(problem.getTitle())
-                .level(problem.getLevel())
-                .tags(tagNames)
-                .reviewCount(reviewCount)
+
                 .build();
 
         // 코드 정보 조회해서 List로 반환
@@ -137,9 +133,13 @@ public class ProblemServiceImpl implements ProblemService {
         // 문제 정보와 코드 정보 합치기
 
         ProblemDetailRes problemDetailResult = ProblemDetailRes.builder()
-                    .problemResList(problemResList)
+                    .problemNo(problemNo)
+                    .title(problem.getTitle())
+                    .level(problem.getLevel())
+                    .tags(tagNames)
+                    .reviewCount(reviewCount)
                     .content(problem.getContent())
-                    .codeReLists(codeResList)
+                    .codeResLists(codeResList)
                     .build();
         return problemDetailResult;
     }

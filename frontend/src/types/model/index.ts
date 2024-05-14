@@ -70,3 +70,17 @@ interface IAlgoReview {
   dp: number;
   geometry: number;
 }
+
+// 문제 조회
+export interface IProblemRes {
+  content: {
+    problemNo: number;
+    title: string;
+    level: number;
+    reviewCount: number;
+    tags: string[];
+  }[];
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
