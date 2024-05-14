@@ -17,12 +17,14 @@ import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +42,6 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final WeekReviewRepository weekReviewRepository;
     private final AlgoReviewRepository algoReviewRepository;
     private final TodayProblemRepository todayProblemRepository;
-    private final UserRepository userRepository;
 
 
     @Override
@@ -66,7 +67,11 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .sun(weekReviewList.get(6))
                 .build();
 
-            List<TodayProblemDto> todayProblem = todayProblemRepository.findByUserId(customUserDetails.getId());
+            LocalDate day;
+            if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+            else day= LocalDate.now();
+
+            List<TodayProblemDto> todayProblem = todayProblemRepository.findByUserId(customUserDetails.getId(),day);
 
             // 문제 제목별로 카운팅하기 위한 맵
             Map<String, Integer> titleCount = new HashMap<>();
@@ -115,10 +120,11 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public Integer getReviewCnt(Long userId) {
 
-        Statistics statistics = statisticsRepository.findById(userId)
-                .orElseThrow(()-> new BusinessException(USER_NOT_FOUND));
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+        return todayProblemRepository.countByDateAndUserIdAndIsCompletedFalse(day,userId);
 
-        return weekReviewRepository.countByTodayReview(statistics.getId());
     }
 
     @Override
@@ -126,7 +132,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        return todayProblemRepository.findByUserId(customUserDetails.getId());
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+        return todayProblemRepository.findByUserId(customUserDetails.getId(), day);
 
     }
 
