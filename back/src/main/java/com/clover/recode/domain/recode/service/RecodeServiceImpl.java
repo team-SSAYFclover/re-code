@@ -6,6 +6,11 @@ import com.clover.recode.domain.problem.entity.Problem;
 import com.clover.recode.domain.problem.entity.Tag;
 import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.recode.dto.*;
+import com.clover.recode.domain.recode.dto.gpt.GptRequestDto;
+import com.clover.recode.domain.recode.dto.gpt.GptResponseDto;
+import com.clover.recode.domain.recode.dto.gpt.Message;
+import com.clover.recode.domain.recode.dto.prompt.Prompt;
+import com.clover.recode.domain.recode.dto.prompt.PromptSub;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
@@ -28,7 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.lang.Math;
 
 import static com.clover.recode.global.result.error.ErrorCode.*;
 
@@ -50,10 +55,28 @@ public class RecodeServiceImpl implements RecodeService {
     @Async
     public void saveRecode(Code code) {
 
-        List<Message> prompts = new ArrayList<>();
-        prompts.add(new Message("system", EnglishPrompt.systemPrompt));
-        prompts.add(new Message("user", EnglishPrompt.answerPrompt + code.getContent() + "\n```"));
+        String content = createRecode(code.getContent());
 
+        Recode recode = Recode.builder()
+                .code(code)
+                .reviewTime(code.getCreatedTime().plusDays(1))
+                .content(content)
+                .build();
+
+        recodeRepository.save(recode);
+
+    }
+
+    public String createRecode(String code) {
+
+        List<Message> prompts = new ArrayList<>();
+        prompts.add(new Message("system", PromptSub.systemPrompt));
+        prompts.add(new Message("user", PromptSub.answerPrompt + code + "\n```"));
+
+        // 시간 측정
+        // long startTime = System.currentTimeMillis();
+
+//        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
         GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
         // HTTP 헤더 설정
@@ -69,13 +92,9 @@ public class RecodeServiceImpl implements RecodeService {
 
         String content = gptResponse.getChoices().getFirst().getMessage().getContent();
 
-        Recode recode = Recode.builder()
-                .code(code)
-                .reviewTime(code.getCreatedTime().plusDays(1))
-                .content(content)
-                .build();
+        // long elapsedTime = System.currentTimeMillis() - startTime;
 
-        recodeRepository.save(recode);
+        return content;
 
     }
 
@@ -83,11 +102,13 @@ public class RecodeServiceImpl implements RecodeService {
     public RecodeRes getRecode(Authentication authentication, Long codeId) {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        Code code = codeRepository.findById(codeId)
+        Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
                 .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
 
-        if(!Objects.equals(customUserDetails.getId(), code.getUser().getId()))
-            throw new BusinessException(RECODE_NOT_ALLOWED);
+        return getRecodeFromCode(code);
+    }
+
+    public RecodeRes getRecodeFromCode(Code code) {
 
         Recode recode = code.getRecode();
 
@@ -97,12 +118,20 @@ public class RecodeServiceImpl implements RecodeService {
         // 문제 정보 가져오기
         Problem problem = code.getProblem();
 
-        // 난이도에 따른 레코드 생성하기
-        int userDifficulty = code.getUser().getSetting().getDifficulty();
+        // 난이도에 따른 레코드 생성하기, 로직처리 할때는 0부터 난이도 '하'로 처리
+        int userDifficulty = code.getUser().getSetting().getDifficulty() - 1;
 
         String content = recode.getContent();
-        StringBuilder sb = new StringBuilder();
+        List<String> notAnswers = new ArrayList<>();
         List<String> answers = new ArrayList<>();
+        List<Integer> answerLevels = new ArrayList<>();
+        List<Integer> answerLevels2 = new ArrayList<>();
+
+        List<String>[] levelAnswers = new List[3];
+        for (int i = 0; i < levelAnswers.length; i++)
+            levelAnswers[i] = new ArrayList<>();
+
+        // 코드 앞과 뒤에 생성된 ``` 제거
         int length = content.length();
         int start = 0;
         int end = length - 1;
@@ -115,33 +144,39 @@ public class RecodeServiceImpl implements RecodeService {
                 log.error("이상한 recode : {}", content);
         }
 
+        StringBuilder notAnswer = new StringBuilder();
         mainLoop: for (int i = start; i < end; i++) {
             char ch = content.charAt(i);
 
             if (ch == '‽') {
-                int blockDifficultyStart = 1;
+                int blockDifficultyStart = 0;
                 while (content.charAt(i + 1) == '‽') {
                     blockDifficultyStart++;
                     i++;
                 }
 
-                if (blockDifficultyStart == userDifficulty) {
+                if (blockDifficultyStart <= userDifficulty) {
                     StringBuilder answer = new StringBuilder();
                     while (content.charAt(i + 1) != '▢') {
                         answer.append(content.charAt(i + 1));
                         i++;
 
                         if (i == end - 1 || content.charAt(i + 1) == '‽') {
-                            sb.append(answer);
+                            notAnswer.append(answer);
                             continue mainLoop;
                         }
                     }
 
-                    sb.append("‽").append("▢");
-                    answers.add(answer.toString());
+                    notAnswers.add(notAnswer.toString());
+                    notAnswer = new StringBuilder();
+                    String answerString = answer.toString();
+                    answers.add(answerString);
+                    answerLevels.add(blockDifficultyStart);
+                    answerLevels2.add(levelAnswers[blockDifficultyStart].size());
+                    levelAnswers[blockDifficultyStart].add(answerString);
                 } else {
                     while (content.charAt(i + 1) != '▢') {
-                        sb.append(content.charAt(i + 1));
+                        notAnswer.append(content.charAt(i + 1));
                         i++;
 
                         if (i == end - 1 || content.charAt(i + 1) == '‽')
@@ -152,22 +187,102 @@ public class RecodeServiceImpl implements RecodeService {
                 while (content.charAt(i + 1) == '▢')
                     i++;
             } else if (ch != '▢')
-                sb.append(ch);
+                notAnswer.append(ch);
+        }
+        notAnswers.add(notAnswer.toString());
+
+        // 난이도 및 문제 길이 변 기본 빈칸 개수
+        int contentLength = content.length();
+        int baseNum = contentLength / 500 + 1;
+
+        // 실제로 집어넣을 빈칸을 선정
+        boolean[][] levelAnswersReal = new boolean[3][];
+        for (int i = 0; i < 3; i++) {
+            int levelAnswerSize = levelAnswers[i].size();
+            levelAnswersReal[i] = new boolean[levelAnswerSize];
+            if (levelAnswerSize > 0)
+                for (int j = 0; j < baseNum; j++) {
+                    if (j >= levelAnswerSize)
+                        break;
+
+                    int index = (int) (Math.random() * levelAnswerSize);
+                    if (!levelAnswersReal[i][index])
+                        levelAnswersReal[i][index] = true;
+                    else
+                        for (index = 0; index < levelAnswerSize; index++)
+                            if (!levelAnswersReal[i][index]) {
+                                levelAnswersReal[i][index] = true;
+                                break;
+                            }
+                }
         }
 
+        StringBuilder sb = new StringBuilder();
+
+        List<String> realAnswers = new ArrayList<>();
+        int answerSize = answers.size();
+        for (int i = 0; i < answerSize; i++) {
+            sb.append(notAnswers.get(i));
+
+            if (levelAnswersReal[answerLevels.get(i)][answerLevels2.get(i)]) {
+                // 선정된 빈칸
+
+                String answer = answers.get(i);
+
+                // 앞, 뒤에 공백 제거
+                for (int j = 0; j < answer.length(); j++) {
+                    if (answer.charAt(j) == ' ')
+                        sb.append(' ');
+                    else {
+                        sb.append('‽').append('▢');
+                        for (int k = answer.length() - 1; k >= 0; k--) {
+                            if (answer.charAt(j) == ' ')
+                                sb.append(' ');
+                            else {
+                                answer = answer.substring(j, k + 1);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                // 빈 칸이 너무 길면 나누기
+//                if (answer.length() > 10) {
+//                    int div = answer.length() / 10 + 1;
+//                    for (int j = 0; j < div; j++) {
+//                        int step = answer.length() / div;
+//                        int start2 = j * step;
+//                        int end2 = (j + 1) * step;
+//                        if (j < div - 1) {
+//                            realAnswers.add(answer.substring(start2, end2 - 2));
+//                            sb.append(answer, end2 - 2, end2).append('‽').append('▢');
+//                        } else
+//                            realAnswers.add(answer.substring(start2));
+//                    }
+//                } else
+                    realAnswers.add(answer);
+            } else
+                sb.append(answers.get(i));
+        }
+        sb.append(notAnswers.getLast());
+
+        // 태그 이름 가져오기
         List<String> tagNames = new ArrayList<>();
         List<Tag> tags = problem.getTags();
         for (Tag tag : tags) tagNames.add(tag.getName());
 
+        // 반환 객체 생성 후 리턴
         return new RecodeRes(ProblemDto.builder()
-                    .problemNo(problem.getProblemNo())
-                    .title(problem.getTitle())
-                    .level(problem.getLevel())
-                    .content(problem.getContent())
-                    .tags(tagNames)
-                    .build()
+                .problemNo(problem.getProblemNo())
+                .title(problem.getTitle())
+                .level(problem.getLevel())
+                .content(problem.getContent())
+                .tags(tagNames)
+                .build()
+                , code.getContent()
                 , sb.toString()
-                , answers);
+                , realAnswers);
     }
 
     @Override
@@ -188,7 +303,7 @@ public class RecodeServiceImpl implements RecodeService {
         int submitCount = recode.getSubmitCount() + 1;
         recode.setSubmitCount(submitCount);
 
-        int addDays;
+        int addDays = 0;
         switch (submitCount) {
             case 1:
                 addDays = 3;
@@ -201,7 +316,7 @@ public class RecodeServiceImpl implements RecodeService {
                 break;
             default:
                 code.setReviewStatus(false);
-                return;
+                break;
         }
 
         recode.setReviewTime(submitTime.plusDays(addDays));
@@ -212,7 +327,16 @@ public class RecodeServiceImpl implements RecodeService {
         //문제를 풀고 난 후, 통계 업데이트 해주기
 
         //오늘의 복습문제 is_complete true로 변경
-       todayProblemRepository.findById(codeId).ifPresent(todayProblem -> {
+        //새벽4시 이전이면 이전날
+        //새벽4시 이후면 Today
+        //code_id는 unique가 아니기 때문에, findByCodeId를 하면 값이
+        //여러개가 리턴될 수 있음
+        //code_id + 날짜로 가져오기로 변경
+
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+       todayProblemRepository.findByCodeIdAndDate(codeId, day).ifPresent(todayProblem -> {
 
            todayProblem.setCompleted(true);
 
@@ -246,8 +370,6 @@ public class RecodeServiceImpl implements RecodeService {
         });
 
 
-
-
         //알고리즘 별 복습한 문제 +1 변경
         List<Tag> tags= code.getProblem().getTags();
         for(Tag tag: tags)
@@ -257,16 +379,15 @@ public class RecodeServiceImpl implements RecodeService {
 
         for(Tag tag: tags){
 
-            log.info("tag..getId(): "+ tag.getId());
-            switch (tag.getId()){
-                case 1: algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
-                case 2: algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
-                case 3: algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
-                case 4: algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
-                case 5: algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
-                case 6: algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
-                case 7: algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
-                case 8: algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
+            switch (tag.getName()){
+                case "수학": algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
+                case "구현": algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
+                case "그리디 알고리즘": algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
+                case "문자열": algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
+                case "자료 구조": algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
+                case "그래프 이론": algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
+                case "다이나믹 프로그래밍": algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
+                case "기하학": algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
 
             }
 
