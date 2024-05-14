@@ -327,7 +327,16 @@ public class RecodeServiceImpl implements RecodeService {
         //문제를 풀고 난 후, 통계 업데이트 해주기
 
         //오늘의 복습문제 is_complete true로 변경
-       todayProblemRepository.findByCodeId(codeId).ifPresent(todayProblem -> {
+        //새벽4시 이전이면 이전날
+        //새벽4시 이후면 Today
+        //code_id는 unique가 아니기 때문에, findByCodeId를 하면 값이
+        //여러개가 리턴될 수 있음
+        //code_id + 날짜로 가져오기로 변경
+
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+       todayProblemRepository.findByCodeIdAndDate(codeId, day).ifPresent(todayProblem -> {
 
            todayProblem.setCompleted(true);
 
