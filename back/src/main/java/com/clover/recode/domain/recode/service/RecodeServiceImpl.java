@@ -70,8 +70,8 @@ public class RecodeServiceImpl implements RecodeService {
     public String createRecode(String code) {
 
         List<Message> prompts = new ArrayList<>();
-        prompts.add(new Message("system", PromptSub.systemPrompt));
-        prompts.add(new Message("user", PromptSub.answerPrompt + code + "\n```"));
+        prompts.add(new Message("system", Prompt.systemPrompt));
+        prompts.add(new Message("user", Prompt.answerPrompt + code + "\n```"));
 
         // 시간 측정
         // long startTime = System.currentTimeMillis();
