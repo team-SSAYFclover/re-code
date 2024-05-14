@@ -67,6 +67,13 @@ const ProblemContent: React.FC = () => {
     refetch();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearchClick();
+    }
+  };
+
   useEffect(() => {
     handleSearchClick();
   }, []);
@@ -90,12 +97,13 @@ const ProblemContent: React.FC = () => {
               color="gray"
             />
             <input
-              type="search"
+              type="text"
               id="probSearch"
               className="block w-full p-4 ps-10 bg-gray-50 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-MAIN1"
               placeholder="원하는 검색어를 입력하세요"
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
+              onKeyDown={handleKeyDown}
               required
             />
             <button

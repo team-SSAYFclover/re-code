@@ -1,6 +1,6 @@
 import { axiosCommonInstance } from '@/apis/axiosInstance';
 import { APIResponse, IProblemRes } from '@/types/model';
-import { IGetProbListParams, IProbDetailInfo } from '@/types/problem';
+import { IGetProbListParams, IProbDetailInfo, ICodePatchParams } from '@/types/problem';
 
 export const getProbList = async (
   params: IGetProbListParams
@@ -8,7 +8,7 @@ export const getProbList = async (
   try {
     const queryString = new URLSearchParams({
       page: params.page.toString(),
-      size: params.page.toString(),
+      size: params.size.toString(),
       ...(params.start && { start: params.start.toString() }),
       ...(params.end && { end: params.end.toString() }),
       ...(params.keyword && { keyword: params.keyword }),
@@ -41,6 +41,19 @@ export const deleteCode = async (codeId: number): Promise<void> => {
     console.log('code deleted : ', codeId);
   } catch (error) {
     console.error('코드 삭제 에러!', error);
+    throw error;
+  }
+};
+
+export const patchCode = async (codeId: number, params: ICodePatchParams): Promise<void> => {
+  try {
+    await axiosCommonInstance.patch(`/problems/code/${codeId}`, {
+      name: params.name,
+      reviewStatus: params.reviewStatus,
+    });
+    console.log(`코드 업데이트 : ${codeId}, ${params.name}, ${params.reviewStatus}`);
+  } catch (error) {
+    console.error('코드 업데이트 에러!', error);
     throw error;
   }
 };
