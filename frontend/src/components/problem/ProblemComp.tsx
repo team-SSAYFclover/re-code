@@ -28,7 +28,7 @@ const ProblemComp: React.FC<IProblemData> = ({ problemNo, title, level, tags, re
 
   return (
     <div
-      className="shadow-lg w-72 h-40 me-10 mb-5 p-5 flex flex-col justify-between bg-white rounded-md text-sm cursor-pointer"
+      className="shadow-lg w-72 h-40 me-10 mb-5 p-5 flex flex-col justify-between bg-white rounded-md text-sm cursor-pointer hover:bg-gray-100/50"
       onClick={() => navigate(`/problem/${problemNo}`)}
     >
       {/* 상단부 */}
