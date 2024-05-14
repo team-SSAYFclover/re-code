@@ -244,19 +244,19 @@ public class RecodeServiceImpl implements RecodeService {
                 }
 
                 // 빈 칸이 너무 길면 나누기
-                if (answer.length() > 10) {
-                    int div = answer.length() / 10 + 1;
-                    for (int j = 0; j < div; j++) {
-                        int step = answer.length() / div;
-                        int start2 = j * step;
-                        int end2 = (j + 1) * step;
-                        if (j < div - 1) {
-                            realAnswers.add(answer.substring(start2, end2 - 2));
-                            sb.append(answer, end2 - 2, end2).append('‽').append('▢');
-                        } else
-                            realAnswers.add(answer.substring(start2));
-                    }
-                } else
+//                if (answer.length() > 10) {
+//                    int div = answer.length() / 10 + 1;
+//                    for (int j = 0; j < div; j++) {
+//                        int step = answer.length() / div;
+//                        int start2 = j * step;
+//                        int end2 = (j + 1) * step;
+//                        if (j < div - 1) {
+//                            realAnswers.add(answer.substring(start2, end2 - 2));
+//                            sb.append(answer, end2 - 2, end2).append('‽').append('▢');
+//                        } else
+//                            realAnswers.add(answer.substring(start2));
+//                    }
+//                } else
                     realAnswers.add(answer);
             } else
                 sb.append(answers.get(i));
