@@ -1,6 +1,10 @@
 package com.clover.recode.domain.statistics.service;
 
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
+import com.clover.recode.domain.problem.entity.Code;
+import com.clover.recode.domain.problem.repository.CodeRepository;
+import com.clover.recode.domain.recode.entity.Recode;
+import com.clover.recode.domain.statistics.dto.AddReviewDto;
 import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
 import com.clover.recode.domain.statistics.dto.StatisticProblemDTO;
 import com.clover.recode.domain.statistics.dto.TodayProblemDto;
@@ -8,6 +12,7 @@ import com.clover.recode.domain.statistics.dto.WeekReviewDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
 import com.clover.recode.domain.statistics.entity.Statistics;
+import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
@@ -15,6 +20,7 @@ import com.clover.recode.domain.statistics.repository.WeekReviewRepository;
 import com.clover.recode.domain.user.entity.User;
 import com.clover.recode.domain.user.repository.UserRepository;
 import com.clover.recode.global.result.error.exception.BusinessException;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
@@ -30,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.clover.recode.global.result.error.ErrorCode.CODE_ALREADY_EXISTS;
+import static com.clover.recode.global.result.error.ErrorCode.CODE_NOT_EXISTS;
 import static com.clover.recode.global.result.error.ErrorCode.USER_NOT_FOUND;
 
 @Service
@@ -175,5 +183,43 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         return supplementary_question;
 
+    }
+
+    @Override
+    @Transactional
+    public void addReview(AddReviewDto addReviewDto, Authentication authentication) {
+        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+
+
+        Boolean flag = todayProblemRepository.existsByCodeIdAndUserId(
+            addReviewDto.getCodeId(), customUserDetails.getId());
+        if(flag) {
+            throw new BusinessException(CODE_ALREADY_EXISTS);
+        }
+
+        Code code = codeRepository.findCodeForAddReviewByCodeId(addReviewDto.getCodeId(), customUserDetails.getId());
+
+        if(code == null) {
+            throw new BusinessException(CODE_NOT_EXISTS);
+        }
+
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+
+        TodayProblem todayProblem = TodayProblem.builder()
+            .isCompleted(false)
+            .reviewCnt(code.getRecode().getSubmitCount())
+            .code(code)
+            .title(code.getProblem().getTitle())
+            .date(day)
+            .problemNo(code.getProblem().getProblemNo())
+            .user(code.getUser())
+            .build();
+
+        Recode recode = code.getRecode();
+        recode.setReviewTime(LocalDateTime.now());
+
+        todayProblemRepository.save(todayProblem);
     }
 }

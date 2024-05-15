@@ -378,17 +378,31 @@ public class RecodeServiceImpl implements RecodeService {
         AlgoReview algoReview= algoReviewRepository.findById(statisticsId).orElseThrow();
 
         for(Tag tag: tags){
+            String tagName = tag.getName();
 
-            switch (tag.getName()){
-                case "수학": algoReview.setMathCnt(algoReview.getMathCnt()+1); break;
-                case "구현": algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1); break;
-                case "그리디 알고리즘": algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1); break;
-                case "문자열": algoReview.setStringCnt(algoReview.getStringCnt()+1); break;
-                case "자료 구조": algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1); break;
-                case "그래프 이론": algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1); break;
-                case "다이나믹 프로그래밍": algoReview.setDpCnt(algoReview.getDpCnt()+1); break;
-                case "기하학": algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1); break;
-
+            if("수학".equals(tagName)) {
+                algoReview.setMathCnt(algoReview.getMathCnt()+1);
+            }
+            if("구현".equals(tagName)) {
+                algoReview.setImplementationCnt(algoReview.getImplementationCnt()+1);
+            }
+            if("그리디 알고리즘".equals(tagName)) {
+                algoReview.setGreedyCnt(algoReview.getGreedyCnt()+1);
+            }
+            if("문자열".equals(tagName)) {
+                algoReview.setStringCnt(algoReview.getStringCnt()+1);
+            }
+            if("자료 구조".equals(tagName)) {
+                algoReview.setData_structuresCnt(algoReview.getData_structuresCnt()+1);
+            }
+            if("그래프 이론".equals(tagName)) {
+                algoReview.setGraphsCnt(algoReview.getGraphsCnt()+1);
+            }
+            if("다이나믹 프로그래밍".equals(tagName)) {
+                algoReview.setDpCnt(algoReview.getDpCnt()+1);
+            }
+            if("기하학".equals(tagName)) {
+                algoReview.setGeometryCnt(algoReview.getGeometryCnt()+1);
             }
 
             algoReviewRepository.save(algoReview);
