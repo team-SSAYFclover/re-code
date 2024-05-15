@@ -6,6 +6,7 @@ import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.user.entity.Setting;
 import com.clover.recode.domain.user.entity.User;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,9 +44,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @ManyToOne(fetch = FetchType.LAZY)
         private Problem problem;
 
-        @JoinColumn(name = "recode_id")
-        @OneToOne(mappedBy = "code", orphanRemoval = true, fetch = FetchType.LAZY)
+        @OneToOne(mappedBy = "code", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
         private Recode recode;
+
+        @OneToMany(mappedBy = "code", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+        private List<TodayProblem> todayProblem;
+
 
         @Column(unique = true, nullable = false)
         private Integer codeNo;
