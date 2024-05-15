@@ -50,6 +50,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final WeekReviewRepository weekReviewRepository;
     private final AlgoReviewRepository algoReviewRepository;
     private final TodayProblemRepository todayProblemRepository;
+    private final CodeRepository codeRepository;
 
 
     @Override
