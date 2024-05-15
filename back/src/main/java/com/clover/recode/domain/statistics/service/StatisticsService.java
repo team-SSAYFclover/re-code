@@ -1,5 +1,6 @@
 package com.clover.recode.domain.statistics.service;
 
+import com.clover.recode.domain.statistics.dto.AddReviewDto;
 import com.clover.recode.domain.statistics.dto.StatisticProblemDTO;
 import com.clover.recode.domain.statistics.dto.TodayProblemDto;
 import com.clover.recode.domain.statistics.dto.response.StatisticsListRes;
@@ -18,4 +19,6 @@ public interface StatisticsService {
     StatisticProblemDTO updateRandom(Authentication authentication);
 
     StatisticProblemDTO updateSupplement(Authentication authentication);
+
+  void addReview(AddReviewDto addReviewDto, Authentication authentication);
 }
