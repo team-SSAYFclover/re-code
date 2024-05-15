@@ -63,3 +63,14 @@ export const patchCode = async (codeId: number, params: ICodePatchParams): Promi
     throw error;
   }
 };
+
+export const addReview = async (codeId: number): Promise<void> => {
+  try {
+    await axiosCommonInstance.post(`/statistics/today/review`, {
+      codeId,
+    });
+  } catch (err) {
+    console.log('리스트 추가 에러', err);
+    throw err;
+  }
+};
