@@ -16,10 +16,9 @@ export const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
 export const requestPermission = async () => {
-  let token = localStorage.getItem('RECODE_FCM_TOKEN');
-  if (token) return;
+  const storedToken = localStorage.getItem('RECODE_FCM_TOKEN');
+  let token;
 
-  console.log('Requesting permission...');
   const permission = await Notification.requestPermission();
 
   if (permission != 'granted') return;
@@ -29,6 +28,8 @@ export const requestPermission = async () => {
   } catch (err) {
     token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
   }
+
+  if (token == storedToken) return;
 
   if (token) {
     const res = await axiosCommonInstance.post('/users/fcm', {
