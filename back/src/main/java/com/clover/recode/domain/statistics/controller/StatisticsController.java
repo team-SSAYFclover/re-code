@@ -34,7 +34,7 @@ public class StatisticsController {
     @Operation(summary = "오늘의 복습문제 갯수 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}/reviews/cnt")
-    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable Long userId) {
+    public ResponseEntity<ResultResponse> getReviewsCnt(@PathVariable("userId") Long userId) {
         Integer count = statisticsService.getReviewCnt(userId);
         if(count == null)
             count = 0;
