@@ -3,6 +3,7 @@ package com.clover.recode.domain.statistics.service;
 import com.clover.recode.domain.auth.dto.CustomOAuth2User;
 import com.clover.recode.domain.problem.entity.Code;
 import com.clover.recode.domain.problem.repository.CodeRepository;
+import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.statistics.dto.AddReviewDto;
 import com.clover.recode.domain.statistics.dto.AlgoReviewDto;
 import com.clover.recode.domain.statistics.dto.StatisticProblemDTO;
@@ -206,6 +207,9 @@ public class StatisticsServiceImpl implements StatisticsService {
             .problemNo(code.getProblem().getProblemNo())
             .user(code.getUser())
             .build();
+
+        Recode recode = code.getRecode();
+        recode.setReviewTime(LocalDateTime.now());
 
         todayProblemRepository.save(todayProblem);
     }
