@@ -191,9 +191,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void addReview(AddReviewDto addReviewDto, Authentication authentication) {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
 
-        Boolean flag = todayProblemRepository.existsByCodeIdAndUserId(
-            addReviewDto.getCodeId(), customUserDetails.getId());
+        Boolean flag = todayProblemRepository.existsByCodeIdAndUserIdAndDate(
+            addReviewDto.getCodeId(), customUserDetails.getId(), day);
         if(flag) {
             throw new BusinessException(CODE_ALREADY_EXISTS);
         }
@@ -203,10 +206,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         if(code == null) {
             throw new BusinessException(CODE_NOT_EXISTS);
         }
-
-        LocalDate day;
-        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
-        else day= LocalDate.now();
 
         TodayProblem todayProblem = TodayProblem.builder()
             .isCompleted(false)
