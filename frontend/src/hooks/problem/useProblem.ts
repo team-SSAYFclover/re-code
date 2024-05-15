@@ -1,4 +1,4 @@
-import { getProbList, getProbDetail, deleteCode, patchCode } from '@/services/problem';
+import { getProbList, getProbDetail, deleteCode, patchCode, addReview } from '@/services/problem';
 import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { IGetProbListParams, ICodePatchParams } from '@/types/problem';
 import { APIResponse, IProblemRes } from '@/types/model';
@@ -42,5 +42,11 @@ export const usePatchCode = () => {
   return useMutation({
     mutationFn: (variables: { codeId: number; params: ICodePatchParams }) =>
       patchCode(variables.codeId, variables.params),
+  });
+};
+
+export const useAddReview = () => {
+  return useMutation({
+    mutationFn: (codeId: number) => addReview(codeId),
   });
 };
