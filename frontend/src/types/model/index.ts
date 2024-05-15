@@ -85,4 +85,5 @@ export interface IProblemRes {
   first: boolean;
   last: boolean;
   empty: boolean;
+  number: number;
 }

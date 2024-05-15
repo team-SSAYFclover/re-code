@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import ProblemDetailCodeComp from './ProblemDetailCodeComp';
 import { IProbDetailInfo, ICodeResList } from '@/types/problem';
-import { useProbDetail, useDeleteCode, usePatchCode } from '@/hooks/problem/useProblem';
+import {
+  useProbDetail,
+  useDeleteCode,
+  usePatchCode,
+  useAddReview,
+} from '@/hooks/problem/useProblem';
 import MarkdownParser from './MarkdownParser';
 
 const ProblemDetailContent: React.FC = () => {
   const { useGetProbDetail } = useProbDetail();
   const { mutate: deleteCodeMutate } = useDeleteCode();
   const { mutate: patchCodeMutate } = usePatchCode();
+  const { mutate: addReviewMutate } = useAddReview();
   const params = useParams();
   const navigate = useNavigate();
   const [imageSrc, setImageSrc] = useState<string>('');
+  const codesRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [problemData, setProblemData] = useState<IProbDetailInfo>({
     id: -1,
     problemNo: parseInt(params.problemNo ?? '-1', 10),
@@ -71,6 +79,21 @@ const ProblemDetailContent: React.FC = () => {
     });
   };
 
+  const addTodayReview = (codeId: number) => {
+    addReviewMutate(codeId, {
+      onError: () => {
+        alert('추가에 실패했어요.');
+      },
+    });
+  };
+
+  const handleMoveEvent = () => {
+    containerRef.current?.scrollBy({
+      top: codesRef.current?.getBoundingClientRect().top,
+      behavior: 'smooth',
+    });
+  };
+
   const { data } = useGetProbDetail(problemData.problemNo);
   useEffect(() => {
     if (data) {
@@ -92,7 +115,7 @@ const ProblemDetailContent: React.FC = () => {
   }, [data, problemData.level]);
 
   return (
-    <div className="w-full h-full pt-5 pe-20 flex flex-col overflow-auto">
+    <div className="w-full h-full pt-5 pe-20 flex flex-col overflow-auto" ref={containerRef}>
       {/* 상단부 : 문제 정보 */}
       <div className="w-full h-fit flex flex-col">
         {/* 번호 */}
@@ -110,8 +133,16 @@ const ProblemDetailContent: React.FC = () => {
         <div className="w-full h-0.5 mb-1 bg-gray-100"></div>
         {/* 복습횟수, 태그 */}
         <div className="w-full h-fit flex flex-row justify-between">
-          <div className="inline rounded-md text-xs w-fit p-1 ps-3 pe-3 bg-MAIN1 text-MAIN2">
-            복습 {problemData.reviewCount}회
+          <div className="flex gap-3">
+            <div className="inline rounded-md text-xs w-fit p-1 ps-3 pe-3 bg-MAIN1 text-MAIN2">
+              복습 {problemData.reviewCount}회
+            </div>
+            <div
+              className="inline rounded-md text-xs w-fit p-1 ps-3 pe-3 bg-gray-300 text-white hover:cursor-pointer"
+              onClick={handleMoveEvent}
+            >
+              {`< / >`}
+            </div>
           </div>
           <div className="h-fit flex flex-row text-xs overflow-hidden">
             {problemData.tags.map((item) => (
@@ -127,7 +158,7 @@ const ProblemDetailContent: React.FC = () => {
         <MarkdownParser markdown={problemData.content} />
       </div>
       {/* 하단부 : 코드 내역 */}
-      <div className="w-full h-fit">
+      <div className="w-full h-fit" ref={codesRef}>
         <div className="w-full h-0.5 mb-3 bg-gray-100"></div>
         {problemData.codeResLists.map((item: ICodeResList) => (
           <ProblemDetailCodeComp
@@ -140,6 +171,7 @@ const ProblemDetailContent: React.FC = () => {
             toggleReviewStatus={() => toggleReviewStatus(item.id)}
             deleteCode={() => deleteCode(item.id)}
             onModifyName={updateCodeName}
+            addReview={() => addTodayReview(item.id)}
           />
         ))}
       </div>

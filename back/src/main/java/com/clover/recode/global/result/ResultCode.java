@@ -23,6 +23,7 @@ public enum ResultCode {
     GET_Statistics_SUCCESS(200, "메인화면 통계를 가져오는 것에 성공했습니다."),
     GET_ReviewCnt_SUCCESS(200, "오늘의 복습 개수 조회에 성공하였습니다"),
     GET_Reviews_SUCCESS(200, "오늘의 복습문제 조회에 성공하였습니다"),
+    ADD_REVIEW_SUCCESS(201, "리스트 추가에 성공하였습니다."),
 
 
     //Recode

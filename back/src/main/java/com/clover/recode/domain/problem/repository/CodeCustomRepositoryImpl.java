@@ -71,4 +71,20 @@ public class CodeCustomRepositoryImpl implements CodeCustomRepository{
                 .orderBy(qCode.createdTime.desc())
                 .fetch();
     }
+
+    @Override
+    public Code findCodeForAddReviewByCodeId(Long codeId, Long userId) {
+        QCode code = QCode.code;
+        QProblem problem = QProblem.problem;
+        QRecode recode = QRecode.recode;
+
+        return jpaQueryFactory.selectFrom(code)
+            .join(code.recode, recode).fetchJoin()
+            .join(code.problem, problem).fetchJoin()
+            .where(
+                code.id.eq(codeId),
+                code.user.id.eq(userId)
+            )
+            .fetchOne();
+    }
 }
