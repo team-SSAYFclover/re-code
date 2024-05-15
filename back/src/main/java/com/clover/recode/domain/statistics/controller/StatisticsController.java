@@ -1,9 +1,11 @@
 package com.clover.recode.domain.statistics.controller;
 
+import com.clover.recode.domain.statistics.dto.AddReviewDto;
 import com.clover.recode.domain.statistics.service.StatisticsService;
 import com.clover.recode.global.result.ResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -61,5 +63,12 @@ public class StatisticsController {
         return ResponseEntity.ok(ResultResponse.of(GET_Reviews_SUCCESS, statisticsService.updateSupplement(authentication)));
     }
 
+    @Operation(summary = "복습 문제에 추가")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/today/review")
+    public ResponseEntity<ResultResponse> addReview(@RequestBody AddReviewDto addReviewDto, Authentication authentication) {
+        statisticsService.addReview(addReviewDto, authentication);
+        return ResponseEntity.ok(ResultResponse.of(ADD_REVIEW_SUCCESS));
+    }
 
 }

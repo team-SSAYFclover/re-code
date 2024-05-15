@@ -40,7 +40,6 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository{
     public Page<Problem> findProblemsByUserId(Long userId, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword) {
         QCode qCode = QCode.code;
         QProblem qProblem = QProblem.problem;
-        QTag qTag = QTag.tag;
 
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and(qCode.user.id.eq(userId));
@@ -73,10 +72,12 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository{
                 .from(qCode)
                 .join(qCode.problem, qProblem)
                 .where(whereClause)
-                .orderBy(qCode.createdTime.desc()) // 가장 최근에 생성된 문제부터 정렬
+                .groupBy(qProblem)
+                .orderBy(qCode.id.max().desc()) // 가장 최근에 생성된 문제부터 정렬
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
 
         // 총 개수 조회 (표시할 데이터의 총 페이지 수를 계산하기 위해 전체 데이터의 수를 알아야 함)
         Long count = jpaQueryFactory

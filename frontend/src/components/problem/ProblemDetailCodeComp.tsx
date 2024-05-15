@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BsTrash } from 'react-icons/bs';
 import { HiPencil } from 'react-icons/hi';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { RiPlayListAddFill } from 'react-icons/ri';
 
 export interface ICode {
   id: number;
@@ -15,6 +16,7 @@ interface IProblemDetailCodeCompProps extends ICode {
   toggleReviewStatus: () => void;
   deleteCode: () => void;
   onModifyName: (id: number, newName: string) => void;
+  addReview: () => void;
 }
 
 const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
@@ -26,15 +28,29 @@ const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
   toggleReviewStatus,
   deleteCode,
   onModifyName,
+  addReview,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isChecked, setIsChecked] = useState(reviewStatus);
   const [isModifying, setIsModifying] = useState(false);
   const [modifiedName, setModifiedName] = useState(name);
 
+  const codeSubmit = new Date(date);
+  const isDisable = codeSubmit.setMinutes(codeSubmit.getMinutes() + 5) >= new Date().getTime();
+
   useEffect(() => {
     setIsChecked(reviewStatus);
   }, [reviewStatus]);
+
+  const codeRemoveHandler = () => {
+    if (!confirm('정말로 삭제하시겠어요?')) return;
+    deleteCode();
+  };
+
+  const addProblemHandler = () => {
+    if (!confirm('복습 리스트에 추가하시겠어요?')) return;
+    addReview();
+  };
 
   const clickShowHandler = () => {
     setIsClicked(!isClicked);
@@ -83,8 +99,22 @@ const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
               />
             </div>
           )}
-          <div className="pt-1 text-MAIN1 cursor-pointer" onClick={clickShowHandler}>
-            {isClicked ? <FaChevronUp /> : <FaChevronDown />}
+          <div className="flex gap-10">
+            <div>
+              <button
+                onClick={addProblemHandler}
+                className={`p-1 ps-5 pe-5 rounded-2xl border border-MAIN1 text-sm text-MAIN1 hover:bg-MAIN1 hover:border-white hover:text-white
+                ${isDisable && `invisible`}
+                `}
+                disabled={isDisable}
+              >
+                <RiPlayListAddFill className="inline" /> 리스트에 추가하기
+              </button>
+            </div>
+
+            <div className="pt-1 text-MAIN1 cursor-pointer" onClick={clickShowHandler}>
+              {isClicked ? <FaChevronUp /> : <FaChevronDown />}
+            </div>
           </div>
         </div>
         {isClicked && (
@@ -118,8 +148,8 @@ const ProblemDetailCodeComp: React.FC<IProblemDetailCodeCompProps> = ({
             </div>
             <div className="w-full flex flex-row justify-end">
               <button
-                onClick={deleteCode}
-                className="p-1 ps-5 pe-5 rounded-2xl border border-red-400 text-sm text-red-400"
+                onClick={codeRemoveHandler}
+                className="p-1 ps-5 pe-5 rounded-2xl border border-red-400 text-sm text-red-400 hover:bg-red-400 hover:border-white hover:text-white"
               >
                 <BsTrash className="inline" /> 삭제
               </button>

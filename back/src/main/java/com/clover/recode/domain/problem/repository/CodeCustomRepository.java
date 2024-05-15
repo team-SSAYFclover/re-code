@@ -14,4 +14,6 @@ public interface CodeCustomRepository {
     //Page<Problem> findProblemsByUserId(Long userId, Pageable pageable, Integer start, Integer end, List<String> tags, String keyword);
 
     public List<CodeResList> findCodesByProblemNoAndUserId(Integer problemNo, Long userId);
+
+    Code findCodeForAddReviewByCodeId(Long codeId, Long userId);
 }

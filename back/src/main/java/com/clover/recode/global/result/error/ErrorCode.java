@@ -28,6 +28,7 @@ public enum ErrorCode {
 
     //Problem
     PROBLEM_NOT_EXISTS(404, "존제하지 않는 문제입니다."),
+    CODE_ALREADY_EXISTS(409, "이미 복습 리스트에 존재하는 코드입니다."),
 
     //Code
     Already_REGIST_CODE(409, "이미 등록한 코드입니다."),

@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface TodayProblemRepository extends JpaRepository<TodayProblem, Long>, TodayProblemCustomRepository {
     Optional<TodayProblem> findByCodeIdAndDate(Long codeId, LocalDate day);
 
+    Boolean existsByCodeIdAndUserId(Long codeId, Long userId);
+
     Integer countByDateAndUserIdAndIsCompletedFalse(LocalDate date, Long userId);
 }

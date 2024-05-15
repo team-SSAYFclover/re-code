@@ -96,6 +96,7 @@ public class ProblemServiceImpl implements ProblemService {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
         Page<Problem> problemsPage = problemRepository.findProblemsByUserId(customUserDetails.getId(), pageable, start, end, tags, keyword);
 
+
         // Page<Problem>을 Page<ProblemRes>로 변환
         return problemsPage.map(problem -> {
             List<String> tagNames = tagRepository.getTagNames(problem.getId()); // 태그 리스트
