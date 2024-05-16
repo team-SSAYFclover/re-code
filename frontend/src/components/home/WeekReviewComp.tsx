@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 
 interface WeekRepeatCompProps {
-  weekRepeatData: { date: string; num: number }[];
+  weekRepeatData: { date: string; 복습량: number }[];
   percentage: number;
 }
 
@@ -55,7 +55,7 @@ const WeekRepeatComp: React.FC<WeekRepeatCompProps> = ({ weekRepeatData, percent
             <Tooltip />
             <Line
               type="monotone"
-              dataKey="num"
+              dataKey="복습량"
               stroke="#53EDC7"
               strokeWidth={2}
               activeDot={{ r: 8 }}
