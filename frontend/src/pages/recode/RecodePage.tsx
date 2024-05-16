@@ -1,6 +1,7 @@
 import clover from '@/assets/clover.png';
 import NoContent from '@/assets/lotties/noContent.json';
 import Progressbar from '@/components/@common/Progressbar';
+import Toast from '@/components/@common/Toast';
 import Nocontent from '@/components/recode/Nocontent';
 import RecodeList from '@/components/recode/RecodeList';
 import RecodeSkeleton from '@/components/recode/RecodeSkeleton';
@@ -24,6 +25,16 @@ const RecodePage = () => {
   };
 
   const handleStartSolve = () => {
+    if (!data) {
+      Toast.error('복습할 문제가 없어요.');
+      return;
+    }
+
+    if (solvedCnt() === data.length) {
+      Toast.info('오늘의 복습을 완료했어요.');
+      return;
+    }
+
     const startCodeId = data ? data.filter((x) => !x.completed)[0].codeId : undefined;
     navigate(`/recode/${startCodeId}`);
   };
