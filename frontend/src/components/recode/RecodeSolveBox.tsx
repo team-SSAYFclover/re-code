@@ -4,6 +4,7 @@ import { Tooltip } from 'react-tooltip';
 import Toast from '../@common/Toast';
 import ErrorTooltip from './Tooltip/ErrorTooltip';
 import SuccessTooltip from './Tooltip/SuccessTooltip';
+const timeout: NodeJS.Timeout[] = [];
 
 const RecodeSolveBox = ({
   codeParts,
@@ -32,7 +33,7 @@ const RecodeSolveBox = ({
       return;
     }
 
-    checkAnswer(index, value);
+    value = checkAnswer(index, value);
 
     setInputs(inputs.map((input, i) => (i === index ? value : input)));
   };
@@ -43,7 +44,7 @@ const RecodeSolveBox = ({
     let isAllCorrect = false;
 
     if (!value.length) {
-      return;
+      return value;
     }
 
     for (let i = 0; i < value.length; i++) {
@@ -57,6 +58,14 @@ const RecodeSolveBox = ({
       }
     }
 
+    if (isSame) {
+      let nextIndex = value.length;
+      while (nextIndex < answer[idx].length && answer[idx][nextIndex] === ' ') {
+        nextIndex++;
+        value += ' ';
+      }
+    }
+
     console.log(value, answer[idx], isSame);
 
     if (value !== '' && isSame) {
@@ -66,20 +75,19 @@ const RecodeSolveBox = ({
 
       setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'success' : show)));
 
-      setTimeout(() => {
-        setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'none' : show)));
-      }, 3000);
-      return;
-    }
-
-    if (answer[idx].length > value.length || !isSame) {
+      clearTimeout(timeout[idx]);
+      timeout[idx] = setTimeout(() => {
+        setIsShowToolTip((prev) => prev.map((show, i) => (idx === i ? 'none' : show)));
+      }, 2000);
+    } else if (answer[idx].length > value.length || !isSame) {
       setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'fail' : show)));
 
-      setTimeout(() => {
-        setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'none' : show)));
-      }, 3000);
-      return;
+      clearTimeout(timeout[idx]);
+      timeout[idx] = setTimeout(() => {
+        setIsShowToolTip((prev) => prev.map((show, i) => (idx === i ? 'none' : show)));
+      }, 2000);
     }
+    return value;
   };
 
   const setTooltip = (idx: number) => {
