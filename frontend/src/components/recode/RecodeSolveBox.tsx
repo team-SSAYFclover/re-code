@@ -120,7 +120,7 @@ const RecodeSolveBox = ({
               >
                 <input
                   type="text"
-                  value={inputs[idx]}
+                  value={inputs[idx] || ''}
                   className={` bg-white/0 outline-none`}
                   onChange={(e) => handleInputChange(idx, e.target.value)}
                   style={{ width: `${answer[idx].length * 16}px` }}
