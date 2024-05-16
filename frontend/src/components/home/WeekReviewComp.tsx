@@ -17,7 +17,7 @@ interface WeekRepeatCompProps {
 }
 
 const WeekRepeatComp: React.FC<WeekRepeatCompProps> = ({ weekRepeatData, percentage }) => {
-  const percentData = [{ name: 'Percent', value: percentage }];
+  const percentData = [{ name: 'Percent', value: 100 - percentage }];
 
   return (
     <div className="shadow-xl w-full h-[40%] my-[10px] p-5 flex-row bg-white rounded-lg">
@@ -28,7 +28,7 @@ const WeekRepeatComp: React.FC<WeekRepeatCompProps> = ({ weekRepeatData, percent
         </div>
         <div className="w-full flex flex-1 flex-col content-end text-end ms-5">
           <div className="text-xs text-MAIN1 font-semibold me-2">현재 상위 {percentage}%</div>
-          <div className="max-w-xs ms-5">
+          <div className="min-w-xs ms-5">
             <ResponsiveContainer width="100%" height={15}>
               <BarChart data={percentData} layout="vertical">
                 <CartesianGrid fill="#ECFFFA" stroke="none" />
