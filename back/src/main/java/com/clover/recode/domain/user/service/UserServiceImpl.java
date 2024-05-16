@@ -100,8 +100,6 @@ public class UserServiceImpl implements UserService {
     Long id = jwtUtil.getId(token);
     String storedRefreshToken = jwtUtil.getRefreshEntity(id);
 
-    log.info("token : {}, id : {}, refresh : {}, stored: {}",token, id, refresh, storedRefreshToken);
-
     if(refresh == null || !refresh.equals(storedRefreshToken)) {
       try {
         jwtUtil.deleteRefreshEntity(id);
@@ -128,10 +126,7 @@ public class UserServiceImpl implements UserService {
 
     Setting setting = user.getSetting();
 
-    log.info("Before setting : {}", setting);
     setting.updateSetting(settingDto);
-
-    log.info("After setting : {}", setting);
 
     settingRepository.save(setting);
   }
