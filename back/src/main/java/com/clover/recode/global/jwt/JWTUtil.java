@@ -53,7 +53,7 @@ public class JWTUtil {
   }
 
   public void deleteRefreshEntity(Long id) {
-    redisTemplate.opsForValue().getAndDelete("refresh"+id);
+    redisTemplate.delete("refresh"+id);
   }
 
 
