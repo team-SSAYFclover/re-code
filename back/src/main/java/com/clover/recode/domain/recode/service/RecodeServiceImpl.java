@@ -10,6 +10,7 @@ import com.clover.recode.domain.recode.dto.gpt.GptRequestDto;
 import com.clover.recode.domain.recode.dto.gpt.GptResponseDto;
 import com.clover.recode.domain.recode.dto.gpt.Message;
 import com.clover.recode.domain.recode.dto.prompt.Prompt;
+import com.clover.recode.domain.recode.dto.prompt.Prompt2;
 import com.clover.recode.domain.recode.dto.prompt.PromptSub;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
