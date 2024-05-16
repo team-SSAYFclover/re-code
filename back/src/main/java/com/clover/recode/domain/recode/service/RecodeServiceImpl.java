@@ -15,6 +15,7 @@ import com.clover.recode.domain.recode.dto.prompt.PromptSub;
 import com.clover.recode.domain.recode.entity.Recode;
 import com.clover.recode.domain.recode.repository.RecodeRepository;
 import com.clover.recode.domain.statistics.entity.AlgoReview;
+import com.clover.recode.domain.statistics.entity.TodayProblem;
 import com.clover.recode.domain.statistics.entity.WeekReview;
 import com.clover.recode.domain.statistics.repository.AlgoReviewRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
@@ -65,6 +66,22 @@ public class RecodeServiceImpl implements RecodeService {
                 .build();
 
         recodeRepository.save(recode);
+
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+
+        TodayProblem todayProblem = TodayProblem.builder()
+            .isCompleted(false)
+            .reviewCnt(0)
+            .code(code)
+            .title(code.getProblem().getTitle())
+            .date(day)
+            .problemNo(code.getProblem().getProblemNo())
+            .user(code.getUser())
+            .build();
+
+        todayProblemRepository.save(todayProblem);
 
     }
 
