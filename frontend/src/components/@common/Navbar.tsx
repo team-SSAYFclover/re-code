@@ -18,8 +18,7 @@ const Navbar = () => {
   const { logout, isLogin } = userStore();
 
   const handleLogout = () => {
-    logoutUser();
-    logout();
+    logoutUser().finally(() => logout());
   };
 
   const navInfo: INavInfo[] = [
