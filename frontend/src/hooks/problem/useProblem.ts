@@ -1,7 +1,8 @@
-import { getProbList, getProbDetail, deleteCode, patchCode, addReview } from '@/services/problem';
-import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query';
-import { IGetProbListParams, ICodePatchParams } from '@/types/problem';
+import Toast from '@/components/@common/Toast';
+import { addReview, deleteCode, getProbDetail, getProbList, patchCode } from '@/services/problem';
 import { APIResponse, IProblemRes } from '@/types/model';
+import { ICodePatchParams, IGetProbListParams } from '@/types/problem';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export const useProbList = () => {
   const useGetProbList = (params: IGetProbListParams, isEnabled = false) => {
@@ -48,5 +49,8 @@ export const usePatchCode = () => {
 export const useAddReview = () => {
   return useMutation({
     mutationFn: (codeId: number) => addReview(codeId),
+    onSuccess: () => {
+      Toast.success('리스트에 추가되었습니다.');
+    },
   });
 };

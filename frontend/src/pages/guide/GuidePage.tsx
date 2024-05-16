@@ -8,6 +8,8 @@ import logo from '@/assets/logo.png';
 import logo2 from '@/assets/logo2.png';
 import { motion } from 'framer-motion';
 import { FaRegArrowAltCircleDown } from 'react-icons/fa';
+import { PiArrowSquareOutLight } from 'react-icons/pi';
+import { Link } from 'react-router-dom';
 
 interface IGuideDetail {
   title: JSX.Element;
@@ -16,12 +18,37 @@ interface IGuideDetail {
 }
 
 const GuidePage = () => {
-  const guide: string[] = [
-    're:code 홈페이지에 들어가 github 로그인을 진행합니다.',
-    'chrome 웹스토어에서 re:code를 검색하여 extension을 다운로드 합니다.',
-    're:code 홈페이지에서 내 연동 코드를 복사하여 익스텐션에 연동합니다.',
-    'BOJ에서 문제를 풀고 맞았다면 re:code 아이콘을 눌러 복습 문제에 추가합니다.',
-    're:code의 오늘의 복습 리스트에 등록되면 문제를 풀어 복습을 진행합니다.',
+  const guide: JSX.Element[] = [
+    <div>
+      re:code 홈페이지에 들어가{' '}
+      <Link to={'https://www.recode-d210.com'} className="text-MAIN1">
+        github 로그인
+      </Link>
+      을 진행합니다.
+    </div>,
+    <div>
+      chrome 웹스토어에서 re:code를 검색하여&nbsp;
+      <Link
+        to={
+          'https://chromewebstore.google.com/detail/recode-uploader/ppbaladjjpmepkmaafeidledkhmjdill'
+        }
+        target="_blank"
+        className="text-MAIN1"
+      >
+        extension을 다운로드
+        <PiArrowSquareOutLight className="inline-block mx-1 leading-6" />
+      </Link>
+      합니다.
+    </div>,
+    <div>re:code 홈페이지에서 내 연동 코드를 복사하여 익스텐션에 연동합니다.</div>,
+    <div>BOJ에서 문제를 풀고 맞았다면 re:code 아이콘을 눌러 복습 문제에 추가합니다.</div>,
+    <div>
+      re:code의 오늘의 복습 리스트에 등록되면&nbsp;
+      <Link to={'https://www.recode-d210.com/recode'} className="text-MAIN1">
+        문제를 풀어 복습
+      </Link>
+      을 진행합니다.
+    </div>,
   ];
 
   const guideDetail: IGuideDetail[] = [
@@ -100,12 +127,13 @@ const GuidePage = () => {
   };
 
   return (
-    <div className="w-full h-auto bg-gradient-to-b from-[#F7FFFD] from-0% to-[#BBFFEE] to-100%">
-      <div className="w-[70%] mx-auto">
+    <div className="h-auto px-40 bg-gradient-to-b from-[#F7FFFD] from-0% to-[#BBFFEE] to-100%">
+      <div className="w-full mx-auto">
         <motion.section
           variants={varient}
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: true }}
           className="w-full py-16 flex flex-col items-center"
         >
           <div className="text-MAIN1 text-[20px] font-bold">USER GUIDE</div>
@@ -119,7 +147,13 @@ const GuidePage = () => {
             src={main}
           />
         </motion.section>
-        <motion.section variants={varient} initial="hidden" whileInView="visible" className="my-16">
+        <motion.section
+          variants={varient}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="my-16"
+        >
           <div className={titleCommonClass}>
             <img alt="logo" src={logo2} className="w-32" />를 이용하는 순서
           </div>
@@ -132,6 +166,7 @@ const GuidePage = () => {
                 variants={varient}
                 initial="hidden"
                 whileInView="visible"
+                viewport={{ once: true }}
               >
                 <div key={idx} className="font-semibold text-[18px]">
                   {text}
@@ -147,13 +182,20 @@ const GuidePage = () => {
             ))}
           </div>
         </motion.section>
-        <motion.section variants={varient} initial="hidden" whileInView="visible" className="my-16">
+        <motion.section
+          variants={varient}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="my-16"
+        >
           {guideDetail.map((info, idx) => {
             return (
               <motion.article
                 variants={varient}
                 initial="hidden"
                 whileInView="visible"
+                viewport={{ once: true }}
                 key={idx}
                 className="my-12 py-12 flex flex-col items-center"
               >
