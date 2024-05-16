@@ -83,15 +83,21 @@ const RecodeSolveContent = ({
       }
     }
 
+    if (!window.confirm('복습을 완료하시겠습니까?')) {
+      return;
+    }
+
     mutate(undefined, {
       onSuccess: () => {
-        if (completedCnt + 1 === todayRecodeList.length) {
-          Toast.error('더이상 풀 문제가 없어요.');
+        const completedCnt = todayRecodeList.filter((x) => x.completed).length;
+        console.log('complete', completedCnt);
+        if (completedCnt === todayRecodeList.length) {
+          Toast.success('오늘의 복습을 완료했어요.');
           navigate('/recode', { replace: true });
           return;
         } else {
           const idx = getNextIdx();
-          // setIsCorrect(Array.from({ length: recode.answers.length }, () => false));
+          console.log('다음 인덱스', idx, todayRecodeList[idx].codeId, todayRecodeList);
           navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
         }
       },
@@ -99,16 +105,20 @@ const RecodeSolveContent = ({
   };
 
   const skip = () => {
+    const completedCnt = todayRecodeList.filter((x) => x.completed).length;
+    console.log('complete', completedCnt);
+
     if (!window.confirm('다음 문제로 건너뛰겠습니까?')) {
       return;
     }
 
-    if (completedCnt === todayRecodeList.length) {
+    if (completedCnt + 1 === todayRecodeList.length) {
       Toast.error('더이상 풀 문제가 없어요.');
       return;
     }
 
     const idx = getNextIdx();
+    console.log('다음 인덱스', idx, todayRecodeList[idx].codeId, todayRecodeList);
     navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
     Toast.success('다음 문제로 이동했습니다.');
   };
