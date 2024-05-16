@@ -3,6 +3,7 @@
 //import com.clover.recode.domain.recode.dto.code.ExampleCode1;
 //import com.clover.recode.domain.recode.dto.code.ExampleCode3;
 //import com.clover.recode.domain.recode.dto.code.ExampleCode4;
+//import com.clover.recode.domain.recode.dto.code.ExampleCode5;
 //import com.clover.recode.global.result.error.ErrorCode;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import com.clover.recode.domain.problem.entity.Code;
@@ -16,22 +17,22 @@
 //@SpringBootTest
 //class RecodeServiceImplTest {
 //
-////    @Autowired
-////    RecodeServiceImpl service;
-////
-////    @Autowired
-////    CodeRepository codeRepository;
-////
-////    @Test
-////    void createRecodeTest() {
-////        service.createRecode(ExampleCode4.code);
-////    }
+//    @Autowired
+//    RecodeServiceImpl service;
 //
-////    @Test
-////    void getRecodeTest() {
-////        Code code = codeRepository.findById(18L)
-////                .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
-////
-////        service.getRecodeFromCode(code);
-////    }
+//    @Autowired
+//    CodeRepository codeRepository;
+//
+//    @Test
+//    void createRecodeTest() {
+//        service.createRecode(ExampleCode5.code);
+//    }
+//
+//    @Test
+//    void getRecodeTest() {
+//        Code code = codeRepository.findById(18L)
+//                .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
+//
+//        service.getRecodeFromCode(code);
+//    }
 //}

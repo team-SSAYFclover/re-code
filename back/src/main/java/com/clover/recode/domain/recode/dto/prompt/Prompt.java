@@ -1,6 +1,7 @@
 package com.clover.recode.domain.recode.dto.prompt;
 
 import com.clover.recode.domain.recode.dto.code.ExampleAnswer1;
+import com.clover.recode.domain.recode.dto.code.ExampleAnswer2;
 import com.clover.recode.domain.recode.dto.code.ExampleCode1;
 import com.clover.recode.domain.recode.dto.code.ExampleCode2;
 
@@ -48,7 +49,7 @@ The code given to you:
 The code you should generate as a response from the given rules:
 
 ```
-""" + ExampleCode2.code + """
+""" + ExampleAnswer2.code + """
 ```
             """;
 
