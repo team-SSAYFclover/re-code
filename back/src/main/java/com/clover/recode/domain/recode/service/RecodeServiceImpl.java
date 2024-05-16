@@ -76,8 +76,8 @@ public class RecodeServiceImpl implements RecodeService {
         // 시간 측정
         // long startTime = System.currentTimeMillis();
 
-        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
-//        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
+//        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
+        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
