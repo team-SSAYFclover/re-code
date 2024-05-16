@@ -4,7 +4,7 @@ import AttendCheckCircle from './AttendCheckCircle';
 interface IWeekRepeatData {
   weekRepeatData: {
     date: string;
-    num: number;
+    복습량: number;
   }[];
 }
 
@@ -15,7 +15,7 @@ const AttendCheckComp: React.FC<IWeekRepeatData> = ({ weekRepeatData }) => {
       <div className="text-sm text-gray-500">지난 일주일 간의 학습 여부입니다</div>
       <div className="flex flex-1 justify-evenly items-center pt-3 pb-1 overflow-scroll scrollbar-hide">
         {weekRepeatData.map((data, index) => (
-          <AttendCheckCircle key={index} weekday={index} onoff={data.num > 0} />
+          <AttendCheckCircle key={index} weekday={index} onoff={data.복습량 > 0} />
         ))}
       </div>
     </div>

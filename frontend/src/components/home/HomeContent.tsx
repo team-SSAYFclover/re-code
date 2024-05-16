@@ -17,13 +17,13 @@ const HomeContent: React.FC = () => {
   // API에서 받은 weekReviews 객체를 배열로 변환
   const weekRepeatData = data
     ? [
-        { date: '월', num: data.weekReviews.mon },
-        { date: '화', num: data.weekReviews.tue },
-        { date: '수', num: data.weekReviews.wed },
-        { date: '목', num: data.weekReviews.thu },
-        { date: '금', num: data.weekReviews.fri },
-        { date: '토', num: data.weekReviews.sat },
-        { date: '일', num: data.weekReviews.sun },
+        { date: '월', 복습량: data.weekReviews.mon },
+        { date: '화', 복습량: data.weekReviews.tue },
+        { date: '수', 복습량: data.weekReviews.wed },
+        { date: '목', 복습량: data.weekReviews.thu },
+        { date: '금', 복습량: data.weekReviews.fri },
+        { date: '토', 복습량: data.weekReviews.sat },
+        { date: '일', 복습량: data.weekReviews.sun },
       ]
     : [];
 
