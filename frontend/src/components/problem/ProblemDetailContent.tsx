@@ -1,15 +1,17 @@
+import {
+  useAddReview,
+  useDeleteCode,
+  usePatchCode,
+  useProbDetail,
+} from '@/hooks/problem/useProblem';
+import { ICodeResList, IProbDetailInfo } from '@/types/problem';
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import ProblemDetailCodeComp from './ProblemDetailCodeComp';
-import { IProbDetailInfo, ICodeResList } from '@/types/problem';
-import {
-  useProbDetail,
-  useDeleteCode,
-  usePatchCode,
-  useAddReview,
-} from '@/hooks/problem/useProblem';
+import Toast from '../@common/Toast';
 import MarkdownParser from './MarkdownParser';
+import ProblemDetailCodeComp from './ProblemDetailCodeComp';
 
 const ProblemDetailContent: React.FC = () => {
   const { useGetProbDetail } = useProbDetail();
@@ -81,8 +83,13 @@ const ProblemDetailContent: React.FC = () => {
 
   const addTodayReview = (codeId: number) => {
     addReviewMutate(codeId, {
-      onError: () => {
-        alert('추가에 실패했어요.');
+      onError: (error: Error) => {
+        if (axios.isAxiosError(error) && error.response?.status === 409) {
+          Toast.error('이미 복습리스트에 추가된 문제입니다.');
+          return;
+        }
+
+        Toast.error('추가에 실패했어요.');
       },
     });
   };
