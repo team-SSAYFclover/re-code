@@ -33,7 +33,7 @@ const RecodeSolveBox = ({
       return;
     }
 
-    if (value.charAt(value.length - 1) == ' ') return;
+    if (inputs[index].length < value.length && value.charAt(value.length - 1) == ' ') return;
 
     value = checkAnswer(index, value);
 
@@ -60,7 +60,7 @@ const RecodeSolveBox = ({
       }
     }
 
-    if (isSame) {
+    if (isSame && inputs[idx].length < value.length) {
       let nextIndex = value.length;
       while (nextIndex < answer[idx].length && answer[idx][nextIndex] === ' ') {
         nextIndex++;
