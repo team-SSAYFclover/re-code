@@ -4,6 +4,7 @@ import { GoHome } from 'react-icons/go';
 import { LuLogOut } from 'react-icons/lu';
 import { PiArrowSquareOutLight, PiHandWaving, PiNotePencilLight, PiNotepad } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '@/services/user';
 
 interface INavInfo {
   icon?: JSX.Element;
@@ -15,6 +16,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const currentPath = window.location.href.replace('//', '').split('/');
   const { logout, isLogin } = userStore();
+
+  const handleLogout = () => {
+    logoutUser().finally(() => logout());
+  };
 
   const navInfo: INavInfo[] = [
     {
@@ -85,7 +90,7 @@ const Navbar = () => {
         {!isRecode && isLogin && (
           <button
             className="flex justify-center items-center absolute bottom-0 left-0 right-0 h-12 m-3 transition ease-in-out text-BLACK font-bold hover:bg-black/5 rounded-md outline-none"
-            onClick={() => logout()}
+            onClick={handleLogout}
           >
             <div className="text-lg">
               <LuLogOut />

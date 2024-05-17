@@ -4,22 +4,22 @@ import com.clover.recode.domain.auth.service.CustomOAuth2UserService;
 import com.clover.recode.global.jwt.JWTFilter;
 import com.clover.recode.global.jwt.JWTUtil;
 import com.clover.recode.global.oauth.CustomSuccessHandler;
+import com.olbl.stickeymain.global.jwt.CustomLogoutFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Collections;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -59,13 +59,21 @@ public class SecurityConfig {
     http
         .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
+    http // 로그아웃 필터
+        .addFilterBefore(new CustomLogoutFilter(jwtUtil), LogoutFilter.class)
+        .logout(logout -> logout
+            .logoutUrl("/users/logout")
+            .logoutSuccessHandler((request, response, authentication) -> {
+                  // 로그아웃 성공 시, 리다이렉트 하지 않는다
+                  response.setStatus(HttpServletResponse.SC_OK);
+            }));
 
     // 경로 별 인가 작업
     http
         .authorizeHttpRequests((auth) -> auth
             // Swagger
-            .requestMatchers("/swagger-ui/**", "/api-docs/**", "/actuator/prometheus").permitAll()
-            .requestMatchers("/users/reissue", "/users/code", "/problems/regist", "/statistics/{userId}/reviews/cnt").permitAll()
+            .requestMatchers("/actuator/prometheus").permitAll()
+            .requestMatchers("/users/reissue", "/users/logout", "/users/code", "/problems/regist", "/statistics/{userId}/reviews/cnt").permitAll()
            .anyRequest().authenticated());
 
     http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
@@ -82,10 +90,6 @@ public class SecurityConfig {
               CorsConfiguration configuration = new CorsConfiguration();
 
               // 허용할 출처
-//              configuration.setAllowedOrigins(
-//                  Arrays.asList("k10d210.p.ssafy.io", "http://localhost:3000", "www.recode-d210.com", "chrome-extension://jbdflmjhhemnomkgojjjkdeklcjihfpp")
-//              );
-              // TODO : 개발이 끝나면 CORS 닫기
               configuration.setAllowedOriginPatterns(Arrays.asList("*"));
 
               // 허용할 HTTP 메소드
@@ -101,7 +105,7 @@ public class SecurityConfig {
               configuration.setMaxAge(3600L);
 
               // 브라우저에 노출할 헤더 설정
-              configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie", "access_token"));
+              configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "access_token"));
               return configuration;
             }));
 

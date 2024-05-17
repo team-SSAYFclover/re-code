@@ -14,4 +14,5 @@ public interface TodayProblemRepository extends JpaRepository<TodayProblem, Long
     Boolean existsByCodeIdAndUserIdAndDate(Long codeId, Long userId,LocalDate date);
 
     Integer countByDateAndUserIdAndIsCompletedFalse(LocalDate date, Long userId);
+    boolean existsByDateAndCodeIdAndUserIdAndIsCompletedFalse(LocalDate date, Long codeId, Long userId);
 }
