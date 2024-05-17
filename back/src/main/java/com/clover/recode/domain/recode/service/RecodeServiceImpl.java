@@ -73,7 +73,7 @@ public class RecodeServiceImpl implements RecodeService {
 
         TodayProblem todayProblem = TodayProblem.builder()
             .isCompleted(false)
-            .reviewCnt(0)
+            .reviewCnt(1)
             .code(code)
             .title(code.getProblem().getTitle())
             .date(day)
@@ -119,6 +119,15 @@ public class RecodeServiceImpl implements RecodeService {
     @Override
     public RecodeRes getRecode(Authentication authentication, Long codeId) {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+
+        LocalDate day;
+        if(LocalDateTime.now().getHour() < 4) day= LocalDate.now().minusDays(1);
+        else day= LocalDate.now();
+        boolean isExist = todayProblemRepository.existsByDateAndCodeIdAndUserIdAndIsCompletedFalse(day, codeId,
+            customUserDetails.getId());
+        if(!isExist) {
+            throw new BusinessException(CODE_NOT_EXISTS);
+        }
 
         Code code = codeRepository.findByIdAndUserId(codeId, customUserDetails.getId())
                 .orElseThrow(() -> new BusinessException(CODE_NOT_EXISTS));
