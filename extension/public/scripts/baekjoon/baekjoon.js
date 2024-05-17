@@ -49,7 +49,7 @@ function addUploadBtnToResult() {
       td[3].style = 'justify-content:center';
       td[3].innerHTML =
         td[3].innerHTML +
-        '<div style="float:right;"><a href="javascript:void(0);" class="uploadBtn fa fa-upload" >RE:CODE</a></div>';
+        '<div style="float:right;"><a href="javascript:void(0);" class="uploadBtn fa fa-cloud-upload" > re:code</a></div>';
     }
   }
 
