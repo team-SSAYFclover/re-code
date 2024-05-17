@@ -57,8 +57,9 @@ const MySettingModal = ({ onClose }: { onClose: () => void }) => {
 
   useEffect(() => {
     if (data) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [hour, min, sec] = data.settings.notificationTime.split(':');
+
+      console.log(hour, min, sec);
 
       setModifyInfo((prev) => {
         return {
