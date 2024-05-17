@@ -1,4 +1,3 @@
-import { ReactComponent as Check } from '@/assets/check.svg';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
 import Toast from '../@common/Toast';
@@ -126,7 +125,7 @@ const RecodeSolveBox = ({
                 {setTooltip(idx)}
               </Tooltip>
               <div
-                className={`bg-MAIN1/20 inline-block my-1 p-1 pl-2 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && isShowToolTip[idx] === 'fail' && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
+                className={`bg-MAIN1/20 inline-block my-1 p-1 px-2 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && isShowToolTip[idx] === 'fail' && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
               >
                 <input
                   type="text"
@@ -138,16 +137,7 @@ const RecodeSolveBox = ({
                   data-tooltip-id={`tooltip-${idx}`}
                 />
 
-                {isCorrect[idx] ? (
-                  <span className="text-blue-700 text-xs px-[1px]">
-                    <Check
-                      width={'26px'}
-                      height={'26px'}
-                      fill="red"
-                      style={{ display: 'inline-block' }}
-                    />
-                  </span>
-                ) : (
+                {!isCorrect[idx] && (
                   <span className="text-gray-400 text-xs px-[1px]">({answer[idx].length})</span>
                 )}
               </div>
