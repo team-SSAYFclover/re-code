@@ -1,11 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import NoContent from '@/assets/lotties/noContent.json';
+import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 import { useProbList } from '@/hooks/problem/useProblem';
+import { IGetProbListParams } from '@/types/problem';
+import React, { useEffect, useMemo, useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
 import { PiFunnelBold } from 'react-icons/pi';
+import Lottie from 'react-lottie';
+import Nocontent from '../recode/Nocontent';
 import ProblemComp from './ProblemComp';
 import ProblemOptionComp from './ProblemOptionComp';
-import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
-import { IGetProbListParams } from '@/types/problem';
 
 export interface IOptionInfo {
   category: { name: string; TF: boolean }[];
@@ -31,8 +34,9 @@ const ProblemContent: React.FC = () => {
     // 브론즈, 실버, 골드, 플래티넘, 다이아몬드, 루비 각 5-4-3-2-1 순
   });
   const handleOptionBtn = () => {
-    setShowOption(!showOption);
+    setShowOption((prev) => !prev);
   };
+
   const queryParams = useMemo(() => {
     return {
       page: 0,
@@ -77,8 +81,14 @@ const ProblemContent: React.FC = () => {
     handleSearchClick();
   }, []);
 
+  const defaltOptions = {
+    loop: true,
+    autoPlay: true,
+    animationData: NoContent,
+  };
+
   return (
-    <div className="w-full h-full pt-10">
+    <div className="w-full h-full pt-10 px-20">
       {/* 상단 옵션버튼, 검색창 */}
       <div className="w-full flex justify-between">
         <button
@@ -125,16 +135,38 @@ const ProblemContent: React.FC = () => {
       ) : null}
       {/* 문제 컴포넌트 리스트 */}
       <div className="w-full pt-10 pb-4 flex flex-row flex-wrap overflow-x-auto">
-        {problemData.map((item) => (
-          <ProblemComp
-            key={item.problemNo}
-            problemNo={item.problemNo}
-            title={item.title}
-            level={item.level}
-            tags={item.tags}
-            repeatCount={item.reviewCount}
-          />
-        ))}
+        {problemData.length > 0 ? (
+          problemData.map((item) => (
+            <ProblemComp
+              key={item.problemNo}
+              problemNo={item.problemNo}
+              title={item.title}
+              level={item.level}
+              tags={item.tags}
+              repeatCount={item.reviewCount}
+            />
+          ))
+        ) : (
+          <div className="w-full min-h-[500px]">
+            <Nocontent
+              text={
+                <>
+                  <div className="text-lg">
+                    오늘의 복습문제가 없어요 <br />
+                    문제를 풀어 복습 문제를 추가해볼까요?
+                  </div>
+                  <button
+                    className="border text-sm border-MAIN1 text-MAIN1 px-4 py-2 mt-4 rounded-md hover:text-white hover:bg-MAIN1"
+                    onClick={() => window.open('https://www.acmicpc.net', '_blank')}
+                  >
+                    문제 풀러 가기
+                  </button>
+                </>
+              }
+              icon={<Lottie options={defaltOptions} width={160} height={160} />}
+            />
+          </div>
+        )}
       </div>
 
       <div ref={setTarget} className="h-[1rem]" key={data?.pageParams.length}></div>
