@@ -1,47 +1,3 @@
-.bstreeview {
-  position: relative;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
-  padding: 0;
-  overflow: hidden;
-}
-
-.bstreeview .list-group {
-  margin-bottom: 0;
-}
-
-.bstreeview .list-group-item {
-  border-radius: 0;
-  border-width: 1px 0 0;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  cursor: pointer;
-}
-
-.bstreeview .list-group-item:hover {
-  background-color: #dee2e6;
-}
-
-.bstreeview > .list-group-item:first-child {
-  border-top-width: 0;
-}
-
-.bstreeview .state-icon {
-  margin-right: 8px;
-}
-
-.bstreeview .item-icon {
-  margin-right: 5px;
-}
-
 .recode-modal-bg {
   display: none;
   width: 100%;
@@ -73,10 +29,8 @@
 }
 
 .recodeheader {
-  background-color: rgb(83 237 199 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-  --tw-bg-opacity: 1;
+  background-color: #53edc7;
+  color: #4b4b4b;
   font-size: 24px;
   font-family: 'Pretendard-Regular';
   src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
@@ -113,6 +67,7 @@
 
 .recodediv * {
   font-weight: 700;
+  color: #4b4b4b;
 }
 
 #tree {
