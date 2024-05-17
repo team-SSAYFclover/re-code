@@ -122,7 +122,7 @@ const ProblemDetailContent: React.FC = () => {
   }, [data, problemData.level]);
 
   return (
-    <div className="w-full h-full pt-5 pe-20 flex flex-col overflow-auto" ref={containerRef}>
+    <div className="w-full h-full py-5 px-20 flex flex-col overflow-auto" ref={containerRef}>
       {/* 상단부 : 문제 정보 */}
       <div className="w-full h-fit flex flex-col">
         {/* 번호 */}
