@@ -25,3 +25,7 @@ body {
 *::-webkit-scrollbar-thumb {
   @apply bg-gray-300 rounded-full border-0;
 }
+
+.recharts-tooltip-wrapper {
+  z-index: 10;
+}
