@@ -209,7 +209,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         TodayProblem todayProblem = TodayProblem.builder()
             .isCompleted(false)
-            .reviewCnt(code.getRecode().getSubmitCount())
+            .reviewCnt(code.getRecode().getSubmitCount() + 1)
             .code(code)
             .title(code.getProblem().getTitle())
             .date(day)
