@@ -67,8 +67,6 @@ const RecodeSolveBox = ({
       }
     }
 
-    console.log(value, answer[idx], isSame);
-
     if (value !== '' && isSame) {
       if (isAllCorrect) {
         setIsCorrect(isCorrect.map((correct, i) => (idx === i ? true : correct)));

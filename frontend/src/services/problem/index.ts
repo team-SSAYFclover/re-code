@@ -69,7 +69,7 @@ export const addReview = async (codeId: number): Promise<void> => {
       codeId,
     });
   } catch (err) {
-    console.log('리스트 추가 에러', err);
+    console.error('리스트 추가 에러', err);
     throw err;
   }
 };
