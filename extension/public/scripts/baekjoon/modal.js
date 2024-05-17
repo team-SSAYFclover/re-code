@@ -14,7 +14,7 @@ function addModal() {
 
 			<div style="display: flex; flex-direction: column; width : 100%; height : 100%; position:relative;">
 			<div id="recodebackdrop" class="" style="position : absolute;"></div>
-			<p class="recodeheader">RE:CODE</p>
+			<div class="recodeheader">re:code</div>
 			<div class="recodediv">
 				<div id="Recode_progress_elem" class="" style="position : absolute;"></div>
 				<div style="width : 100%; display : flex;">
