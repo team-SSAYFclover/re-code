@@ -6,7 +6,7 @@ const refresh = async (error: AxiosError) => {
     try {
       const response = await axiosRefreshInstance.post('/users/reissue');
       const access_token = response.headers['access_token'];
-      console.log('받은 응답', response);
+      // console.log('받은 응답', response);
 
       localStorage.setItem('RECODE_ACCESS_TOKEN', access_token);
       error.config.headers.Authorization = `Bearer ${access_token}`;

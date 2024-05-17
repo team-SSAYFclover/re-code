@@ -41,8 +41,6 @@ const RecodePage = () => {
 
   const percentage: number = data ? (solvedCnt() / data.length) * 100 : 0;
 
-  console.log('받아온 데이터', data);
-
   return (
     <div className="w-full h-full flex justify-center items-center bg-gray-100/50 relative pl-60">
       <div className="w-2/3 h-2/3 min-w-[700px] mx-auto">
