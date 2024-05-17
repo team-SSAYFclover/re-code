@@ -1,6 +1,8 @@
 import { useHome } from '@/hooks/home/useHome';
 import userStore from '@/stores/userStore';
 import React from 'react';
+import ErrorContent from '../@common/ErrorContent';
+import LoadingContent from '../@common/LoadingContent';
 import AttendCheckComp from './AttendCheckComp';
 import CloverComp from './CloverComp';
 import OctagonGraphComp from './OctagonGraphComp';
@@ -12,8 +14,7 @@ const HomeContent: React.FC = () => {
   const { name } = userStore();
   const { useGetMainInfo } = useHome();
   const { data, isLoading } = useGetMainInfo();
-  console.log('가져온 데이터 : ', data);
-  console.log('isLoading : ', isLoading);
+  // console.log('가져온 데이터 : ', data);
   // API에서 받은 weekReviews 객체를 배열로 변환
   const weekRepeatData = data
     ? [
@@ -30,7 +31,7 @@ const HomeContent: React.FC = () => {
   const OctagonData = data
     ? Object.keys(data.algoReview).map((key) => ({
         name: key,
-        num: data.algoReview[key],
+        복습량: data.algoReview[key],
       }))
     : [];
 
@@ -55,8 +56,8 @@ const HomeContent: React.FC = () => {
     ? { problemNo: data.randomQuestion, problemTitle: data.randomTitle }
     : { problemNo: 11779, problemTitle: '최소비용 구하기 2' };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!data) return <div>No data available</div>;
+  if (isLoading) return <LoadingContent />;
+  if (!data) return <ErrorContent />;
 
   return (
     <div className="w-full h-full pb-8">

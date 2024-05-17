@@ -19,6 +19,5 @@ export const modifyUserInfo = async (
 };
 
 export const logoutUser = async () => {
-  const res = await axiosRefreshInstance.get(`/users/logout`);
-  console.log(res);
+  await axiosRefreshInstance.get(`/users/logout`);
 };

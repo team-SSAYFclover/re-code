@@ -33,13 +33,10 @@ const Header = () => {
             onClick={() => handleOpen('setting')}
             className="flex justify-center items-center"
           >
-            {/* <span className="cursor-pointer z-10" onClick={() => handleOpen('alarm')}>
-              <FiBell size="25" color="#484848" />
-            </span> */}
             <img
               src={avatarUrl === '' ? defaultProfile : avatarUrl}
               alt="profile"
-              className="w-8 z-10 rounded-full"
+              className="w-8 rounded-full"
             />
             <span className="text-gray-200 px-2">|</span>
             <div className="text-sm text-BLACK">@ {name}</div>
