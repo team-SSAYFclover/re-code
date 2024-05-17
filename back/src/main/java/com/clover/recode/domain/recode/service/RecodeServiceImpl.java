@@ -211,7 +211,7 @@ public class RecodeServiceImpl implements RecodeService {
 
         // 난이도 및 문제 길이 변 기본 빈칸 개수
         int contentLength = content.length();
-        int baseNum = contentLength / 300 + 1;
+        int baseNum = contentLength / 500 + 1;
 
         // 실제로 집어넣을 빈칸을 선정
         boolean[][] levelAnswersReal = new boolean[3][];
