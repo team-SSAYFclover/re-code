@@ -1,9 +1,9 @@
-import { ReactComponent as Check } from '@/assets/check.svg';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
 import Toast from '../@common/Toast';
 import ErrorTooltip from './Tooltip/ErrorTooltip';
 import SuccessTooltip from './Tooltip/SuccessTooltip';
+const timeout: NodeJS.Timeout[] = [];
 
 const RecodeSolveBox = ({
   codeParts,
@@ -32,7 +32,9 @@ const RecodeSolveBox = ({
       return;
     }
 
-    checkAnswer(index, value);
+    if (inputs[index].length < value.length && value.charAt(value.length - 1) == ' ') return;
+
+    value = checkAnswer(index, value);
 
     setInputs(inputs.map((input, i) => (i === index ? value : input)));
   };
@@ -43,7 +45,7 @@ const RecodeSolveBox = ({
     let isAllCorrect = false;
 
     if (!value.length) {
-      return;
+      return value;
     }
 
     for (let i = 0; i < value.length; i++) {
@@ -57,6 +59,14 @@ const RecodeSolveBox = ({
       }
     }
 
+    if (isSame && inputs[idx].length < value.length) {
+      let nextIndex = value.length;
+      while (nextIndex < answer[idx].length && answer[idx][nextIndex] === ' ') {
+        nextIndex++;
+        value += ' ';
+      }
+    }
+
     console.log(value, answer[idx], isSame);
 
     if (value !== '' && isSame) {
@@ -66,20 +76,19 @@ const RecodeSolveBox = ({
 
       setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'success' : show)));
 
-      setTimeout(() => {
-        setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'none' : show)));
-      }, 3000);
-      return;
-    }
-
-    if (answer[idx].length > value.length || !isSame) {
+      clearTimeout(timeout[idx]);
+      timeout[idx] = setTimeout(() => {
+        setIsShowToolTip((prev) => prev.map((show, i) => (idx === i ? 'none' : show)));
+      }, 2000);
+    } else if (answer[idx].length > value.length || !isSame) {
       setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'fail' : show)));
 
-      setTimeout(() => {
-        setIsShowToolTip(isShowToolTip.map((show, i) => (idx === i ? 'none' : show)));
-      }, 3000);
-      return;
+      clearTimeout(timeout[idx]);
+      timeout[idx] = setTimeout(() => {
+        setIsShowToolTip((prev) => prev.map((show, i) => (idx === i ? 'none' : show)));
+      }, 2000);
     }
+    return value;
   };
 
   const setTooltip = (idx: number) => {
@@ -116,7 +125,7 @@ const RecodeSolveBox = ({
                 {setTooltip(idx)}
               </Tooltip>
               <div
-                className={`bg-MAIN1/20 inline-block my-1 p-1 pl-2 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && isShowToolTip[idx] === 'fail' && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
+                className={`bg-MAIN1/20 inline-block my-1 p-1 px-2 outline-MAIN1 rounded-sm ${inputs[idx] !== '' && isShowToolTip[idx] === 'fail' && inCorrectInputClass} ${isCorrect[idx] && correctInputClass}`}
               >
                 <input
                   type="text"
@@ -128,16 +137,7 @@ const RecodeSolveBox = ({
                   data-tooltip-id={`tooltip-${idx}`}
                 />
 
-                {isCorrect[idx] ? (
-                  <span className="text-blue-700 text-xs px-[1px]">
-                    <Check
-                      width={'26px'}
-                      height={'26px'}
-                      fill="red"
-                      style={{ display: 'inline-block' }}
-                    />
-                  </span>
-                ) : (
+                {!isCorrect[idx] && (
                   <span className="text-gray-400 text-xs px-[1px]">({answer[idx].length})</span>
                 )}
               </div>

@@ -31,10 +31,7 @@ const TimePicker = ({ hour, minute, setModifyInfo }: ITimePickerProps) => {
       };
     });
 
-    console.log('value', value);
-
     if (type === 'hour') {
-      console.log(selectedTime);
       setModifyInfo((prev) => {
         return {
           ...prev,
@@ -43,7 +40,6 @@ const TimePicker = ({ hour, minute, setModifyInfo }: ITimePickerProps) => {
       });
     } else if (type === 'minute') {
       setModifyInfo((prev) => {
-        console.log(prev);
         return {
           ...prev,
           notifMinute: Number(value),

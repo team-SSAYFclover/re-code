@@ -7,6 +7,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import MarkdownParser from './MarkdownParser';
 import RecodeProgressBar from './RecodeProgressBar';
 import RecodeSolveBox from './RecodeSolveBox';
+import firework from './firework';
 
 const RecodeSolveContent = ({
   recode,
@@ -75,7 +76,7 @@ const RecodeSolveContent = ({
   };
 
   const completeRepeat = () => {
-    console.log(isCorrect);
+    // console.log(isCorrect);
     for (const ele of isCorrect) {
       if (!ele) {
         Toast.error('빈칸을 모두 채워야 복습을 완료할 수 있습니다.');
@@ -90,15 +91,21 @@ const RecodeSolveContent = ({
     mutate(undefined, {
       onSuccess: () => {
         const completedCnt = todayRecodeList.filter((x) => x.completed).length;
-        console.log('complete', completedCnt);
+
         if (completedCnt === todayRecodeList.length) {
           Toast.success('오늘의 복습을 완료했어요.');
-          navigate('/recode', { replace: true });
+          firework();
+          setTimeout(() => {
+            navigate('/recode', { replace: true });
+          }, 3000);
           return;
         } else {
           const idx = getNextIdx();
-          console.log('다음 인덱스', idx, todayRecodeList[idx].codeId, todayRecodeList);
-          navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
+          // console.log('다음 인덱스', idx, todayRecodeList[idx].codeId, todayRecodeList);
+
+          setTimeout(() => {
+            navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
+          }, 500);
         }
       },
     });
@@ -106,7 +113,6 @@ const RecodeSolveContent = ({
 
   const skip = () => {
     const completedCnt = todayRecodeList.filter((x) => x.completed).length;
-    console.log('complete', completedCnt);
 
     if (!window.confirm('다음 문제로 건너뛰겠습니까?')) {
       return;
@@ -118,8 +124,12 @@ const RecodeSolveContent = ({
     }
 
     const idx = getNextIdx();
-    console.log('다음 인덱스', idx, todayRecodeList[idx].codeId, todayRecodeList);
-    navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
+    // console.log('다음 인덱스', idx, todayRecodeList[idx].codeId, todayRecodeList);
+
+    setTimeout(() => {
+      navigate(`/recode/${todayRecodeList[idx].codeId}`, { replace: true });
+    }, 500);
+
     Toast.success('다음 문제로 이동했습니다.');
   };
 

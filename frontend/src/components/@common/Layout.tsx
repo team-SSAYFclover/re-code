@@ -6,7 +6,7 @@ const Layout = () => {
   const currentPath = window.location.href.replace('//', '').split('/');
   const isRecode = currentPath.includes('recode') && currentPath.length > 2;
   return (
-    <div className=" h-screen flex">
+    <div className=" h-screen flex min-w-[1200px]">
       <Navbar />
       <div className={`w-full h-full ${isRecode ? 'pl-16' : 'pl-60'}`}>
         <Header />

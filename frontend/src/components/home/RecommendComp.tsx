@@ -1,7 +1,7 @@
 import { useHome } from '@/hooks/home/useHome';
+import { useAnimate } from 'framer-motion';
 import React from 'react';
 import { IoMdRefresh } from 'react-icons/io';
-import { useAnimate } from 'framer-motion';
 
 interface RecommendCompProps {
   suppleProb: { problemNo: number; problemTitle: string };
@@ -59,7 +59,7 @@ const RecommendComp: React.FC<RecommendCompProps> = ({ suppleProb, randProb }) =
       <div
         id="suppleProb"
         onClick={() => window.open(`https://www.acmicpc.net/problem/${suppleProb.problemNo}`)}
-        className="w-full h-fit m-1 p-2 rounded-lg flex-row bg-[#9BFFC3] shadow-inner cursor-pointer"
+        className="w-full h-fit m-1 p-2 rounded-lg flex-row bg-[#5ceb95] shadow-inner cursor-pointer"
       >
         <div className="flex justify-between">
           <div className="text-xs font-semibold text-MAIN2">BOJ {suppleProb.problemNo}</div>

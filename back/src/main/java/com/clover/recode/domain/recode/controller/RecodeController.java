@@ -28,7 +28,6 @@ public class RecodeController {
     @GetMapping("/{codeId}")
     public ResponseEntity<ResultResponse> getRecode(Authentication authentication, @PathVariable("codeId") Long codeId) {
         RecodeRes res = recodeService.getRecode(authentication, codeId);
-        log.info("GetRecode : {}", res);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_Recode_SUCCESS, res));
     }
 

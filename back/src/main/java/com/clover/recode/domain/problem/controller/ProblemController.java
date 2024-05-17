@@ -30,7 +30,6 @@ public class ProblemController {
 
     @PostMapping("/regist")
     public ResponseEntity<ResultResponse> saveProblemAndCode(@RequestBody ProblemCodeRegistReq problemCodeRegistReq) {
-        log.info("ProblemCode : {}", problemCodeRegistReq);
         problemService.saveProblemAndCode(problemCodeRegistReq);
         return ResponseEntity.ok(ResultResponse.of(REGIST_CODE_SUCCESS));
     }

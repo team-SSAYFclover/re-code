@@ -5,6 +5,7 @@ import com.clover.recode.domain.problem.repository.CodeRepository;
 import com.clover.recode.domain.statistics.entity.*;
 import com.clover.recode.domain.statistics.repository.StatisticsRepository;
 import com.clover.recode.domain.statistics.repository.TodayProblemRepository;
+import com.clover.recode.domain.user.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -41,14 +44,32 @@ public class StatisticsScheduler {
             LocalDate today = LocalDate.now();
 
             List<Code> codesToReview = codeRepository.findByReviewStatusTrueAndReviewTimeBefore();
+            Map<Long, Map<String, Integer>> userTitleCountMap = new HashMap<>();
 
             List<TodayProblem> todayProblemList = new ArrayList<>();
             for(Code code: codesToReview) {
+
+                Long userId = code.getUser().getId();
+                String originalTitle = code.getProblem().getTitle();
+                String title = originalTitle;
+
+                // 사용자를 위한 내부 맵이 없으면 초기화
+                userTitleCountMap.putIfAbsent(userId, new HashMap<>());
+                Map<String, Integer> titleCountMap = userTitleCountMap.get(userId);
+
+                if (titleCountMap.containsKey(originalTitle)) {
+                    int count = titleCountMap.get(originalTitle) + 1;
+                    titleCountMap.put(originalTitle, count);
+                    title = originalTitle + "(" + count + ")";
+                } else {
+                    titleCountMap.put(originalTitle, 1);
+                }
+
                     TodayProblem todayProblem = TodayProblem.builder()
                             .isCompleted(false)
                             .reviewCnt(code.getRecode().getSubmitCount())
                             .code(code)
-                            .title(code.getProblem().getTitle())
+                            .title(title)
                             .date(today)
                             .problemNo(code.getProblem().getProblemNo())
                             .user(code.getUser())

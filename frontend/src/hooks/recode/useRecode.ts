@@ -32,7 +32,6 @@ export const useRecode = () => {
         queryClient.setQueryData(
           ['todayRecode'],
           (oldData: APIResponse<IGetTodayRecodeListRes>) => {
-            console.log(oldData);
             return {
               ...oldData,
               data: oldData.data.map((item) => {

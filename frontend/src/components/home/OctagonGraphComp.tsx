@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 
 interface IOctagonGraphProps {
-  OctagonData: { name: string; num: number }[];
+  OctagonData: { name: string; 복습량: number }[];
 }
 
 const OctagonGraphComp: React.FC<IOctagonGraphProps> = ({ OctagonData }) => {
@@ -29,8 +29,10 @@ const OctagonGraphComp: React.FC<IOctagonGraphProps> = ({ OctagonData }) => {
         <RadarChart data={OctagonData}>
           <PolarGrid />
           <Tooltip />
+
           <PolarAngleAxis dataKey="name" fontSize={12} />
-          <Radar dataKey="num" stroke="#53EDC7" fill="#ECFFFA" fillOpacity={0.5} />
+
+          <Radar dataKey="복습량" stroke="#53EDC7" fill="#ECFFFA" fillOpacity={0.5} />
         </RadarChart>
       </ResponsiveContainer>
     </div>

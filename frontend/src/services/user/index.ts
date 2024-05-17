@@ -1,4 +1,4 @@
-import { axiosCommonInstance } from '@/apis/axiosInstance';
+import { axiosCommonInstance, axiosRefreshInstance } from '@/apis/axiosInstance';
 import { APIBasicResponse, APIResponse } from '@/types/model';
 import { IGetUserInfoRes } from '@/types/user';
 
@@ -16,4 +16,8 @@ export const modifyUserInfo = async (
   });
 
   return res.data;
+};
+
+export const logoutUser = async () => {
+  await axiosRefreshInstance.get(`/users/logout`);
 };
