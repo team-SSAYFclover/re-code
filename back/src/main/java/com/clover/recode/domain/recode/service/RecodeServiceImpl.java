@@ -94,8 +94,8 @@ public class RecodeServiceImpl implements RecodeService {
         // 시간 측정
         // long startTime = System.currentTimeMillis();
 
-//        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
-        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
+        GptRequestDto request = new GptRequestDto("gpt-4o", prompts, 1, 1, 0, 0);
+//        GptRequestDto request = new GptRequestDto("gpt-4-turbo", prompts, 1, 1, 0, 0);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -220,7 +220,7 @@ public class RecodeServiceImpl implements RecodeService {
 
         // 난이도 및 문제 길이 변 기본 빈칸 개수
         int contentLength = content.length();
-        int baseNum = contentLength / 300 + 1;
+        int baseNum = contentLength / 500 + 1;
 
         // 실제로 집어넣을 빈칸을 선정
         boolean[][] levelAnswersReal = new boolean[3][];
