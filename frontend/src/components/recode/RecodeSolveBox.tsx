@@ -33,6 +33,8 @@ const RecodeSolveBox = ({
       return;
     }
 
+    if (value.charAt(value.length - 1) == ' ') return;
+
     value = checkAnswer(index, value);
 
     setInputs(inputs.map((input, i) => (i === index ? value : input)));
