@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./logs:/logs
+      - /home/ubuntu/logs:/logs
     networks:
       - backend_frontend
 
