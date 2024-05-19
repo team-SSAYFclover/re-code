@@ -12,15 +12,34 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        default_batch_fetch_size: 1000
         format_sql: true
+        rewriteBatchedStatements: true
         jdbc:
           time_zone: Asia/Seoul
+        order_updates: true
+        order_inserts: true
     show-sql: true
     defer-datasource-initialization: true
+
     open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-name: github
+            client-id: ${oauth.client.id}
+            client-secret: ${oauth.client.secret}
+            redirect-uri: ${oauth.redirect.uri}
+            authorization-grant-type: authorization_code
+#            scope:  no-scope
+
 
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/record?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+#    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://${db.server_public_ip}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+
     username: ${db.username}
     password: ${db.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -33,8 +52,16 @@ spring:
       validation-timeout: 5000  # 커넥션 유효성 검사 타임아웃 설정 (ms)
       auto-commit: true  # 자동 커밋 모드 설정
 
+  redis:
+    host: ${db.redis.host}
+    port: ${db.redis.port}
+    password: ${db.redis.password}
+
+  openai:
+    secret-key: ${openai.secret-key}
+
 springdoc: #swagger
-  packages-to-scan: com.example.back
+  packages-to-scan: com.clover.recode
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
@@ -48,3 +75,15 @@ springdoc: #swagger
   cache:
     disabled: true
 
+firebase:
+  config-path: ${FIREBASE_CONFIG_PATH}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health, info
+  metrics:
+    tags:
+      application: ${spring.application.name}
