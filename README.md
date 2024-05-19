@@ -17,64 +17,116 @@ re:code는 사용자가 등록한 알고리즘 문제 코드를 기반으로, �
 
 </div>
 
-## 서비스 개요
-
-주요 기능 gif 따와서 보여주며 소개
-
-## 실행 방법
-
-포팅매뉴얼 만들면 docs에 올리고 여기 링크 추가
-
-## 기술 스택
-
-<div>
-<h4>🎨 FrontEnd </h4>
-<div>
-    <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-    <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
-    <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=black">
-    <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
-    <br/>
-    <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
-    <img src="https://img.shields.io/badge/styled_components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
-    <img src="https://img.shields.io/badge/tailwind css-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
-    <img src="https://img.shields.io/badge/daisyui-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white">
-</div>
-<h4>💾  BackEnd</h4>
-<div>
-    <img src="https://img.shields.io/badge/Java-000000?style=for-the-badge&logo=openjdk&logoColor=white">
-    <img src="https://img.shields.io/badge/spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-    <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
-    <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
-    <br/>
-    <img src="https://shields.io/badge/MySQL-lightgrey?style=for-the-badge&logo=mysql&logoColor=white">
-    <img src="https://img.shields.io/badge/hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white">
-    <img src="https://img.shields.io/badge/swagger-85EA2DC?style=for-the-badge&logo=swagger&logoColor=white">
-    <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
-    <img src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black">
-</div>
-<h4>💻 DevOps</h4>
-<div>
-    <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
-    <img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
-    <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
-    <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-</div>
-<h4>💬 Cooperation</h4>
-<div>
-    <img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
-    <img src="https://img.shields.io/badge/jirasoftware-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
-    <img src="https://img.shields.io/badge/mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">
-</div>
-</div>
-
-## 시스템 구조
-
-추후 시스템 아키텍쳐 추가
-
 ## 팀원 소개
 
 | <img src="https://github.com/gyeongri.png" width="150"> | <img src="https://github.com/tmdwns7809.png" width="150"> | <img src="https://github.com/bae2019.png" width="150"> | <img src="https://github.com/ChaNyeok1225.png" width="150"> | <img src="https://github.com/rosielsh.png" width="150"> | <img src="https://github.com/eunalove.png" width="150"> |
 | :-----------------------------------------------------: | :-------------------------------------------------------: | :----------------------------------------------------: | :---------------------------------------------------------: | :-----------------------------------------------------: | :-----------------------------------------------------: |
 |   [정경리<br>@gyeongri](https://github.com/gyeongri)    |  [이승준<br>@tmdwns7809](https://github.com/tmdwns7809)   |    [배성연<br>@bae2019](https://github.com/bae2019)    | [전찬혁<br>@ChaNyeok1225](https://github.com/ChaNyeok1225)  |   [이수화<br>@rosielsh](https://github.com/rosielsh)    |   [오은아<br>@eunalove](https://github.com/eunalove)    |
-|                       Leader, BE                        |                        BE, DevOps                         |                           FE                           |                      BE, FE, Extention                      |                           FE                            |                           BE                            |
+|                       Leader, BE                        |                         BE, Infra                         |                           FE                           |                      BE, FE, Extention                      |                           FE                            |                        BE, Infra                        |
+
+## 기술 스택
+
+<div>
+<h4>🎨 FrontEnd </h4>
+<img src="./docs/Readme%20assets/frontend.png" />
+<h4>💾  BackEnd</h4>
+<img src="./docs/Readme%20assets/backend.png" />
+<h4>💻 Infra</h4>
+<img src="./docs/Readme%20assets/infra.png" />
+<h4>💬 Cooperation</h4>
+<img src="./docs/Readme%20assets/tools.png" />
+</div>
+
+## 시스템 구조
+
+<img src="./docs/Readme%20assets/architecture.png" />
+
+## 서비스 화면
+
+### 크롬 확장 프로그램을 통한 문제 생성
+
+- 크롬 웹 스토어에 등록된 확장 프로그램 다운 가능
+- 백준 사이트에서 자신이 맞춘 문제의 코드를 가져와 문제 생성
+
+![Untitled](./docs/Readme%20assets/gif/regist_recode.gif)
+
+### 문제 풀기
+
+- 등록한 코드에 ai를 통한 빈칸을 생성
+
+![Untitled](./docs/Readme%20assets/gif/recode.gif)
+
+### 문제 조회
+
+- 등록한 코드와 문제를 조회
+- 알고리즘, 난이도 등 다양한 검색 기능
+
+![Untitled](./docs/Readme%20assets/gif/detail.gif)
+
+### 시작 가이드
+
+- 직관적이고 사용자 친화적인 서비스 이용 가이드 제공
+
+![Untitled](./docs/Readme%20assets/gif/guide.gif)
+
+## 실행 방법
+
+### 1. [레코드 확장 프로그램 설치](https://chromewebstore.google.com/detail/recode-uploader/ppbaladjjpmepkmaafeidledkhmjdill?hl=ko&utm_source=ext_sidebar)
+
+![Untitled](./docs/Readme%20assets/howto/Untitled.png)
+
+### 2. 레코드 서비스와 확장 프로그램 연동
+
+1. 확장 프로그램 클릭 후 서비스 페이지로 이동
+
+   ![Untitled](./docs/Readme%20assets/howto/Untitled%201.png)
+
+2. 깃헙 로그인 하기
+
+   ![Untitled](./docs/Readme%20assets/howto/Untitled%202.png)
+
+3. 오른쪽 상단 내 정보 클릭후 연동코드 복사하기
+
+   ![Untitled](./docs/Readme%20assets/howto/Untitled%203.png)
+
+4. 확장 프로그램에서 연동 코드 입력하여 연동하기
+
+   ![Untitled](./docs/Readme%20assets/howto/Untitled%204.png)
+
+   ![Untitled](./docs/Readme%20assets/howto/Untitled%205.png)
+
+### 3. 복습하고 싶은 코드 등록하기
+
+1. 백준 사이트에서 맞힌 코드 옆에 생성된 RE:CODE 버튼 클릭
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%206.png)
+
+2. 등록할 코드의 제목 설정 후 등록
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%207.png)
+
+### 4. 메인 대시보드
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%208.png)
+
+### 5. 시작 가이드
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%209.png)
+
+### 6. 문제 조회
+
+1. 문제 전체 조회 및 검색
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%2010.png)
+
+2. 문제 상세 조회
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%2011.png)
+
+3. 등록한 코드 확인
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%2012.png)
+
+### 7. 문제 풀기
+
+![Untitled](./docs/Readme%20assets/howto/Untitled%2013.png)
