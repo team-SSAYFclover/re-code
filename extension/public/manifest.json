@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "re:code uploader",
+  "description": "re:code 서비스에 백준 코드를 등록할 수 있습니다.",
+  "version": "1.2",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "re:code"
+  },
+  "icons": {
+    "16": "assets/thumbnail.png",
+    "48": "assets/thumbnail.png",
+    "128": "assets/thumbnail.png"
+  },
+  "permissions": ["storage", "declarativeNetRequest"],
+  "host_permissions": ["https://www.acmicpc.net/"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.acmicpc.net/*"],
+      "css": ["css/modal.css"],
+      "js": [
+        "scripts/utils.js",
+        "scripts/baekjoon/modal.js",
+        "scripts/baekjoon/variable.js",
+        "scripts/baekjoon/parse.js",
+        "scripts/baekjoon/baekjoon.js",
+        "scripts/baekjoon/api.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

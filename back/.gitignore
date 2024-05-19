@@ -1,4 +1,4 @@
-application-secrets.yml
+src/main/resources/application-secret.yml
 
 HELP.md
 .gradle
@@ -37,3 +37,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### FCM KEY ###
+src/main/resources/firebase/**
+
+src/main/generated/**

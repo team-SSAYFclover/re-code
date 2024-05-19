@@ -1,0 +1,30 @@
+version: "3"
+services:
+  recode-back:
+    container_name: recode-back
+    build: ./back
+    image: recode_back_image:0.0
+    ports:
+      - "8080:8080"
+    volumes:
+      - /home/ubuntu/logs:/logs
+    networks:
+      - backend_frontend
+
+  recode-front:
+    container_name: recode-front
+    build: ./frontend
+    image: recode_front_image:0.0
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+      - /home/ubuntu/nginx:/etc/nginx/conf.d
+    networks:
+      - backend_frontend
+
+networks:
+  backend_frontend:
+    driver: bridge
