@@ -246,9 +246,9 @@
 </tr>
   <tr>
   <td style="text-align:center;">코드 등록(POST)</td>
-  <td>306.9/sec</td>
-  <td>25/ms</td>
-  <td>13/ms</td>
+  <td>238.5/sec</td>
+  <td>155/ms</td>
+  <td>74/ms</td>
 </tr>
   <tr>
   <td style="text-align:center;">사용자 정보 조회(GET)</td>
