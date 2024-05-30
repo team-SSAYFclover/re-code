@@ -259,7 +259,8 @@
 </table>
 
 ### 지속적인 메트릭, Error 로그 모니터링
-![image (10)](https://github.com/team-SSAYFclover/re-code/assets/88129325/494774ba-b380-4f62-9b8c-279f8444bb73)
+![image (9)](https://github.com/team-SSAYFclover/re-code/assets/88129325/296b5fc0-7532-4040-864d-bae5538da5b8)
+
 
 ![image (11)](https://github.com/team-SSAYFclover/re-code/assets/88129325/37f0ac4e-b573-43e4-ba04-bd05ff2483e0)
 
