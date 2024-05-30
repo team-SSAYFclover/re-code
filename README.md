@@ -2,7 +2,7 @@
 <img src="./docs/Readme%20assets/logo2.png" />
 </p>
 
-# 나만의 작은 알고리즘 복습 서비스, re:code
+# 🍀나만의 작은 알고리즘 복습 서비스, re:code
 
 -   삼성 청년 SW 아카데미(SSAFY) 10기 자율 프로젝트
 -   구미 2반 10팀 : 팀 SSAYFclover
@@ -23,9 +23,10 @@
 1. [**시스템 구조**](#3)
 1. [**주요 기능**](#4)
 1. [**서비스 화면**](#5)
-1. [**팀원 소개**](#6)
-1. [**디렉터리 구조**](#7)
-1. [**산출물**](#8)
+1. [**운영 과정**](#6)
+1. [**팀원 소개**](#7)
+1. [**디렉터리 구조**](#8)
+1. [**산출물**](#9)
 
 <br/>
 
@@ -39,7 +40,7 @@
 
 <br/>
 
-<div id="3"></div>
+<div id="2"></div>
 
 ## 🛠️ 기술 스택
 
@@ -56,7 +57,7 @@
 
 <br/>
 
-<div id="4"></div>
+<div id="3"></div>
 
 ## ⚙️ 시스템 구조
 
@@ -68,7 +69,7 @@
 
 <br/>
 
-<div id="5"></div>
+<div id="4"></div>
 
 ## 💡 주요 기능
 
@@ -107,7 +108,7 @@
 
 <br/>
 
-<div id="6"></div>
+<div id="5"></div>
 
 ## 🖥️ 서비스 화면
 
@@ -171,6 +172,101 @@
 
 <div id="6"></div>
 
+## 🧐 운영 과정
+### 주요 서비스 API 성능테스트
+
+동시접속사 100명, 각 사용자 요청횟수 10회를 기준으로 함
+<table style="word-break:keep-all">
+<tr ><th style="text-align:center;">API</th><th>TPS</th><th>응답시간 평균</th><th>응답시간 표준편차</th></tr>
+<tr>
+  <td style="text-align:center;">레코드 가져오기(GET)</td>
+  <td>89.9/sec</td>
+  <td>801/ms</td>
+  <td>286/ms</td>
+</tr>
+<tr>
+  <td style="text-align:center;">레코드 복습완료(PUT)</td>
+  <td>117.8/sec</td>
+  <td>550/ms</td>
+  <td>199/ms</td>
+</tr>
+<tr>
+  <td style="text-align:center;">메인화면 통계 조회(GET)</td>
+  <td>159.6/sec</td>
+  <td>344/ms</td>
+  <td>164/ms</td>
+</tr>
+<tr>
+  <td style="text-align:center;">오늘의 복습문제 갯수 조회(GET)</td>
+  <td>160/sec</td>
+  <td>21/ms</td>
+  <td>11/ms</td>
+</tr>
+<tr>
+  <td style="text-align:center;">랜덤문제 업데이트(PATCH)</td>
+  <td>95/sec</td>
+  <td>351/ms</td>
+  <td>178/ms</td>
+</tr>
+<tr>
+  <td style="text-align:center;">보충문제 업데이트(PATCH)</td>
+  <td>90/sec</td>
+  <td>381/ms</td>
+  <td>162/ms</td>
+</tr>
+<tr>
+  <td style="text-align:center;">오늘의 복습문제 조회(GET)</td>
+  <td>107.6/sec</td>
+  <td>262/ms</td>
+  <td>134/ms</td>
+</tr>
+<tr>
+  <td style="text-align:center;">사용자 문제조회(GET)</td>
+  <td>126.2/sec</td>
+  <td>498/ms</td>
+  <td>195/ms</td>
+</tr>
+  <tr>
+  <td style="text-align:center;">문제 상세 조회(GET)</td>
+  <td>289.3/sec</td>
+  <td>57/ms</td>
+  <td>20/ms</td>
+</tr>
+  <tr>
+  <td style="text-align:center;">코드 삭제(DELETE)</td>
+  <td>293.6/sec</td>
+  <td>61/ms</td>
+  <td>21/ms</td>
+</tr>
+  <tr>
+  <td style="text-align:center;">코드 수정(PATCH)</td>
+  <td>306.9/sec</td>
+  <td>25/ms</td>
+  <td>13/ms</td>
+</tr>
+  <tr>
+  <td style="text-align:center;">코드 등록(POST)</td>
+  <td>306.9/sec</td>
+  <td>25/ms</td>
+  <td>13/ms</td>
+</tr>
+  <tr>
+  <td style="text-align:center;">사용자 정보 조회(GET)</td>
+  <td>109.1/sec</td>
+  <td>271/ms</td>
+  <td>127/ms</td>
+</tr>
+</table>
+
+### 지속적인 메트릭, Error 로그 모니터링
+![image (10)](https://github.com/team-SSAYFclover/re-code/assets/88129325/494774ba-b380-4f62-9b8c-279f8444bb73)
+
+![image (11)](https://github.com/team-SSAYFclover/re-code/assets/88129325/37f0ac4e-b573-43e4-ba04-bd05ff2483e0)
+
+
+<br/>
+
+<div id="7"></div>
 ## 🧑‍🤝‍🧑 팀원 소개
 
 | <img src="https://github.com/gyeongri.png" width="150"> | <img src="https://github.com/tmdwns7809.png" width="150"> | <img src="https://github.com/bae2019.png" width="150"> | <img src="https://github.com/ChaNyeok1225.png" width="150"> | <img src="https://github.com/rosielsh.png" width="150"> | <img src="https://github.com/eunalove.png" width="150"> |
@@ -180,7 +276,7 @@
 
 <br/>
 
-<div id="7"></div>
+<div id="8"></div>
 
 ## 📁 디렉토리 구조
 
@@ -297,7 +393,7 @@
 
 <br/>
 
-<div id="8"></div>
+<div id="9"></div>
 
 ## 산출물
 
