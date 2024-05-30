@@ -175,7 +175,7 @@
 ## 🧐 운영 과정
 ### 주요 서비스 API 성능테스트
 
-동시접속사 100명, 각 사용자 요청횟수 10회를 기준으로 함
+동시접속자 100명, 각 사용자 요청횟수 10회를 기준으로 함
 <table style="word-break:keep-all">
 <tr ><th style="text-align:center;">API</th><th>TPS</th><th>응답시간 평균</th><th>응답시간 표준편차</th></tr>
 <tr>
