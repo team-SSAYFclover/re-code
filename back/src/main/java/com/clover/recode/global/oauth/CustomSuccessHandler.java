@@ -35,12 +35,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     StringBuilder sb = new StringBuilder();
 
-    String serverName = request.getServerName();
-    if(serverName.equals("app")) {
-      sb.append("https://www.recode-d210.com/redirect");
-    } else {
-      sb.append("http://localhost:5173/redirect");
-    }
+    sb.append("https://re-code.site/redirect");
     sb.append("?access_token=").append(access);
 
     response.sendRedirect(sb.toString());

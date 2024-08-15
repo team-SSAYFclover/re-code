@@ -49,7 +49,7 @@ function addModal() {
     const nameInput = document.getElementById('nameinput');
     bojData.code.name = nameInput.value || '빈 제목 입니다.';
 
-    fetch('https://www.recode-d210.com/api/problems/regist', {
+    fetch('https://re-code.site/api/problems/regist', {
       method: 'POST',
       body: JSON.stringify(bojData),
       headers: {

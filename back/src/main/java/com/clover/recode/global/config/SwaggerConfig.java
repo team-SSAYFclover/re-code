@@ -45,9 +45,9 @@ public class SwaggerConfig {
         Server server2 = new Server();
         if (System.getenv("HOSTNAME") == null) {
             server.setUrl("http://localhost:8080/api");
-            server2.setUrl("https://www.recode-d210.com/api");
+            server2.setUrl("https://re-code.site/api");
         } else {
-            server.setUrl("https://www.recode-d210.com/api");
+            server.setUrl("https://re-code.site/api");
             server2.setUrl("http://localhost:8080/api");
         }
 

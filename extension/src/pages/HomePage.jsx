@@ -11,7 +11,7 @@ const HomePage = () => {
 
   useEffect(() => {
     chrome.storage.local.get(['id']).then((res) => {
-      fetch(`https://www.recode-d210.com/api/statistics/${res.id}/reviews/cnt`)
+      fetch(`https://re-code.site/api/statistics/${res.id}/reviews/cnt`)
         .then((res) => res.json())
         .then((res) => {
           setProblemNum(res.data);
@@ -28,7 +28,7 @@ const HomePage = () => {
             오늘의 복습 문제는 <span className="text-[#2CDCB2] font-bold">{problemNum}</span>개
             입니다. <br />
             <a
-              href="https://www.recode-d210.com"
+              href="https://re-code.site"
               target="_blank"
               className="text-[#53EDC7] underline underline-offset-4"
             >

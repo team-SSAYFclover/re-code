@@ -33,12 +33,12 @@ spring:
             client-secret: ${oauth.client.secret}
             redirect-uri: ${oauth.redirect.uri}
             authorization-grant-type: authorization_code
-#            scope:  no-scope
+  #            scope:  no-scope
 
 
   datasource:
-#    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
-    url: jdbc:mysql://${db.server_public_ip}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    #    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://${db.server_address}:3306/recode?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
 
     username: ${db.username}
     password: ${db.password}
@@ -53,9 +53,9 @@ spring:
       auto-commit: true  # 자동 커밋 모드 설정
 
   redis:
-    host: ${db.redis.host}
-    port: ${db.redis.port}
-    password: ${db.redis.password}
+    host: ${redis.host}
+    port: ${redis.port}
+    password: ${redis.password}
 
   openai:
     secret-key: ${openai.secret-key}

@@ -21,7 +21,7 @@ const GuidePage = () => {
   const guide: JSX.Element[] = [
     <div>
       re:code 홈페이지에 들어가{' '}
-      <Link to={'https://www.recode-d210.com'} className="text-MAIN1">
+      <Link to={'https://re-code.site'} className="text-MAIN1">
         github 로그인
       </Link>
       을 진행합니다.
@@ -44,7 +44,7 @@ const GuidePage = () => {
     <div>BOJ에서 문제를 풀고 맞았다면 re:code 아이콘을 눌러 복습 문제에 추가합니다.</div>,
     <div>
       re:code의 오늘의 복습 리스트에 등록되면&nbsp;
-      <Link to={'https://www.recode-d210.com/recode'} className="text-MAIN1">
+      <Link to={'https://re-code.site/recode'} className="text-MAIN1">
         문제를 풀어 복습
       </Link>
       을 진행합니다.

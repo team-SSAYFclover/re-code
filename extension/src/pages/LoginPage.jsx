@@ -5,7 +5,7 @@ const LoginPage = () => {
   const [text, setText] = useState('');
 
   const connService = () => {
-    fetch(`https://www.recode-d210.com/api/users/code?uuid=${uuidRef.current.value}`)
+    fetch(`https://re-code.site/api/users/code?uuid=${uuidRef.current.value}`)
       .then((res) => res.json())
       .then((res) => {
         chrome.storage.local.set({ id: res.data.id });
@@ -38,7 +38,7 @@ const LoginPage = () => {
         <div className="w-full">
           <p className="text-center text-[14px]">
             <a
-              href="https://www.recode-d210.com/guide"
+              href="https://re-code.site/guide"
               target="_blank"
               className="text-[#5A8AF2] hover:underline"
             >
